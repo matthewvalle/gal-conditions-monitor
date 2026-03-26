@@ -1,0 +1,53 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/fetch-weather",
+      "schedule": "0 */2 * * *"
+    },
+    {
+      "path": "/api/cron/fetch-mwac",
+      "schedule": "0 */4 * * *"
+    },
+    {
+      "path": "/api/cron/fetch-nws-alerts",
+      "schedule": "0 * * * *"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://granitealpinelab.com"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/zones",
+      "destination": "/api/routes/zones"
+    },
+    {
+      "source": "/api/zones/:id",
+      "destination": "/api/routes/zone/:id"
+    },
+    {
+      "source": "/api/zones/:id/weather",
+      "destination": "/api/routes/zone/weather"
+    },
+    {
+      "source": "/api/zones/:id/forecast",
+      "destination": "/api/routes/zone/forecast"
+    }
+  ]
+}
