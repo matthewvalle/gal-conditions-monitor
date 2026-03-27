@@ -195,7 +195,7 @@ export default function ConditionsMap({ zones, weather, forecast, assessments, i
           <button
             key={key}
             className={`map-style-btn${mapStyle === key ? ' map-style-btn--active' : ''}`}
-            onClick={() => setMapStyle(key)}
+            onClick={() => setMapStyle(key as 'standard' | 'terrain' | 'satellite')}
           >
             {MAP_STYLES[key].label}
           </button>
