@@ -13,20 +13,33 @@ interface Props {
   panelRef: React.RefObject<HTMLDivElement | null>;
 }
 
-const MAP_STYLES = {
-  standard: {
-    label: 'Standard',
-    url: 'https://tiles.openfreemap.org/styles/liberty',
+// Style URLs or inline style objects for MapLibre
+const STYLE_STANDARD = 'https://tiles.openfreemap.org/styles/liberty';
+const STYLE_TERRAIN = 'https://tiles.stadiamaps.com/styles/stamen_terrain.json';
+const STYLE_SATELLITE: any = {
+  version: 8,
+  sources: {
+    satellite: {
+      type: 'raster',
+      tiles: ['https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}'],
+      tileSize: 256,
+      maxzoom: 16,
+      attribution: 'USGS National Map',
+    },
   },
-  terrain: {
-    label: 'Terrain',
-    url: 'https://tiles.openfreemap.org/styles/liberty', // base style
-    // We'll add terrain layer on top
-  },
-  satellite: {
-    label: 'Satellite',
-    url: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
-  },
+  layers: [{
+    id: 'satellite-layer',
+    type: 'raster',
+    source: 'satellite',
+    minzoom: 0,
+    maxzoom: 16,
+  }],
+};
+
+const MAP_STYLES: Record<string, { label: string; style: any }> = {
+  standard: { label: 'Standard', style: STYLE_STANDARD },
+  terrain: { label: 'Terrain', style: STYLE_TERRAIN },
+  satellite: { label: 'Satellite', style: STYLE_SATELLITE },
 };
 
 // Compute a quick condition rating from weather data
@@ -60,7 +73,7 @@ export default function ConditionsMap({ zones, weather, forecast, assessments, i
 
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: MAP_STYLES[mapStyle].url,
+      style: MAP_STYLES[mapStyle].style,
       center: [-71.30, 44.27],
       zoom: 11,
       attributionControl: false,
@@ -103,7 +116,7 @@ export default function ConditionsMap({ zones, weather, forecast, assessments, i
     const map = mapRef.current;
     if (!map) return;
 
-    map.setStyle(MAP_STYLES[mapStyle].url);
+    map.setStyle(MAP_STYLES[mapStyle].style);
 
     map.once('styledata', () => {
       // Re-add terrain source after style change
