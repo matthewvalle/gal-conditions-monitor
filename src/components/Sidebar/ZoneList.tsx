@@ -5,9 +5,10 @@ import type { Zone, ZoneWeather } from '../../../lib/types';
 interface Props {
   zones: Zone[];
   weather: Record<string, ZoneWeather>;
+  assessments: Record<string, { rating: string; reasons: string[] }>;
 }
 
-export default function ZoneList({ zones, weather }: Props) {
+export default function ZoneList({ zones, weather, assessments }: Props) {
   const { selectedZoneId, selectZone } = useSelectedZone();
 
   if (zones.length === 0) {
@@ -35,7 +36,9 @@ export default function ZoneList({ zones, weather }: Props) {
             {groupZones.map((zone) => {
               const zw = weather[zone.id];
               const isSelected = zone.id === selectedZoneId;
-              const rating = getConditionRating(zw);
+              // Use server assessment, fall back to client computation
+              const serverRating = assessments[zone.id]?.rating;
+              const rating = (serverRating as any) || getConditionRating(zw);
               const dotColor = CONDITION_COLORS[rating];
 
               return (

@@ -16,6 +16,10 @@ export default function App() {
   const detailQuery = useZoneDetail(selectedZoneId);
   const panelRef = useRef<HTMLDivElement>(null);
 
+  // Server-side assessments (includes avy danger in rating)
+  const assessments: Record<string, { rating: string; reasons: string[] }> =
+    (data as any)?.assessments ?? {};
+
   return (
     <div className="app">
       <Header />
@@ -32,6 +36,7 @@ export default function App() {
             zones={data?.zones ?? []}
             weather={data?.weather ?? {}}
             forecast={data?.forecast ?? null}
+            assessments={assessments}
             isLoading={isLoading}
             panelRef={panelRef}
           />
@@ -40,6 +45,7 @@ export default function App() {
             <ZoneList
               zones={data?.zones ?? []}
               weather={data?.weather ?? {}}
+              assessments={assessments}
             />
           </div>
         </div>

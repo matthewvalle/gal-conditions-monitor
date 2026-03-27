@@ -8,6 +8,7 @@ interface Props {
   zones: Zone[];
   weather: Record<string, ZoneWeather>;
   forecast: MwacForecast | null;
+  assessments: Record<string, { rating: string; reasons: string[] }>;
   isLoading: boolean;
   panelRef: React.RefObject<HTMLDivElement | null>;
 }
@@ -46,7 +47,7 @@ export const CONDITION_COLORS: Record<string, string> = {
   dangerous: '#F44336',
 };
 
-export default function ConditionsMap({ zones, weather, forecast, isLoading, panelRef }: Props) {
+export default function ConditionsMap({ zones, weather, forecast, assessments, isLoading, panelRef }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<maplibregl.Marker[]>([]);
@@ -135,8 +136,9 @@ export default function ConditionsMap({ zones, weather, forecast, isLoading, pan
     markersRef.current = [];
 
     zones.forEach((zone) => {
-      const zoneWeather = weather[zone.id];
-      const conditionRating = getConditionRating(zoneWeather);
+      // Use server-side assessment if available, fall back to client-side
+      const serverRating = assessments[zone.id]?.rating;
+      const conditionRating = (serverRating as any) || getConditionRating(weather[zone.id]);
 
       const marker = ZoneMarker({
         zone,
