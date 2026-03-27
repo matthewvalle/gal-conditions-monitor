@@ -1,4 +1,4 @@
-import { getLastFetch } from '../lib/cache';
+import { getLastFetch } from '../../lib/cache';
 
 interface HealthResponse {
   status: 'ok' | 'degraded' | 'error';

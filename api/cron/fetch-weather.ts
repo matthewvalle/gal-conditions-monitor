@@ -1,63 +1,68 @@
-import { getMvpZones } from '../../data/zones/zones';
-import { fetchZoneWeather } from '../lib/open-meteo';
-import { cacheSet, setLastFetch } from '../lib/cache';
-
-const WEATHER_TTL = 3 * 60 * 60; // 3 hours
-
 /**
- * Vercel Cron handler — fetches Open-Meteo weather for all MVP zones
- * and stores each result in the cache.
+ * Daily cron handler — fetches ALL data sources:
+ * 1. Open-Meteo weather for all MVP zones
+ * 2. MWAC avalanche forecast
+ * 3. NWS active alerts for NH
  *
- * Configured in vercel.json:
- *   { "path": "/api/cron/fetch-weather", "schedule": "0 6 * * *" }
+ * Configured in vercel.json: { "path": "/api/cron/fetch-weather", "schedule": "0 6 * * *" }
  */
-export async function POST(request: Request): Promise<Response> {
-  // Optional: verify Vercel cron secret
+import { cacheSet, setLastFetch } from '../../lib/cache';
+import { fetchZoneWeather } from '../../lib/open-meteo';
+import { fetchMwacForecast } from '../../lib/mwac-scraper';
+import { fetchAlerts } from '../../lib/nws';
+
+// Read zone metadata
+import zoneData from '../../data/zone-metadata.json';
+const mvpZones = (zoneData as any[]).filter((z: any) => z.isMvp);
+
+export async function GET(request: Request): Promise<Response> {
+  // Verify cron secret if set
   const authHeader = request.headers.get('authorization');
-  if (
-    process.env.CRON_SECRET &&
-    authHeader !== `Bearer ${process.env.CRON_SECRET}`
-  ) {
+  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return new Response('Unauthorized', { status: 401 });
   }
 
-  const zones = getMvpZones();
-  const results: { zoneId: string; ok: boolean; error?: string }[] = [];
+  const results: string[] = [];
 
-  // Fetch all zones in parallel
-  const settled = await Promise.allSettled(
-    zones.map(async (zone) => {
-      const weather = await fetchZoneWeather(zone);
-      await cacheSet(`weather:${zone.id}`, weather, WEATHER_TTL);
-      return zone.id;
-    })
-  );
+  // 1. Fetch weather for all MVP zones
+  try {
+    const weatherResults = await Promise.allSettled(
+      mvpZones.map(async (zone: any) => {
+        const weather = await fetchZoneWeather(zone as any);
+        await cacheSet(`weather:${zone.id}`, weather, 3 * 3600);
+        return zone.id;
+      })
+    );
 
-  for (const result of settled) {
-    if (result.status === 'fulfilled') {
-      results.push({ zoneId: result.value, ok: true });
-    } else {
-      const errMsg =
-        result.reason instanceof Error
-          ? result.reason.message
-          : String(result.reason);
-      console.error('[fetch-weather] Zone failed:', errMsg);
-      results.push({ zoneId: 'unknown', ok: false, error: errMsg });
-    }
+    const succeeded = weatherResults.filter((r) => r.status === 'fulfilled').length;
+    results.push(`Weather: ${succeeded}/${mvpZones.length} zones updated`);
+    await setLastFetch('weather');
+  } catch (err) {
+    results.push(`Weather: ERROR - ${err}`);
   }
 
-  await setLastFetch('weather');
+  // 2. Fetch MWAC forecast
+  try {
+    const mwac = await fetchMwacForecast();
+    await cacheSet('mwac:current', mwac, 12 * 3600);
+    await setLastFetch('mwac');
+    results.push(`MWAC: Updated (danger: ${mwac.dangerLevel?.alpine ?? 'N/A'})`);
+  } catch (err) {
+    results.push(`MWAC: ERROR - ${err}`);
+  }
 
-  const successCount = results.filter((r) => r.ok).length;
-  console.log(
-    `[fetch-weather] Completed: ${successCount}/${zones.length} zones updated`
+  // 3. Fetch NWS alerts
+  try {
+    const alerts = await fetchAlerts('NH');
+    await cacheSet('nws:alerts:NH', alerts, 3600);
+    await setLastFetch('nws');
+    results.push(`NWS: ${alerts.length} active alerts`);
+  } catch (err) {
+    results.push(`NWS: ERROR - ${err}`);
+  }
+
+  return Response.json(
+    { ok: true, results, timestamp: new Date().toISOString() },
+    { headers: { 'Cache-Control': 'no-store' } }
   );
-
-  return Response.json({
-    success: true,
-    zonesUpdated: successCount,
-    zonesTotal: zones.length,
-    results,
-    timestamp: new Date().toISOString(),
-  });
 }

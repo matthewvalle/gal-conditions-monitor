@@ -1,4 +1,4 @@
-import type { Zone } from '../../api/lib/types';
+import type { Zone } from '../../lib/types';
 import zoneMetadata from '../zone-metadata.json';
 
 /**

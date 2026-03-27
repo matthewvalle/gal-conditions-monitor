@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 import { useQuery } from '@tanstack/react-query';
-import type { ZonesResponse, ZoneDetailResponse } from '../../api/lib/types';
+import type { ZonesResponse, ZoneDetailResponse } from '../../lib/types';
 
 const API_BASE = import.meta.env.VITE_API_URL ?? '';
 

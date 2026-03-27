@@ -1,5 +1,5 @@
 import { getDangerLevel } from '../../utils/dangerScale';
-import type { MwacForecast } from '../../../api/lib/types';
+import type { MwacForecast } from '../../../lib/types';
 
 interface Props {
   forecast: MwacForecast | null;

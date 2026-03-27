@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { NwsAlert } from '../../../api/lib/types';
+import type { NwsAlert } from '../../../lib/types';
 
 interface Props {
   alerts: NwsAlert[];

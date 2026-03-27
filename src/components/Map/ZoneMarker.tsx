@@ -1,6 +1,6 @@
 import maplibregl from 'maplibre-gl';
 import { getDangerLevel } from '../../utils/dangerScale';
-import type { Zone } from '../../../api/lib/types';
+import type { Zone } from '../../../lib/types';
 
 interface ZoneMarkerProps {
   zone: Zone;

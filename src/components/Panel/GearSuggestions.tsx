@@ -1,5 +1,5 @@
 import React from 'react';
-import type { GearSuggestion } from '../../../api/lib/types';
+import type { GearSuggestion } from '../../../lib/types';
 
 interface Props {
   gear: GearSuggestion[];

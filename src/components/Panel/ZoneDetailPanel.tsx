@@ -5,7 +5,7 @@ import AvalancheCard from './AvalancheCard';
 import ForecastTable from './ForecastTable';
 import GearSuggestions from './GearSuggestions';
 import WindRose from './WindRose';
-import type { ZoneDetailResponse } from '../../../api/lib/types';
+import type { ZoneDetailResponse } from '../../../lib/types';
 
 interface Props {
   detail: ZoneDetailResponse | null;

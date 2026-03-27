@@ -1,11 +1,11 @@
 import { zones } from '../../data/zones/zones';
-import { cacheGet } from '../lib/cache';
+import { cacheGet } from '../../lib/cache';
 import type {
   ZoneWeather,
   MwacForecast,
   NwsAlert,
   ZonesResponse,
-} from '../lib/types';
+} from '../../lib/types';
 
 /**
  * GET /api/zones

@@ -1,4 +1,4 @@
-import type { ZoneWeather } from '../../../api/lib/types';
+import type { ZoneWeather } from '../../../lib/types';
 
 interface Props {
   weather: ZoneWeather;

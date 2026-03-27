@@ -1,6 +1,6 @@
 import { useSelectedZone } from '../../hooks/useSelectedZone';
 import { getDangerLevel } from '../../utils/dangerScale';
-import type { Zone, ZoneWeather } from '../../../api/lib/types';
+import type { Zone, ZoneWeather } from '../../../lib/types';
 
 interface Props {
   zones: Zone[];

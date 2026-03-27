@@ -1,4 +1,4 @@
-import type { TripAssessment as TripAssessmentType } from '../../../api/lib/types';
+import type { TripAssessment as TripAssessmentType } from '../../../lib/types';
 
 interface Props {
   assessment: TripAssessmentType;

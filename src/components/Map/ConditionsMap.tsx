@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import maplibregl from 'maplibre-gl';
 import { useSelectedZone } from '../../hooks/useSelectedZone';
 import ZoneMarker from './ZoneMarker';
-import type { Zone, ZoneWeather, MwacForecast } from '../../../api/lib/types';
+import type { Zone, ZoneWeather, MwacForecast } from '../../../lib/types';
 
 interface Props {
   zones: Zone[];
