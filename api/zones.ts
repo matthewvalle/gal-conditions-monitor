@@ -122,6 +122,122 @@ async function getWeather(zoneId: string, lat: number, lon: number, elevation: n
   };
 }
 
+// Strip HTML tags to plain text
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/\s+/g, ' ').trim();
+}
+
+// Fetch MWAC avalanche forecast
+async function getMwacForecast() {
+  try {
+    const res = await fetch('https://api.avalanche.org/v2/public/products?avalanche_center_id=MWAC&type=forecast');
+    if (!res.ok) throw new Error(`MWAC API ${res.status}`);
+    const products = await res.json();
+
+    const forecast = Array.isArray(products)
+      ? products.find((p: any) => p.product_type === 'forecast')
+      : null;
+
+    if (!forecast) {
+      return {
+        dangerRating: -1,
+        dangerLabel: 'No rating',
+        dangerLevels: { alpine: null, treeline: null, belowTreeline: null },
+        tomorrowLevels: { alpine: null, treeline: null, belowTreeline: null },
+        bottomLine: 'Forecast data unavailable',
+        author: '',
+        publishedAt: '',
+        expiresAt: '',
+        source: 'Mount Washington Avalanche Center (USDA Forest Service)',
+        sourceUrl: 'https://www.mountwashingtonavalanchecenter.org/forecasts/#/presidential-range',
+        disclaimer: 'This data is sourced from MWAC. Always check the official forecast before heading into avalanche terrain.',
+      };
+    }
+
+    // Parse danger levels from the danger array
+    // valid_day "current" = today, "tomorrow" = tomorrow
+    const todayDanger = (forecast.danger || []).find((d: any) => d.valid_day === 'current') || {};
+    const tomorrowDanger = (forecast.danger || []).find((d: any) => d.valid_day === 'tomorrow') || {};
+
+    // Map: upper=Alpine, middle=Treeline, lower=Below Treeline
+    const parseDangerLevel = (val: any) => (typeof val === 'number' && val >= 0 ? val : null);
+
+    return {
+      dangerRating: forecast.danger_rating ?? -1,
+      dangerLabel: forecast.danger_level_text || 'No rating',
+      dangerLevels: {
+        alpine: parseDangerLevel(todayDanger.upper),
+        treeline: parseDangerLevel(todayDanger.middle),
+        belowTreeline: parseDangerLevel(todayDanger.lower),
+      },
+      tomorrowLevels: {
+        alpine: parseDangerLevel(tomorrowDanger.upper),
+        treeline: parseDangerLevel(tomorrowDanger.middle),
+        belowTreeline: parseDangerLevel(tomorrowDanger.lower),
+      },
+      bottomLine: forecast.bottom_line ? stripHtml(forecast.bottom_line) : '',
+      author: forecast.author || '',
+      publishedAt: forecast.published_time || '',
+      expiresAt: forecast.expires_time || '',
+      source: 'Mount Washington Avalanche Center (USDA Forest Service)',
+      sourceUrl: 'https://www.mountwashingtonavalanchecenter.org/forecasts/#/presidential-range',
+      disclaimer: 'This data is sourced from MWAC. Always check the official forecast before heading into avalanche terrain.',
+    };
+  } catch {
+    return {
+      dangerRating: -1,
+      dangerLabel: 'No rating',
+      dangerLevels: { alpine: null, treeline: null, belowTreeline: null },
+      tomorrowLevels: { alpine: null, treeline: null, belowTreeline: null },
+      bottomLine: 'Unable to fetch avalanche forecast. Check mountwashingtonavalanchecenter.org directly.',
+      author: '',
+      publishedAt: '',
+      expiresAt: '',
+      source: 'Mount Washington Avalanche Center (USDA Forest Service)',
+      sourceUrl: 'https://www.mountwashingtonavalanchecenter.org/forecasts/#/presidential-range',
+      disclaimer: 'This data is sourced from MWAC. Always check the official forecast before heading into avalanche terrain.',
+    };
+  }
+}
+
+// Quick assessment: combine weather + avy danger into a single rating per zone
+function getQuickAssessment(weather: any, mwacForecast: any): { rating: 'good' | 'fair' | 'poor' | 'dangerous'; reasons: string[] } {
+  const reasons: string[] = [];
+  let rating: 'good' | 'fair' | 'poor' | 'dangerous' = 'good';
+
+  const current = weather?.current;
+  if (!current) return { rating: 'fair', reasons: ['Weather data unavailable'] };
+
+  const avyRating = mwacForecast?.dangerRating ?? -1;
+  const gusts = current.windGustMph ?? 0;
+  const temp = current.tempF ?? 32;
+  const visibility = current.visibility ?? 10;
+
+  // Dangerous conditions
+  if (avyRating >= 4) { rating = 'dangerous'; reasons.push(`Avalanche danger: ${mwacForecast?.dangerLabel || 'High/Extreme'}`); }
+  if (gusts > 70) { rating = 'dangerous'; reasons.push(`Extreme gusts: ${gusts} mph`); }
+  if (temp < -15) { rating = 'dangerous'; reasons.push(`Extreme cold: ${temp}°F`); }
+
+  // Poor conditions
+  if (rating !== 'dangerous') {
+    if (avyRating >= 3) { rating = 'poor'; reasons.push(`Avalanche danger: ${mwacForecast?.dangerLabel || 'Considerable'}`); }
+    if (gusts > 50) { rating = 'poor'; reasons.push(`Very high gusts: ${gusts} mph`); }
+    if (temp < 0) { rating = 'poor'; reasons.push(`Very cold: ${temp}°F`); }
+  }
+
+  // Fair conditions
+  if (rating === 'good') {
+    if (avyRating === 2) { rating = 'fair'; reasons.push(`Avalanche danger: ${mwacForecast?.dangerLabel || 'Moderate'}`); }
+    if (gusts > 35) { rating = 'fair'; reasons.push(`Strong gusts: ${gusts} mph`); }
+    if (temp < 15) { rating = 'fair'; reasons.push(`Cold: ${temp}°F`); }
+    if (visibility < 1) { rating = 'fair'; reasons.push('Poor visibility'); }
+  }
+
+  if (reasons.length === 0) reasons.push('Conditions look favorable');
+
+  return { rating, reasons };
+}
+
 // Fetch NWS alerts
 async function getAlerts() {
   try {
@@ -151,6 +267,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const results = await Promise.allSettled([
       ...mvpZones.map((z) => getWeather(z.id, z.lat, z.lon, z.elevation)),
       getAlerts(),
+      getMwacForecast(),
     ]);
 
     const weatherMap: Record<string, any> = {};
@@ -161,13 +278,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     });
 
-    const alertsResult = results[results.length - 1];
+    const alertsResult = results[mvpZones.length];
     const alerts = alertsResult.status === 'fulfilled' ? alertsResult.value : [];
+
+    const forecastResult = results[mvpZones.length + 1];
+    const mwacForecast = forecastResult.status === 'fulfilled' ? forecastResult.value : null;
+
+    // Build per-zone assessments
+    const assessments: Record<string, any> = {};
+    mvpZones.forEach((zone) => {
+      const weather = weatherMap[zone.id];
+      assessments[zone.id] = getQuickAssessment(weather, mwacForecast);
+    });
 
     return res.status(200).json({
       zones: mvpZones,
       weather: weatherMap,
-      forecast: null,
+      forecast: mwacForecast,
+      assessments,
       alerts,
       updatedAt: new Date().toISOString(),
     });

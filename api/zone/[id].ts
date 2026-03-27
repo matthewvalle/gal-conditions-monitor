@@ -32,6 +32,81 @@ function degreesToCardinal(deg: number): string {
   return dirs[Math.round(deg / 22.5) % 16];
 }
 
+// Strip HTML tags to plain text
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/\s+/g, ' ').trim();
+}
+
+// Fetch MWAC avalanche forecast
+async function getMwacForecast() {
+  try {
+    const res = await fetch('https://api.avalanche.org/v2/public/products?avalanche_center_id=MWAC&type=forecast');
+    if (!res.ok) throw new Error(`MWAC API ${res.status}`);
+    const products = await res.json();
+
+    const forecast = Array.isArray(products)
+      ? products.find((p: any) => p.product_type === 'forecast')
+      : null;
+
+    if (!forecast) {
+      return {
+        dangerRating: -1,
+        dangerLabel: 'No rating',
+        dangerLevels: { alpine: null, treeline: null, belowTreeline: null },
+        tomorrowLevels: { alpine: null, treeline: null, belowTreeline: null },
+        bottomLine: 'Forecast data unavailable',
+        author: '',
+        publishedAt: '',
+        expiresAt: '',
+        source: 'Mount Washington Avalanche Center (USDA Forest Service)',
+        sourceUrl: 'https://www.mountwashingtonavalanchecenter.org/forecasts/#/presidential-range',
+        disclaimer: 'This data is sourced from MWAC. Always check the official forecast before heading into avalanche terrain.',
+      };
+    }
+
+    const todayDanger = (forecast.danger || []).find((d: any) => d.valid_day === 'current') || {};
+    const tomorrowDanger = (forecast.danger || []).find((d: any) => d.valid_day === 'tomorrow') || {};
+
+    const parseDangerLevel = (val: any) => (typeof val === 'number' && val >= 0 ? val : null);
+
+    return {
+      dangerRating: forecast.danger_rating ?? -1,
+      dangerLabel: forecast.danger_level_text || 'No rating',
+      dangerLevels: {
+        alpine: parseDangerLevel(todayDanger.upper),
+        treeline: parseDangerLevel(todayDanger.middle),
+        belowTreeline: parseDangerLevel(todayDanger.lower),
+      },
+      tomorrowLevels: {
+        alpine: parseDangerLevel(tomorrowDanger.upper),
+        treeline: parseDangerLevel(tomorrowDanger.middle),
+        belowTreeline: parseDangerLevel(tomorrowDanger.lower),
+      },
+      bottomLine: forecast.bottom_line ? stripHtml(forecast.bottom_line) : '',
+      author: forecast.author || '',
+      publishedAt: forecast.published_time || '',
+      expiresAt: forecast.expires_time || '',
+      source: 'Mount Washington Avalanche Center (USDA Forest Service)',
+      sourceUrl: 'https://www.mountwashingtonavalanchecenter.org/forecasts/#/presidential-range',
+      disclaimer: 'This data is sourced from MWAC. Always check the official forecast before heading into avalanche terrain.',
+    };
+  } catch {
+    return {
+      dangerRating: -1,
+      dangerLabel: 'No rating',
+      dangerLevels: { alpine: null, treeline: null, belowTreeline: null },
+      tomorrowLevels: { alpine: null, treeline: null, belowTreeline: null },
+      bottomLine: 'Unable to fetch avalanche forecast. Check mountwashingtonavalanchecenter.org directly.',
+      author: '',
+      publishedAt: '',
+      expiresAt: '',
+      source: 'Mount Washington Avalanche Center (USDA Forest Service)',
+      sourceUrl: 'https://www.mountwashingtonavalanchecenter.org/forecasts/#/presidential-range',
+      disclaimer: 'This data is sourced from MWAC. Always check the official forecast before heading into avalanche terrain.',
+    };
+  }
+}
+
 // Inline gear suggestions based on conditions
 function getGearSuggestions(current: any, daily: any[]) {
   const suggestions: any[] = [];
@@ -61,20 +136,35 @@ function getGearSuggestions(current: any, daily: any[]) {
   return suggestions;
 }
 
-// Simple trip assessment
-function getTripAssessment(current: any) {
+// Trip assessment factoring in weather + avalanche danger
+function getTripAssessment(current: any, mwacForecast: any) {
   const reasons: string[] = [];
   let level = 'good';
 
-  if (current.windGustMph > 70) { level = 'dangerous'; reasons.push(`Extreme gusts: ${current.windGustMph} mph`); }
-  else if (current.windGustMph > 50) { level = 'poor'; reasons.push(`Very high gusts: ${current.windGustMph} mph`); }
-  else if (current.windGustMph > 35) { level = 'fair'; reasons.push(`Strong gusts: ${current.windGustMph} mph`); }
+  const avyRating = mwacForecast?.dangerRating ?? -1;
+  const gusts = current.windGustMph ?? 0;
+  const temp = current.tempF ?? 32;
+  const visibility = current.visibility ?? 10;
 
-  if (current.tempF < -15) { level = 'dangerous'; reasons.push(`Extreme cold: ${current.tempF}°F`); }
-  else if (current.tempF < 0) { if (level !== 'dangerous') level = 'poor'; reasons.push(`Very cold: ${current.tempF}°F`); }
-  else if (current.tempF < 15) { if (level === 'good') level = 'fair'; reasons.push(`Cold: ${current.tempF}°F`); }
+  // Dangerous conditions
+  if (avyRating >= 4) { level = 'dangerous'; reasons.push(`Avalanche danger: ${mwacForecast?.dangerLabel || 'High/Extreme'}`); }
+  if (gusts > 70) { level = 'dangerous'; reasons.push(`Extreme gusts: ${gusts} mph`); }
+  if (temp < -15) { level = 'dangerous'; reasons.push(`Extreme cold: ${temp}°F`); }
 
-  if (current.visibility < 1) { if (level === 'good') level = 'fair'; reasons.push('Poor visibility'); }
+  // Poor conditions
+  if (level !== 'dangerous') {
+    if (avyRating >= 3) { level = 'poor'; reasons.push(`Avalanche danger: ${mwacForecast?.dangerLabel || 'Considerable'}`); }
+    if (gusts > 50) { level = 'poor'; reasons.push(`Very high gusts: ${gusts} mph`); }
+    if (temp < 0) { level = 'poor'; reasons.push(`Very cold: ${temp}°F`); }
+  }
+
+  // Fair conditions
+  if (level === 'good') {
+    if (avyRating === 2) { level = 'fair'; reasons.push(`Avalanche danger: ${mwacForecast?.dangerLabel || 'Moderate'}`); }
+    if (gusts > 35) { level = 'fair'; reasons.push(`Strong gusts: ${gusts} mph`); }
+    if (temp < 15) { level = 'fair'; reasons.push(`Cold: ${temp}°F`); }
+    if (visibility < 1) { level = 'fair'; reasons.push('Poor visibility'); }
+  }
 
   if (reasons.length === 0) reasons.push('Conditions look favorable');
 
@@ -159,14 +249,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       })),
     };
 
-    const assessment = getTripAssessment(weather.current);
+    // Fetch MWAC forecast in parallel (don't block on failure)
+    let mwacForecast = null;
+    try {
+      mwacForecast = await getMwacForecast();
+    } catch {
+      // MWAC fetch failed — continue with null forecast
+    }
+
+    const assessment = getTripAssessment(weather.current, mwacForecast);
     const gearSuggestions = getGearSuggestions(weather.current, weather.daily);
 
     res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600');
     return res.status(200).json({
       zone,
       weather,
-      forecast: null,
+      forecast: mwacForecast,
       alerts: [],
       assessment,
       gearSuggestions,

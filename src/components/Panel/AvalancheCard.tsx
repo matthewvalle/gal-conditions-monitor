@@ -1,12 +1,21 @@
 import { getDangerLevel } from '../../utils/dangerScale';
-import type { MwacForecast } from '../../../lib/types';
 
 interface Props {
-  forecast: MwacForecast | null;
+  forecast: any;
+}
+
+function formatDate(isoStr: string | null): string {
+  if (!isoStr) return '';
+  try {
+    return new Date(isoStr).toLocaleDateString('en-US', {
+      month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
+    });
+  } catch { return ''; }
 }
 
 export default function AvalancheCard({ forecast }: Props) {
-  if (!forecast) {
+  // No forecast or failed fetch
+  if (!forecast || forecast.dangerRating === -1 || forecast.dangerRating === undefined) {
     return (
       <div className="avy-card avy-card--unavailable">
         <h3 className="card-title">Avalanche Forecast</h3>
@@ -17,94 +26,110 @@ export default function AvalancheCard({ forecast }: Props) {
             <line x1="12" y1="17" x2="12.01" y2="17" />
           </svg>
           <p>Avalanche forecast data unavailable.</p>
-          <a
-            href="https://mountwashingtonavalanchecenter.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="avy-link"
-          >
-            Check MWAC directly
+          <a href="https://www.mountwashingtonavalanchecenter.org/forecasts/#/presidential-range" target="_blank" rel="noopener noreferrer" className="avy-link">
+            Check MWAC directly →
           </a>
         </div>
       </div>
     );
   }
 
-  const alpineDanger = getDangerLevel(forecast.dangerLevel.alpine);
-  const treelineDanger = getDangerLevel(forecast.dangerLevel.treeline);
-  const belowTreelineDanger = getDangerLevel(forecast.dangerLevel.belowTreeline);
-
-  const issuedDate = new Date(forecast.issuedAt).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  });
-  const expiresDate = new Date(forecast.expiresAt).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  });
+  // Parse danger levels from the API response
+  const levels = forecast.dangerLevels || {};
+  const tomorrowLevels = forecast.tomorrowLevels || {};
+  const overallDanger = getDangerLevel(forecast.dangerRating);
+  const alpineDanger = getDangerLevel(levels.alpine ?? forecast.dangerRating);
+  const treelineDanger = getDangerLevel(levels.treeline ?? forecast.dangerRating);
+  const belowTreelineDanger = getDangerLevel(levels.belowTreeline ?? 0);
 
   return (
     <div className="avy-card">
       <h3 className="card-title">Avalanche Forecast</h3>
 
+      {/* Overall danger badge */}
       <div className="avy-danger-row">
-        <div className="avy-danger-badge" style={{ backgroundColor: alpineDanger.color }}>
-          <span className="avy-danger-num">{alpineDanger.level}</span>
+        <div className="avy-danger-badge" style={{ backgroundColor: overallDanger.color }}>
+          <span className="avy-danger-num">{overallDanger.level > 0 ? overallDanger.level : '—'}</span>
         </div>
         <div className="avy-danger-info">
-          <span className="avy-danger-label">{alpineDanger.label}</span>
-          <span className="avy-danger-zone">Alpine</span>
+          <span className="avy-danger-label">{overallDanger.label}</span>
+          <span className="avy-danger-zone">Overall — Presidential Range</span>
         </div>
       </div>
 
+      {/* Elevation band breakdown */}
       <div className="avy-elevations">
         <div className="avy-elevation">
-          <span className="avy-elev-dot" style={{ backgroundColor: treelineDanger.color }} />
-          <span>Treeline: {treelineDanger.label}</span>
+          <span className="avy-elev-dot" style={{ backgroundColor: alpineDanger.color }} />
+          <span>Alpine (above treeline): <strong>{alpineDanger.label}</strong></span>
         </div>
         <div className="avy-elevation">
-          <span className="avy-elev-dot" style={{ backgroundColor: belowTreelineDanger.color }} />
-          <span>Below treeline: {belowTreelineDanger.label}</span>
+          <span className="avy-elev-dot" style={{ backgroundColor: treelineDanger.color }} />
+          <span>Treeline: <strong>{treelineDanger.label}</strong></span>
         </div>
+        {levels.belowTreeline != null && (
+          <div className="avy-elevation">
+            <span className="avy-elev-dot" style={{ backgroundColor: belowTreelineDanger.color }} />
+            <span>Below treeline: <strong>{belowTreelineDanger.label}</strong></span>
+          </div>
+        )}
       </div>
 
-      {forecast.problems.length > 0 && (
-        <div className="avy-problems">
-          <h4 className="avy-problems-title">Problems</h4>
-          <div className="avy-problem-tags">
-            {forecast.problems.map((p, i) => (
-              <span key={i} className="avy-problem-tag">
-                {p.type}
-                <span className="avy-problem-likelihood">{p.likelihood}</span>
-              </span>
-            ))}
+      {/* Tomorrow outlook */}
+      {(tomorrowLevels.alpine != null || tomorrowLevels.treeline != null) && (
+        <div className="avy-tomorrow">
+          <h4 className="avy-section-title">Tomorrow</h4>
+          <div className="avy-elevations">
+            {tomorrowLevels.alpine != null && (
+              <div className="avy-elevation">
+                <span className="avy-elev-dot" style={{ backgroundColor: getDangerLevel(tomorrowLevels.alpine).color }} />
+                <span>Alpine: <strong>{getDangerLevel(tomorrowLevels.alpine).label}</strong></span>
+              </div>
+            )}
+            {tomorrowLevels.treeline != null && (
+              <div className="avy-elevation">
+                <span className="avy-elev-dot" style={{ backgroundColor: getDangerLevel(tomorrowLevels.treeline).color }} />
+                <span>Treeline: <strong>{getDangerLevel(tomorrowLevels.treeline).label}</strong></span>
+              </div>
+            )}
           </div>
         </div>
       )}
 
+      {/* Bottom line / travel advice */}
       {forecast.bottomLine && (
         <div className="avy-bottomline">
-          <h4 className="avy-bottomline-title">Bottom Line</h4>
+          <h4 className="avy-section-title">Travel Advice</h4>
           <p>{forecast.bottomLine}</p>
         </div>
       )}
 
+      {/* Metadata */}
       <div className="avy-meta">
-        <span>Issued: {issuedDate}</span>
-        <span>Expires: {expiresDate}</span>
+        {forecast.author && <span>Forecaster: {forecast.author}</span>}
+        {forecast.publishedAt && <span>Issued: {formatDate(forecast.publishedAt)}</span>}
+        {forecast.expiresAt && <span>Expires: {formatDate(forecast.expiresAt)}</span>}
+      </div>
+
+      {/* Source attribution + disclaimer */}
+      <div className="avy-attribution">
+        <p className="avy-source">
+          Source: <a href={forecast.sourceUrl || 'https://www.mountwashingtonavalanchecenter.org/forecasts/#/presidential-range'} target="_blank" rel="noopener noreferrer">
+            {forecast.source || 'Mount Washington Avalanche Center (USDA Forest Service)'}
+          </a>
+        </p>
+        <p className="avy-disclaimer">
+          {forecast.disclaimer || 'Always check the official MWAC forecast before heading into avalanche terrain.'}
+        </p>
       </div>
 
       <a
-        href={forecast.detailUrl}
+        href="https://www.mountwashingtonavalanchecenter.org/forecasts/#/presidential-range"
         target="_blank"
         rel="noopener noreferrer"
-        className="avy-link"
+        className="avy-link avy-link--full"
       >
-        Full MWAC Forecast &rarr;
+        View Full MWAC Forecast →
       </a>
     </div>
   );
