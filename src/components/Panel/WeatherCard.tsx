@@ -1,4 +1,3 @@
-import React from 'react';
 import type { ZoneWeather } from '../../../api/lib/types';
 
 interface Props {

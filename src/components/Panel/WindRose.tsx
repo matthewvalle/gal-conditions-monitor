@@ -1,4 +1,3 @@
-import React from 'react';
 
 interface Props {
   direction: string; // cardinal e.g. "NW"

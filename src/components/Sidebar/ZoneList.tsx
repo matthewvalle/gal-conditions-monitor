@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelectedZone } from '../../hooks/useSelectedZone';
 import { getDangerLevel } from '../../utils/dangerScale';
 import type { Zone, ZoneWeather } from '../../../api/lib/types';

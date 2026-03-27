@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import { useQuery } from '@tanstack/react-query';
 import type { ZonesResponse, ZoneDetailResponse } from '../../api/lib/types';
 

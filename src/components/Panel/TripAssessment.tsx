@@ -1,4 +1,3 @@
-import React from 'react';
 import type { TripAssessment as TripAssessmentType } from '../../../api/lib/types';
 
 interface Props {

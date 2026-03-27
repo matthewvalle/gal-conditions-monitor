@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const regionTabs = [
   { id: 'all', label: 'All', active: true },

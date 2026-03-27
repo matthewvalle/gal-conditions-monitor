@@ -1,4 +1,3 @@
-import React from 'react';
 import { getDangerLevel } from '../../utils/dangerScale';
 import type { MwacForecast } from '../../../api/lib/types';
 

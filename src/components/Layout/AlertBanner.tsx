@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type { NwsAlert } from '../../../api/lib/types';
 
 interface Props {

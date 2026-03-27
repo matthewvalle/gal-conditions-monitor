@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useAllZones } from './hooks/useConditions';
 import { useSelectedZone } from './hooks/useSelectedZone';
 import { useZoneDetail } from './hooks/useConditions';

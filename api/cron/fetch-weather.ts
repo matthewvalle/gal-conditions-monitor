@@ -9,7 +9,7 @@ const WEATHER_TTL = 3 * 60 * 60; // 3 hours
  * and stores each result in the cache.
  *
  * Configured in vercel.json:
- *   { "path": "/api/cron/fetch-weather", "schedule": "0 */3 * * *" }
+ *   { "path": "/api/cron/fetch-weather", "schedule": "0 6 * * *" }
  */
 export async function POST(request: Request): Promise<Response> {
   // Optional: verify Vercel cron secret

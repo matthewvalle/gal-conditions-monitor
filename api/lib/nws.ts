@@ -56,6 +56,7 @@ export async function fetchAlerts(state: SupportedState): Promise<NwsAlert[]> {
     headline: feature.properties.headline ?? '',
     description: feature.properties.description ?? '',
     instruction: feature.properties.instruction,
+    areaDesc: feature.properties.areaDesc ?? '',
     onset: feature.properties.onset ?? '',
     expires: feature.properties.expires ?? '',
     fetchedAt: new Date().toISOString(),

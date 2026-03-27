@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelectedZone } from '../../hooks/useSelectedZone';
 import TripAssessment from './TripAssessment';
 import WeatherCard from './WeatherCard';

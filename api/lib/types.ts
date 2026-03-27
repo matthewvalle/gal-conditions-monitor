@@ -91,6 +91,7 @@ export interface NwsAlert {
   headline: string;
   description: string;
   instruction: string | null;
+  areaDesc: string; // e.g. "Northern Coos; Southern Coos; Grafton"
   onset: string; // ISO 8601
   expires: string; // ISO 8601
   fetchedAt: string; // ISO 8601

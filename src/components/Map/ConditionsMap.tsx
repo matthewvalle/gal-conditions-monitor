@@ -54,7 +54,6 @@ export default function ConditionsMap({ zones, weather, forecast, isLoading, pan
     markersRef.current = [];
 
     zones.forEach((zone) => {
-      const zoneWeather = weather[zone.id];
       const dangerLevel = forecast?.dangerLevel?.alpine ?? 0;
 
       const marker = ZoneMarker({
