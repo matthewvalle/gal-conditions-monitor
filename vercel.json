@@ -2,15 +2,7 @@
   "crons": [
     {
       "path": "/api/cron/fetch-weather",
-      "schedule": "0 */2 * * *"
-    },
-    {
-      "path": "/api/cron/fetch-mwac",
-      "schedule": "0 */4 * * *"
-    },
-    {
-      "path": "/api/cron/fetch-nws-alerts",
-      "schedule": "0 * * * *"
+      "schedule": "0 6 * * *"
     }
   ],
   "headers": [

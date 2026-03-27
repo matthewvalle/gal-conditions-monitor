@@ -1,67 +1,40 @@
 /**
- * Cache wrapper that uses Vercel KV when available, falling back
- * to an in-memory Map for local development.
+ * Simple in-memory cache for serverless functions.
+ *
+ * Since Vercel serverless functions are ephemeral, this cache lives
+ * for the duration of a warm function instance. The real caching
+ * strategy is stale-while-revalidate: API routes fetch fresh data
+ * inline when the cache is empty or stale, and HTTP Cache-Control
+ * headers handle edge caching for subsequent requests.
  *
  * Key patterns:
- *   weather:{zoneId}          — ZoneWeather, TTL 3h
- *   mwac:current              — MwacForecast, TTL 12h
+ *   weather:{zoneId}          — ZoneWeather, TTL 2h
+ *   mwac:current              — MwacForecast, TTL 4h
  *   nws:alerts:{state}        — NwsAlert[], TTL 1h
- *   meta:last_fetch:{source}  — ISO timestamp, TTL 7d
+ *   meta:last_fetch:{source}  — ISO timestamp
  */
 
-// ─── In-memory fallback ──────────────────────────────────────────
-
 interface CacheEntry {
-  value: string; // JSON-serialized
-  expiresAt: number; // Unix ms
+  value: string;
+  expiresAt: number;
+  createdAt: number;
 }
 
-const memoryStore = new Map<string, CacheEntry>();
-
-function isVercelKvAvailable(): boolean {
-  return !!(
-    typeof process !== 'undefined' &&
-    process.env &&
-    process.env.KV_REST_API_URL &&
-    process.env.KV_REST_API_TOKEN
-  );
-}
-
-// ─── Vercel KV adapter ──────────────────────────────────────────
-
-async function getVercelKv() {
-  // Dynamic import to avoid bundling @vercel/kv when not needed
-  const { kv } = await import('@vercel/kv');
-  return kv;
-}
-
-// ─── Public API ──────────────────────────────────────────────────
+const store = new Map<string, CacheEntry>();
 
 export async function cacheGet<T>(key: string): Promise<T | null> {
-  if (isVercelKvAvailable()) {
-    try {
-      const kv = await getVercelKv();
-      const value = await kv.get<T>(key);
-      return value ?? null;
-    } catch (err) {
-      console.error(`[Cache] Vercel KV get error for key "${key}":`, err);
-      return null;
-    }
-  }
-
-  // In-memory fallback
-  const entry = memoryStore.get(key);
+  const entry = store.get(key);
   if (!entry) return null;
 
   if (Date.now() > entry.expiresAt) {
-    memoryStore.delete(key);
+    store.delete(key);
     return null;
   }
 
   try {
     return JSON.parse(entry.value) as T;
   } catch {
-    memoryStore.delete(key);
+    store.delete(key);
     return null;
   }
 }
@@ -71,31 +44,42 @@ export async function cacheSet(
   value: unknown,
   ttlSeconds: number
 ): Promise<void> {
-  if (isVercelKvAvailable()) {
-    try {
-      const kv = await getVercelKv();
-      await kv.set(key, value, { ex: ttlSeconds });
-    } catch (err) {
-      console.error(`[Cache] Vercel KV set error for key "${key}":`, err);
-    }
-    return;
-  }
-
-  // In-memory fallback
-  memoryStore.set(key, {
+  store.set(key, {
     value: JSON.stringify(value),
     expiresAt: Date.now() + ttlSeconds * 1000,
+    createdAt: Date.now(),
   });
+}
+
+/**
+ * Get cached value, or fetch fresh data if cache is empty/stale.
+ * This is the primary pattern for serverless: inline fetch with caching.
+ */
+export async function cacheGetOrFetch<T>(
+  key: string,
+  ttlSeconds: number,
+  fetcher: () => Promise<T>
+): Promise<T> {
+  const cached = await cacheGet<T>(key);
+  if (cached !== null) return cached;
+
+  const fresh = await fetcher();
+  await cacheSet(key, fresh, ttlSeconds);
+  return fresh;
 }
 
 // ─── Convenience: last-fetch meta timestamps ─────────────────────
 
-const META_TTL = 7 * 24 * 60 * 60; // 7 days
-
 export async function setLastFetch(source: string): Promise<void> {
-  await cacheSet(`meta:last_fetch:${source}`, new Date().toISOString(), META_TTL);
+  await cacheSet(`meta:last_fetch:${source}`, new Date().toISOString(), 7 * 24 * 3600);
 }
 
 export async function getLastFetch(source: string): Promise<string | null> {
   return cacheGet<string>(`meta:last_fetch:${source}`);
+}
+
+export function getCacheAge(key: string): number | null {
+  const entry = store.get(key);
+  if (!entry) return null;
+  return Math.floor((Date.now() - entry.createdAt) / 1000);
 }
