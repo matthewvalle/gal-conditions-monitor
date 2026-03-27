@@ -74,6 +74,21 @@ export default function ConditionsMap({ zones, weather, forecast, isLoading, pan
     });
   }, [zones, weather, forecast, selectedZoneId, selectZone, panelRef]);
 
+  // Fly to selected zone when selection changes
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !selectedZoneId) return;
+
+    const zone = zones.find((z) => z.id === selectedZoneId);
+    if (zone) {
+      map.flyTo({
+        center: [zone.lon, zone.lat],
+        zoom: 13,
+        duration: 1000,
+      });
+    }
+  }, [selectedZoneId, zones]);
+
   return (
     <div className="map-container">
       <div ref={containerRef} className="map-canvas" />

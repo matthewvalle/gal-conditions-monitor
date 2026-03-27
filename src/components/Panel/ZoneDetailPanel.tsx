@@ -49,7 +49,20 @@ export default function ZoneDetailPanel({ detail, isLoading }: Props) {
     );
   }
 
-  const { zone, weather, forecast, assessment } = detail;
+  // Handle both typed response and raw API response shapes
+  const zone = detail.zone;
+  const weather = detail.weather;
+  const forecast = detail.forecast ?? (detail as any).mwac ?? null;
+  const assessment = detail.assessment ?? (detail as any).assessment ?? null;
+  const gearSuggestions = (detail as any).gearSuggestions ?? assessment?.gear ?? null;
+
+  if (!weather) {
+    return (
+      <div className="panel-error">
+        <p>Weather data unavailable for this zone.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="zone-panel">
@@ -57,7 +70,7 @@ export default function ZoneDetailPanel({ detail, isLoading }: Props) {
         <div className="zone-panel-header-text">
           <h2 className="zone-panel-name">{zone.name}</h2>
           <p className="zone-panel-meta">
-            {zone.elevation.toLocaleString()} ft &middot; {zone.subRegion}
+            {zone.elevation?.toLocaleString()} ft &middot; {zone.subRegion}
             {zone.aspect && <> &middot; {zone.aspect} aspect</>}
           </p>
         </div>
@@ -86,7 +99,7 @@ export default function ZoneDetailPanel({ detail, isLoading }: Props) {
 
       <AvalancheCard forecast={forecast} />
       <ForecastTable daily={weather.daily} />
-      {assessment && <GearSuggestions gear={assessment.gear} />}
+      {gearSuggestions && <GearSuggestions gear={gearSuggestions} />}
     </div>
   );
 }
