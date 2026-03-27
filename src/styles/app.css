@@ -277,6 +277,53 @@ a:hover {
   animation: spin 0.8s linear infinite;
 }
 
+/* Map style toggle */
+.map-style-toggle {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  z-index: 5;
+  display: flex;
+  gap: 0;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  border: 1px solid var(--stone-300);
+}
+
+.map-style-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 6px 12px;
+  background: var(--white);
+  color: var(--stone-700);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition);
+  border-right: 1px solid var(--stone-300);
+}
+
+.map-style-btn:last-child {
+  border-right: none;
+}
+
+.map-style-btn:hover {
+  background: var(--stone-100);
+  color: var(--stone-900);
+}
+
+.map-style-btn--active {
+  background: var(--stone-950);
+  color: var(--white);
+}
+
+.map-style-btn--active:hover {
+  background: var(--stone-900);
+  color: var(--white);
+}
+
 /* Zone marker popup */
 .zone-marker-popup .maplibregl-popup-content {
   font-family: 'Inter', sans-serif;

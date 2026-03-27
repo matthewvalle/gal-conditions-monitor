@@ -1,5 +1,5 @@
 import { useSelectedZone } from '../../hooks/useSelectedZone';
-import { getDangerLevel } from '../../utils/dangerScale';
+import { getConditionRating, CONDITION_COLORS } from '../Map/ConditionsMap';
 import type { Zone, ZoneWeather } from '../../../lib/types';
 
 interface Props {
@@ -35,6 +35,8 @@ export default function ZoneList({ zones, weather }: Props) {
             {groupZones.map((zone) => {
               const zw = weather[zone.id];
               const isSelected = zone.id === selectedZoneId;
+              const rating = getConditionRating(zw);
+              const dotColor = CONDITION_COLORS[rating];
 
               return (
                 <button
@@ -44,9 +46,7 @@ export default function ZoneList({ zones, weather }: Props) {
                 >
                   <span
                     className="zone-pill-dot"
-                    style={{
-                      backgroundColor: getDangerLevel(1).color,
-                    }}
+                    style={{ backgroundColor: dotColor }}
                   />
                   <span className="zone-pill-name">{zone.name}</span>
                   {zw && (
