@@ -25,7 +25,7 @@ export function useAllZones() {
 export function useZoneDetail(zoneId: string | null) {
   return useQuery<ZoneDetailResponse>({
     queryKey: ['zone', zoneId],
-    queryFn: () => fetchJson<ZoneDetailResponse>(`/api/zones/${zoneId}`),
+    queryFn: () => fetchJson<ZoneDetailResponse>(`/api/zone/${zoneId}`),
     enabled: !!zoneId,
     refetchInterval: 5 * 60 * 1000,
   });

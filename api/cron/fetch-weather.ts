@@ -1,30 +1,20 @@
-/**
- * Daily cron handler — fetches ALL data sources:
- * 1. Open-Meteo weather for all MVP zones
- * 2. MWAC avalanche forecast
- * 3. NWS active alerts for NH
- *
- * Configured in vercel.json: { "path": "/api/cron/fetch-weather", "schedule": "0 6 * * *" }
- */
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { cacheSet, setLastFetch } from '../../lib/cache';
 import { fetchZoneWeather } from '../../lib/open-meteo';
 import { fetchMwacForecast } from '../../lib/mwac-scraper';
 import { fetchAlerts } from '../../lib/nws';
 
-// Read zone metadata
 import zoneData from '../../data/zone-metadata.json';
 const mvpZones = (zoneData as any[]).filter((z: any) => z.isMvp);
 
-export async function GET(request: Request): Promise<Response> {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Verify cron secret if set
-  const authHeader = request.headers.get('authorization');
-  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return new Response('Unauthorized', { status: 401 });
+  if (process.env.CRON_SECRET && req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
   const results: string[] = [];
 
-  // 1. Fetch weather for all MVP zones
   try {
     const weatherResults = await Promise.allSettled(
       mvpZones.map(async (zone: any) => {
@@ -33,36 +23,30 @@ export async function GET(request: Request): Promise<Response> {
         return zone.id;
       })
     );
-
     const succeeded = weatherResults.filter((r) => r.status === 'fulfilled').length;
-    results.push(`Weather: ${succeeded}/${mvpZones.length} zones updated`);
+    results.push(`Weather: ${succeeded}/${mvpZones.length} zones`);
     await setLastFetch('weather');
   } catch (err) {
     results.push(`Weather: ERROR - ${err}`);
   }
 
-  // 2. Fetch MWAC forecast
   try {
     const mwac = await fetchMwacForecast();
     await cacheSet('mwac:current', mwac, 12 * 3600);
     await setLastFetch('mwac');
-    results.push(`MWAC: Updated (danger: ${mwac.dangerLevel?.alpine ?? 'N/A'})`);
+    results.push(`MWAC: OK`);
   } catch (err) {
     results.push(`MWAC: ERROR - ${err}`);
   }
 
-  // 3. Fetch NWS alerts
   try {
     const alerts = await fetchAlerts('NH');
     await cacheSet('nws:alerts:NH', alerts, 3600);
     await setLastFetch('nws');
-    results.push(`NWS: ${alerts.length} active alerts`);
+    results.push(`NWS: ${alerts.length} alerts`);
   } catch (err) {
     results.push(`NWS: ERROR - ${err}`);
   }
 
-  return Response.json(
-    { ok: true, results, timestamp: new Date().toISOString() },
-    { headers: { 'Cache-Control': 'no-store' } }
-  );
+  return res.status(200).json({ ok: true, results, timestamp: new Date().toISOString() });
 }
