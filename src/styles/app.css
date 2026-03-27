@@ -68,7 +68,7 @@ a:hover {
   }
 
   .app-map-col {
-    width: 58%;
+    width: 65%;
     flex-shrink: 0;
     height: 100%;
     overflow: hidden;
@@ -77,7 +77,7 @@ a:hover {
   }
 
   .app-panel-col {
-    width: 42%;
+    width: 35%;
     height: 100%;
     overflow-y: auto;
     border-left: 1px solid var(--stone-300);
@@ -316,7 +316,7 @@ a:hover {
 
 .map-container {
   position: relative;
-  height: 60vh;
+  height: 70vh;
   min-height: 300px;
   flex-shrink: 0;
 }
@@ -480,105 +480,140 @@ a:hover {
   vertical-align: super;
 }
 
-/* ─── Zone List ───────────────────────────────────────────────────────────── */
+/* ─── Zone Selector (collapsible list) ────────────────────────────────────── */
 
-.zone-list {
-  padding: 8px 12px 12px;
+.zone-selector {
   max-height: 200px;
   overflow-y: auto;
 }
 
 @media (min-width: 1024px) {
-  .zone-list {
-    max-height: none;
+  .zone-selector {
+    max-height: 120px;
   }
 }
 
-.zone-list--empty {
-  padding: 16px;
+.zone-selector--empty {
+  padding: 12px 16px;
   text-align: center;
   color: var(--stone-600);
   font-size: 13px;
 }
 
-.zone-list-group {
-  margin-bottom: 8px;
+.zone-group {
+  border-bottom: 1px solid var(--stone-200);
 }
 
-.zone-list-group-title {
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--stone-600);
-  margin-bottom: 4px;
+.zone-group:last-child {
+  border-bottom: none;
 }
 
-.zone-list-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-/* Mobile: horizontal scroll */
-@media (max-width: 767px) {
-  .zone-list-items {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 4px;
-  }
-}
-
-.zone-pill {
+.zone-group-header {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  padding: 5px 10px;
-  border: 1px solid var(--stone-300);
-  border-radius: 999px;
-  background: var(--white);
-  color: var(--stone-800);
+  width: 100%;
+  padding: 6px 12px;
+  background: var(--stone-100);
+  border: none;
   cursor: pointer;
-  white-space: nowrap;
-  transition: all var(--transition);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--stone-700);
+  transition: background var(--transition);
 }
 
-.zone-pill:hover {
-  border-color: var(--alpine);
+.zone-group-header:hover {
+  background: var(--stone-200);
+}
+
+.zone-group-name {
+  flex: 1;
+  text-align: left;
+}
+
+.zone-group-count {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--stone-500);
+  background: var(--stone-300);
+  padding: 1px 6px;
+  border-radius: 999px;
+}
+
+.zone-group-chevron {
+  color: var(--stone-500);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.zone-group-chevron--open {
+  transform: rotate(180deg);
+}
+
+.zone-group-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.zone-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 5px 12px 5px 20px;
+  background: var(--white);
+  border: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--stone-800);
+  transition: background var(--transition);
+  text-align: left;
+}
+
+.zone-row:hover {
   background: var(--stone-100);
 }
 
-.zone-pill--selected {
+.zone-row--selected {
   background: var(--alpine);
-  border-color: var(--alpine);
   color: var(--white);
 }
 
-.zone-pill--selected:hover {
+.zone-row--selected:hover {
   background: var(--alpine-hover);
 }
 
-.zone-pill-dot {
-  width: 8px;
-  height: 8px;
+.zone-row-dot {
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
-.zone-pill--selected .zone-pill-dot {
+.zone-row--selected .zone-row-dot {
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-.zone-pill-name {
+.zone-row-name {
+  flex: 1;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.zone-pill-temp {
+.zone-row-temp {
   font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
   opacity: 0.75;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
 /* ─── Panel ───────────────────────────────────────────────────────────────── */

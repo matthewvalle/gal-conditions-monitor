@@ -1,10 +1,10 @@
 const regionTabs = [
   { id: 'all', label: 'All', active: true },
   { id: 'nh', label: 'NH', active: true },
-  { id: 'vt', label: 'VT', active: false },
+  { id: 'vt', label: 'VT', active: true },
+  { id: 'ny', label: 'NY', active: true },
+  { id: 'ma', label: 'MA', active: true },
   { id: 'me', label: 'ME', active: false },
-  { id: 'ny', label: 'NY', active: false },
-  { id: 'ma', label: 'MA', active: false },
 ];
 
 interface Props {

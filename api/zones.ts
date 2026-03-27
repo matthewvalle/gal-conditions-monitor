@@ -29,8 +29,38 @@ const gbaZones = [
   { id: 'crescent-ridge-glade', name: 'Crescent Ridge Glade', lat: 44.3919, lon: -71.2863, elevation: 3046, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'SE/E', approachMiles: 2.0, isMvp: false, zoneType: 'glade' as const },
 ];
 
+// Mt. Mansfield zones (Vermont — alpine/CCC trails)
+const mansfieldZones = [
+  { id: 'teardrop-trail', name: 'Teardrop Trail', lat: 44.5290, lon: -72.8428, elevation: 4062, region: 'Vermont', subRegion: 'Mt. Mansfield', aspect: 'W', approachMiles: 1.8, isMvp: false, zoneType: 'alpine' as const },
+  { id: 'bruce-trail', name: 'Bruce Trail', lat: 44.5290, lon: -72.8428, elevation: 4393, region: 'Vermont', subRegion: 'Mt. Mansfield', aspect: 'SW', approachMiles: 4.8, isMvp: false, zoneType: 'alpine' as const },
+  { id: 'skytop-trail', name: 'Skytop Trail', lat: 44.5290, lon: -72.8428, elevation: 4062, region: 'Vermont', subRegion: 'Mt. Mansfield', aspect: 'W/NW', approachMiles: 6.0, isMvp: false, zoneType: 'alpine' as const },
+  { id: 'steeple-trail', name: 'Steeple Trail', lat: 44.5436, lon: -72.8143, elevation: 4200, region: 'Vermont', subRegion: 'Mt. Mansfield', aspect: 'E/SE', approachMiles: 2.0, isMvp: false, zoneType: 'alpine' as const },
+  { id: 'nosedive-trail', name: 'Nose Dive Trail', lat: 44.5436, lon: -72.8143, elevation: 4064, region: 'Vermont', subRegion: 'Mt. Mansfield', aspect: 'NW', approachMiles: 1.4, isMvp: false, zoneType: 'alpine' as const },
+];
+
+// Mt. Cardigan zones (New Hampshire — glade/tree skiing)
+const cardiganZones = [
+  { id: 'dukes-trail', name: "Duke's Trail", lat: 43.6495, lon: -71.8777, elevation: 3000, region: 'New Hampshire', subRegion: 'Mt. Cardigan', aspect: 'E', approachMiles: 1.6, isMvp: false, zoneType: 'glade' as const },
+  { id: 'alexandria-trail', name: 'Alexandria Ski Trail', lat: 43.6495, lon: -71.8777, elevation: 2800, region: 'New Hampshire', subRegion: 'Mt. Cardigan', aspect: 'E', approachMiles: 1.7, isMvp: false, zoneType: 'glade' as const },
+  { id: 'kimball-trail', name: 'Kimball Ski Trail', lat: 43.6495, lon: -71.8777, elevation: 2100, region: 'New Hampshire', subRegion: 'Mt. Cardigan', aspect: 'S', approachMiles: 1.0, isMvp: false, zoneType: 'glade' as const },
+  { id: 'cardigan-grand-tour', name: 'Grand Tour (Duke\'s + Alexandria)', lat: 43.6495, lon: -71.8777, elevation: 3155, region: 'New Hampshire', subRegion: 'Mt. Cardigan', aspect: 'E', approachMiles: 5.5, isMvp: false, zoneType: 'glade' as const },
+];
+
+// Mt. Greylock zones (Massachusetts — alpine/exposed)
+const greylockZones = [
+  { id: 'thunderbolt-trail', name: 'Thunderbolt Ski Trail', lat: 42.6372, lon: -73.1658, elevation: 3491, region: 'Massachusetts', subRegion: 'Mt. Greylock', aspect: 'E', approachMiles: 1.6, isMvp: false, zoneType: 'alpine' as const },
+  { id: 'bellows-pipe-trail', name: 'Bellows Pipe Ski Trail', lat: 42.6422, lon: -73.1625, elevation: 3491, region: 'Massachusetts', subRegion: 'Mt. Greylock', aspect: 'NE', approachMiles: 1.8, isMvp: false, zoneType: 'alpine' as const },
+];
+
+// Mt. Marcy zones (New York — alpine/above-treeline)
+const marcyZones = [
+  { id: 'van-hoevenberg-trail', name: 'Van Hoevenberg Trail', lat: 44.1830, lon: -73.9645, elevation: 5344, region: 'New York', subRegion: 'Mt. Marcy', aspect: 'Various', approachMiles: 7.4, isMvp: false, zoneType: 'alpine' as const },
+  { id: 'marcy-summit-bowl-glades', name: 'Summit Bowl & Indian Falls Glades', lat: 44.1830, lon: -73.9645, elevation: 5344, region: 'New York', subRegion: 'Mt. Marcy', aspect: 'W/SW', approachMiles: 7.4, isMvp: false, zoneType: 'alpine' as const },
+  { id: 'panther-gorge-slides', name: 'Panther Gorge Slides', lat: 44.0893, lon: -74.0562, elevation: 5344, region: 'New York', subRegion: 'Mt. Marcy', aspect: 'S/SE', approachMiles: 10.3, isMvp: false, zoneType: 'alpine' as const },
+];
+
 // All zones combined
-const allZones = [...mvpZones, ...gbaZones];
+const allZones = [...mvpZones, ...gbaZones, ...mansfieldZones, ...cardiganZones, ...greylockZones, ...marcyZones];
 
 // WMO weather code → human-readable condition
 function weatherCodeToCondition(code: number): { condition: string; icon: string } {
@@ -361,8 +391,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const weather = weatherMap[zone.id];
       if (zone.zoneType === 'glade') {
         assessments[zone.id] = getGladeAssessment(weather);
-      } else {
+      } else if (zone.subRegion === 'Presidential Range') {
+        // MWAC avalanche forecast applies to Presidential Range only
         assessments[zone.id] = getQuickAssessment(weather, mwacForecast);
+      } else {
+        // Other alpine zones: weather-only assessment (no MWAC coverage)
+        assessments[zone.id] = getQuickAssessment(weather, null);
       }
     });
 

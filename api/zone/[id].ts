@@ -29,8 +29,38 @@ const gbaZones = [
   { id: 'crescent-ridge-glade', name: 'Crescent Ridge Glade', lat: 44.3919, lon: -71.2863, elevation: 3046, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'SE/E', approachMiles: 2.0, isMvp: false, zoneType: 'glade' as const },
 ];
 
+// Mt. Mansfield zones (Vermont — alpine/CCC trails)
+const mansfieldZones = [
+  { id: 'teardrop-trail', name: 'Teardrop Trail', lat: 44.5290, lon: -72.8428, elevation: 4062, region: 'Vermont', subRegion: 'Mt. Mansfield', aspect: 'W', approachMiles: 1.8, isMvp: false, zoneType: 'alpine' as const },
+  { id: 'bruce-trail', name: 'Bruce Trail', lat: 44.5290, lon: -72.8428, elevation: 4393, region: 'Vermont', subRegion: 'Mt. Mansfield', aspect: 'SW', approachMiles: 4.8, isMvp: false, zoneType: 'alpine' as const },
+  { id: 'skytop-trail', name: 'Skytop Trail', lat: 44.5290, lon: -72.8428, elevation: 4062, region: 'Vermont', subRegion: 'Mt. Mansfield', aspect: 'W/NW', approachMiles: 6.0, isMvp: false, zoneType: 'alpine' as const },
+  { id: 'steeple-trail', name: 'Steeple Trail', lat: 44.5436, lon: -72.8143, elevation: 4200, region: 'Vermont', subRegion: 'Mt. Mansfield', aspect: 'E/SE', approachMiles: 2.0, isMvp: false, zoneType: 'alpine' as const },
+  { id: 'nosedive-trail', name: 'Nose Dive Trail', lat: 44.5436, lon: -72.8143, elevation: 4064, region: 'Vermont', subRegion: 'Mt. Mansfield', aspect: 'NW', approachMiles: 1.4, isMvp: false, zoneType: 'alpine' as const },
+];
+
+// Mt. Cardigan zones (New Hampshire — glade/tree skiing)
+const cardiganZones = [
+  { id: 'dukes-trail', name: "Duke's Trail", lat: 43.6495, lon: -71.8777, elevation: 3000, region: 'New Hampshire', subRegion: 'Mt. Cardigan', aspect: 'E', approachMiles: 1.6, isMvp: false, zoneType: 'glade' as const },
+  { id: 'alexandria-trail', name: 'Alexandria Ski Trail', lat: 43.6495, lon: -71.8777, elevation: 2800, region: 'New Hampshire', subRegion: 'Mt. Cardigan', aspect: 'E', approachMiles: 1.7, isMvp: false, zoneType: 'glade' as const },
+  { id: 'kimball-trail', name: 'Kimball Ski Trail', lat: 43.6495, lon: -71.8777, elevation: 2100, region: 'New Hampshire', subRegion: 'Mt. Cardigan', aspect: 'S', approachMiles: 1.0, isMvp: false, zoneType: 'glade' as const },
+  { id: 'cardigan-grand-tour', name: 'Grand Tour (Duke\'s + Alexandria)', lat: 43.6495, lon: -71.8777, elevation: 3155, region: 'New Hampshire', subRegion: 'Mt. Cardigan', aspect: 'E', approachMiles: 5.5, isMvp: false, zoneType: 'glade' as const },
+];
+
+// Mt. Greylock zones (Massachusetts — alpine/exposed)
+const greylockZones = [
+  { id: 'thunderbolt-trail', name: 'Thunderbolt Ski Trail', lat: 42.6372, lon: -73.1658, elevation: 3491, region: 'Massachusetts', subRegion: 'Mt. Greylock', aspect: 'E', approachMiles: 1.6, isMvp: false, zoneType: 'alpine' as const },
+  { id: 'bellows-pipe-trail', name: 'Bellows Pipe Ski Trail', lat: 42.6422, lon: -73.1625, elevation: 3491, region: 'Massachusetts', subRegion: 'Mt. Greylock', aspect: 'NE', approachMiles: 1.8, isMvp: false, zoneType: 'alpine' as const },
+];
+
+// Mt. Marcy zones (New York — alpine/above-treeline)
+const marcyZones = [
+  { id: 'van-hoevenberg-trail', name: 'Van Hoevenberg Trail', lat: 44.1830, lon: -73.9645, elevation: 5344, region: 'New York', subRegion: 'Mt. Marcy', aspect: 'Various', approachMiles: 7.4, isMvp: false, zoneType: 'alpine' as const },
+  { id: 'marcy-summit-bowl-glades', name: 'Summit Bowl & Indian Falls Glades', lat: 44.1830, lon: -73.9645, elevation: 5344, region: 'New York', subRegion: 'Mt. Marcy', aspect: 'W/SW', approachMiles: 7.4, isMvp: false, zoneType: 'alpine' as const },
+  { id: 'panther-gorge-slides', name: 'Panther Gorge Slides', lat: 44.0893, lon: -74.0562, elevation: 5344, region: 'New York', subRegion: 'Mt. Marcy', aspect: 'S/SE', approachMiles: 10.3, isMvp: false, zoneType: 'alpine' as const },
+];
+
 // All zones combined
-const allZones = [...mvpZones, ...gbaZones];
+const allZones = [...mvpZones, ...gbaZones, ...mansfieldZones, ...cardiganZones, ...greylockZones, ...marcyZones];
 
 const ZONE_INFO: Record<string, any> = {
   'tuckerman-ravine': {
@@ -408,6 +438,236 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Avenza Maps - Randolph Crescent Ridge Glade', url: 'https://store.avenza.com/products/randolph-crescent-ridge-glade-granite-backcountry-alliance-map', description: 'Downloadable geo-referenced PDF map for offline navigation.' },
     ],
   },
+  // ─── Mt. Mansfield (Vermont) ──────────────────────────────────────────────
+  'teardrop-trail': {
+    overview: 'A CCC trail cut in 1937 descending the west side of Mt. Mansfield from the Forehead (4,062 ft) down to Underhill State Park. Drops roughly 2,000 vertical feet in 1.8 miles with several sharp turns, steep pitches, and double fall lines. A classic link-up skins up Teardrop, traverses to the Bruce via the Toll Road, skis the Bruce, skins back up, and returns via Teardrop for 4,500+ ft of total vertical.',
+    stats: {
+      verticalDrop: '2,000 ft',
+      length: '1.8 miles',
+      difficulty: 'intermediate-advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      baseElevation: 2060,
+      topElevation: 4062,
+      aspect: 'W',
+    },
+    sources: [
+      { title: 'New England Ski History - Mt. Mansfield CCC Ski Trails', url: 'https://www.newenglandskihistory.com/cccskitrails/Vermont/mtmansfield.php', description: 'Comprehensive history of CCC-era ski trails on Mt. Mansfield.' },
+      { title: 'Explore-Share - Backcountry Skiing on the Teardrop Trail', url: 'https://www.explore-share.com/trip/backcountry-skiing-on-the-teardrop-trail-mt-mansfield-west-side/', description: 'Guided trip details for the Teardrop Trail with route description and difficulty assessment.' },
+    ],
+  },
+  'bruce-trail': {
+    overview: 'One of the oldest ski trails in the United States, cut by the CCC in 1933. The Bruce descends the southwest side of Mt. Mansfield from near the Chin summit with roughly 2,180 ft of vertical. The trail starts narrow then dives down the fall line through progressively wider terrain in dense spruce forest.',
+    stats: {
+      verticalDrop: '2,180 ft',
+      length: '4.8 miles (round trip including approach)',
+      difficulty: 'advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      baseElevation: 2200,
+      topElevation: 4393,
+      aspect: 'SW',
+    },
+    sources: [
+      { title: 'New England Ski History - Mt. Mansfield CCC Ski Trails', url: 'https://www.newenglandskihistory.com/cccskitrails/Vermont/mtmansfield.php', description: 'History of the Bruce Trail including construction dates and historical context.' },
+      { title: 'Vermont Dept. of Forests, Parks and Recreation - Mt. Mansfield State Forest', url: 'https://fpr.vermont.gov/mt-mansfield-state-forest-0', description: 'Official state resource for Mt. Mansfield State Forest trail access and regulations.' },
+    ],
+  },
+  'skytop-trail': {
+    overview: 'A high-elevation ridge traverse and descent route offering panoramic views of the Green Mountains. Skytop follows the ridgeline below Skytop Ridge before descending through hardwood glades on the west side. Accessible from the Stowe Mountain Resort Nordic Center or the Trapp Family Lodge. A longer tour combining ridge walking with moderate glade skiing.',
+    stats: {
+      verticalDrop: '1,500-2,000 ft (varies by descent line)',
+      length: '5-8 miles round trip (depending on approach)',
+      difficulty: 'intermediate-advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      baseElevation: 2400,
+      topElevation: 4062,
+      aspect: 'W/NW',
+    },
+    sources: [
+      { title: 'Explore-Share - Backcountry Skiing Day Tour on Mount Mansfield', url: 'https://www.explore-share.com/trip/backcountry-skiing-day-tour-on-mount-mansfield-in-stowe-vermont/', description: 'Overview of Mt. Mansfield backcountry skiing options including Skytop.' },
+    ],
+  },
+  'steeple-trail': {
+    overview: 'The steepest marked backcountry trail in Mansfield State Forest with an average grade of 23.3%. Starts near the top of the Toll Road and delivers one of the most rewarding descents on the mountain. The upper third is expert-only terrain through tight trees, while the lower Steeple mellows to intermediate grade.',
+    stats: {
+      verticalDrop: '2,000+ ft',
+      length: 'Approximately 2 miles',
+      difficulty: 'advanced-expert (upper) / intermediate (lower)',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      baseElevation: 2200,
+      topElevation: 4200,
+      aspect: 'E/SE',
+    },
+    sources: [
+      { title: 'SkiMaven - Skiing the Lower Steeple Trail', url: 'https://www.skimaven.com/post/skiing-the-lower-steeple-trail-a-classic-backcountry-trail-near-mt-mansfield', description: 'Trip report and trail description for the Steeple Trail descent.' },
+      { title: 'Explore-Share - Backcountry Skiing Day Tour on Mount Mansfield', url: 'https://www.explore-share.com/trip/backcountry-skiing-day-tour-on-mount-mansfield-in-stowe-vermont/', description: 'Guide-led tour info for Mansfield backcountry routes.' },
+    ],
+  },
+  'nosedive-trail': {
+    overview: 'Cut by the CCC in 1934-1935, the Nose Dive was Stowe\'s most famous race trail and hosted Eastern Downhill Championships from 1937 to 1949. The original trail featured the Cork Screw, the Corridor, and the Gulch. While the upper portion is now part of Stowe Mountain Resort, the lower sections and historical race line remain a backcountry classic.',
+    stats: {
+      verticalDrop: '2,300+ ft (original full trail)',
+      length: '1.4 miles',
+      difficulty: 'advanced-expert',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      baseElevation: 2060,
+      topElevation: 4064,
+      aspect: 'NW',
+    },
+    sources: [
+      { title: 'New England Ski History - Mt. Mansfield CCC Ski Trails', url: 'https://www.newenglandskihistory.com/cccskitrails/Vermont/mtmansfield.php', description: 'Historical overview of the Nose Dive trail including race history.' },
+    ],
+  },
+  // ─── Mt. Cardigan (New Hampshire) ─────────────────────────────────────────
+  'dukes-trail': {
+    overview: 'Cut from the Firescrew subpeak of Mt. Cardigan in late 1933 by the CCC and designed by Duke Dimitri von Leuchtenberg. The gentler of the two ski descents at roughly 1.25 miles with 1,600 ft of vertical drop. Designed with gentle grades suitable for novice and intermediate skiers. The 3.2-mile round trip from the AMC Cardigan Lodge is a satisfying half-day tour.',
+    stats: {
+      verticalDrop: '1,600 ft',
+      length: '1.25 miles (descent) / 3.2 miles round trip',
+      difficulty: 'intermediate',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      baseElevation: 1392,
+      topElevation: 3000,
+      aspect: 'E',
+    },
+    sources: [
+      { title: 'AMC Outdoors - Best Backcountry Skiing at Mount Cardigan', url: 'https://www.outdoors.org/resources/amc-outdoors/outdoor-resources/best-backcountry-skiing-at-mount-cardigan/', description: 'AMC guide to backcountry skiing on Mt. Cardigan with trail descriptions.' },
+      { title: 'New England Ski History - Mt. Cardigan CCC Ski Trails', url: 'https://www.newenglandskihistory.com/cccskitrails/NewHampshire/mtcardigan.php', description: 'Historical overview of CCC-era ski trail construction on Mt. Cardigan.' },
+    ],
+  },
+  'alexandria-trail': {
+    overview: 'Cut by the CCC in 1934 and designed by Charles Proctor, the Alexandria Trail is the steeper, more challenging descent on Mt. Cardigan. At 1.7 miles with 1,400 ft of vertical drop, the trail showcases excellent CCC craftsmanship -- widening where you need room to carve. Combined with Duke\'s Trail in the Grand Tour, it creates one of the best backcountry ski loops in New Hampshire.',
+    stats: {
+      verticalDrop: '1,400 ft',
+      length: '1.7 miles',
+      difficulty: 'advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      baseElevation: 1392,
+      topElevation: 2800,
+      aspect: 'E',
+    },
+    sources: [
+      { title: 'AMC Outdoors - Best Backcountry Skiing at Mount Cardigan', url: 'https://www.outdoors.org/resources/amc-outdoors/outdoor-resources/best-backcountry-skiing-at-mount-cardigan/', description: 'AMC guide covering the Alexandria Trail.' },
+      { title: 'EMS goEast - Backcountry Turns at Mt. Cardigan', url: 'https://goeast.ems.com/backcountry-skiing-mount-cardigan/', description: 'EMS backcountry guide to Mt. Cardigan.' },
+    ],
+  },
+  'kimball-trail': {
+    overview: 'A shorter, lower-elevation forest descent on the south side of Mt. Cardigan, cut by the AMC in December 1934. At 0.8-1 mile with roughly 600 ft of vertical, the Kimball provides a quick lap option and connects into the Grand Tour loop. Dense forest retains snow when higher trails are wind-scoured.',
+    stats: {
+      verticalDrop: '600 ft',
+      length: '0.8-1 mile',
+      difficulty: 'intermediate',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      baseElevation: 1500,
+      topElevation: 2100,
+      aspect: 'S',
+    },
+    sources: [
+      { title: 'New England Ski History - Mt. Cardigan CCC Ski Trails', url: 'https://www.newenglandskihistory.com/cccskitrails/NewHampshire/mtcardigan.php', description: 'Historical overview of Kimball Trail construction.' },
+    ],
+  },
+  'cardigan-grand-tour': {
+    overview: 'The signature backcountry ski outing on Mt. Cardigan: a 5.5-mile loop that skins up one CCC trail, crosses the Firescrew-Mt. Cardigan ridge, and descends the opposite ski trail. Typically done ascending Duke\'s and descending Alexandria. The ridge traverse adds alpine character with exposed granite above treeline. Roughly 1,750 ft of vertical in 3-4 hours.',
+    stats: {
+      verticalDrop: '1,750 ft (total vertical)',
+      length: '5.5 miles (full loop)',
+      difficulty: 'intermediate-advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      baseElevation: 1392,
+      topElevation: 3155,
+      aspect: 'E (both descents)',
+    },
+    sources: [
+      { title: 'AMC Outdoors - Best Backcountry Skiing at Mount Cardigan', url: 'https://www.outdoors.org/resources/amc-outdoors/outdoor-resources/best-backcountry-skiing-at-mount-cardigan/', description: 'AMC guide with Grand Tour route details.' },
+      { title: 'Explore-Share - Mt. Cardigan Grand Tour on Skis', url: 'https://www.explore-share.com/trip/mt-cardigan-grand-tour-skis-intermediate/', description: 'Guided tour of the Grand Tour loop with route description.' },
+    ],
+  },
+  // ─── Mt. Greylock (Massachusetts) ─────────────────────────────────────────
+  'thunderbolt-trail': {
+    overview: 'The crown jewel of Massachusetts backcountry skiing. The Thunderbolt drops 2,175 ft in 1.6 miles from the summit of Mt. Greylock down the east face to Greylock Glen. Constructed in 1934 by the CCC with 300 pounds of dynamite, it hosted the U.S. Eastern Alpine Ski Championships in 1936. Features alternating fall-line pitches 30-50 ft wide reaching grades up to 35 degrees. Maintained by the Thunderbolt Ski Runners volunteer organization.',
+    stats: {
+      verticalDrop: '2,175 ft',
+      length: '1.6 miles',
+      maxPitch: '35 degrees',
+      difficulty: 'advanced-expert',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      baseElevation: 1263,
+      topElevation: 3491,
+      aspect: 'E',
+    },
+    sources: [
+      { title: 'Thunderbolt Ski Runners - Official Website', url: 'https://www.thunderboltski.com', description: 'Official website of the volunteer organization that maintains the Thunderbolt Ski Trail.' },
+      { title: 'New England Ski History - Mt. Greylock CCC Ski Trails', url: 'https://www.newenglandskihistory.com/cccskitrails/Massachusetts/mtgreylock.php', description: 'History of CCC-era ski trail construction on Mt. Greylock.' },
+      { title: 'Powder Project - Thunderbolt Ski Trail', url: 'https://www.powderproject.com/trail/7000227/thunderbolt-ski-trail', description: 'Route page with GPS coordinates, elevation profile, and user trip reports.' },
+    ],
+  },
+  'bellows-pipe-trail': {
+    overview: 'An intermediate alternative to the Thunderbolt, opened in 1938-39 on the northeast face of Mt. Greylock. At 1.8 miles with 2,000 ft of vertical drop, it was designed as a less extreme racing venue. Maximum gradient is 27 degrees -- substantially mellower than the Thunderbolt. Can be combined with the Thunderbolt in a loop using the Bellows Pipe hiking trail.',
+    stats: {
+      verticalDrop: '2,000 ft',
+      length: '1.8 miles',
+      maxPitch: '27 degrees',
+      difficulty: 'intermediate-advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      baseElevation: 1490,
+      topElevation: 3491,
+      aspect: 'NE',
+    },
+    sources: [
+      { title: 'New England Ski History - Mt. Greylock CCC Ski Trails', url: 'https://www.newenglandskihistory.com/cccskitrails/Massachusetts/mtgreylock.php', description: 'History of Bellows Pipe trail construction and race history.' },
+      { title: 'EMS goEast - Alpha Guide: Hiking Mount Greylock\'s Thunderbolt Trail', url: 'https://goeast.ems.com/mount-greylock-thunderbolt-trail-alpha-guide/', description: 'Guide to Greylock trails with approach logistics.' },
+    ],
+  },
+  // ─── Mt. Marcy (New York) ─────────────────────────────────────────────────
+  'van-hoevenberg-trail': {
+    overview: 'The classic ski route to Mt. Marcy\'s summit and the most popular backcountry ski tour in the Adirondack High Peaks. The 7.4-mile approach from Adirondak Loj follows the Van Hoevenberg Trail through gentle terrain to Marcy Dam, then climbs steadily past Indian Falls to the open alpine summit. Key descent sections include the Corkscrew, Romper Room, and the summit bowl.',
+    stats: {
+      verticalDrop: '3,166 ft',
+      length: '7.4 miles one-way (14.8 miles round trip)',
+      difficulty: 'advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      approachTime: '5 hours (ascent) / 2-3 hours (descent)',
+      baseElevation: 2178,
+      topElevation: 5344,
+      aspect: 'Various',
+    },
+    sources: [
+      { title: 'Adirondack Explorer - Skiing Mount Marcy', url: 'https://www.adirondackexplorer.org/outdoor-recreation/skiing-mount-marcy/', description: 'Comprehensive guide to backcountry skiing Mt. Marcy via the Van Hoevenberg Trail.' },
+      { title: 'Pure Adirondacks - Backcountry Skiing Mt. Marcy Trip', url: 'https://pureadirondacks.com/blogs/adirondack-skiing-riding/backcountry-skiing-mt-marcy-trip', description: 'Detailed ski trip report covering the full Marcy approach.' },
+      { title: 'ADK - Hiker Parking at Heart Lake', url: 'https://adk.org/hiker-parking-at-heart-lake/', description: 'Official ADK info on parking and winter access at Adirondak Loj.' },
+    ],
+  },
+  'marcy-summit-bowl-glades': {
+    overview: 'Above treeline near the summit and in the transition zone above Indian Falls, Mt. Marcy offers open glade skiing accessible as a bonus on the standard Van Hoevenberg route. The summit bowl provides a short, steep descent with 360-degree views before entering the tree-skiing zone. The classic ski loop descends the cone on the west side, contours left of Gray Peak through the Funnel, then floats through glades to Lake Tear of the Clouds.',
+    stats: {
+      verticalDrop: '1,000-1,500 ft (glade zone)',
+      length: 'Variable (off-trail)',
+      difficulty: 'advanced-expert',
+      bestMonths: ['January', 'February', 'March'],
+      baseElevation: 3800,
+      topElevation: 5344,
+      aspect: 'W/SW',
+    },
+    sources: [
+      { title: 'Adirondack Explorer - The Fun Dome: New York\'s Mount Marcy', url: 'https://www.adirondackexplorer.org/outdoor-recreation/skiing-mt-marcy-five-minutes/', description: 'Profile of Marcy\'s summit bowl skiing and classic glade descent.' },
+      { title: 'Adirondack Explorer - Skiing Mount Marcy', url: 'https://www.adirondackexplorer.org/outdoor-recreation/skiing-mount-marcy/', description: 'Comprehensive route guide.' },
+    ],
+  },
+  'panther-gorge-slides': {
+    overview: 'Between Mt. Marcy and Mt. Haystack lies Panther Gorge, harboring several slide paths on the south face of Marcy. The Pipeline is a 600-ft slide, Grand Central rises roughly 1,200 ft but is only 50 ft wide. All Panther Gorge lines are extremely hazardous -- avalanche-prone with numerous terrain traps. These are ski mountaineering objectives, not recreational descents. Most approach from the Upper Works trailhead in Newcomb (10.3 miles, 3,800 ft gain).',
+    stats: {
+      verticalDrop: '600-1,200 ft (slide dependent)',
+      length: 'Variable (slides 0.2-0.5 miles; approach 10+ miles)',
+      difficulty: 'expert-only / ski mountaineering',
+      bestMonths: ['March', 'April'],
+      baseElevation: 3200,
+      topElevation: 5344,
+      aspect: 'S/SE',
+    },
+    sources: [
+      { title: 'NYSkiBlog - Panther Gorge Trek', url: 'https://nyskiblog.com/panther-gorge-trek/', description: 'Trip report and terrain description of Panther Gorge slides.' },
+      { title: 'Adirondack Explorer - Skiing Mount Marcy', url: 'https://www.adirondackexplorer.org/outdoor-recreation/skiing-mount-marcy/', description: 'Overview including Panther Gorge terrain.' },
+    ],
+  },
 };
 
 function weatherCodeToCondition(code: number): string {
@@ -505,20 +765,78 @@ async function getMwacForecast() {
   }
 }
 
-// Inline gear suggestions based on conditions
-function getGearSuggestions(current: any, daily: any[]) {
-  const suggestions: any[] = [];
+// ─── Zone-specific gear suggestions ──────────────────────────────────────
+// Alpine/exposed zones
+const ALPINE_EXPOSED_IDS = new Set([
+  'tuckerman-ravine', 'huntington-ravine', 'gulf-of-slides', 'great-gulf',
+  'oakes-gulf', 'burt-ammonoosuc-ravines', 'teardrop-trail', 'bruce-trail',
+  'skytop-trail', 'steeple-trail', 'nosedive-trail',
+  'van-hoevenberg-trail', 'marcy-summit-bowl-glades', 'panther-gorge-slides',
+  'thunderbolt-trail', 'bellows-pipe-trail',
+]);
+// CCC trail zones (sustained pitch, variable conditions)
+const CCC_TRAIL_IDS = new Set([
+  'sherburne-ski-trail', 'thunderbolt-trail', 'bellows-pipe-trail',
+  'bruce-trail', 'teardrop-trail', 'steeple-trail', 'nosedive-trail',
+]);
+// Gladed terrain zones
+const GLADE_IDS = new Set([
+  'baldface', 'black-white-glade', 'bill-hill-glade', 'cooley-jericho-glade',
+  'hypnosis-glade', 'maple-villa-glade', 'page-hill', 'prkr-mtn-glades',
+  'the-pike-glades', 'ski-tow-glade', 'west-side-glade', 'historic-ccc-trails',
+  'crescent-ridge-glade', 'dukes-trail', 'alexandria-trail', 'kimball-trail',
+  'cardigan-grand-tour',
+]);
+// Long approach zones (>3.5 miles)
+const LONG_APPROACH_IDS = new Set([
+  'great-gulf', 'oakes-gulf', 'van-hoevenberg-trail', 'marcy-summit-bowl-glades',
+  'panther-gorge-slides', 'skytop-trail', 'cardigan-grand-tour',
+  'black-white-glade',
+]);
 
-  if (current.windGustMph > 50) {
-    suggestions.push({ text: 'Extreme wind — hardshell, ski goggles, and ski crampons essential', priority: 'essential', category: 'protection', reviewUrl: '/grivel-ski-tour-skimatic-review/' });
-  } else if (current.windGustMph > 35) {
-    suggestions.push({ text: 'High winds forecast — bring hardshell and goggles', priority: 'essential', category: 'protection', reviewUrl: '/best-ski-goggles-2026/' });
+function getGearSuggestions(current: any, daily: any[], zone: any) {
+  const suggestions: any[] = [];
+  const zoneId = zone.id;
+  const zoneName = zone.name;
+  const temp = current.tempF ?? 32;
+  const gusts = current.windGustMph ?? 0;
+
+  // ── Alpine/exposed terrain suggestions ──
+  if (ALPINE_EXPOSED_IDS.has(zoneId)) {
+    suggestions.push({ text: 'Ski crampons for icy alpine terrain', priority: 'essential', category: 'protection', reviewUrl: '/grivel-ski-tour-skimatic-review/' });
+    suggestions.push({ text: 'Beacon, probe, and shovel — mandatory in avalanche terrain', priority: 'essential', category: 'safety', reviewUrl: '/best-avalanche-beacons-2026/' });
+
+    if (gusts > 50) {
+      suggestions.push({ text: `Summit winds at ${zoneName} regularly exceed 50 mph — full hardshell mandatory`, priority: 'essential', category: 'protection', reviewUrl: '/best-ski-goggles-2026/' });
+    } else if (gusts > 30) {
+      suggestions.push({ text: 'High winds — hardshell and goggles essential', priority: 'essential', category: 'protection', reviewUrl: '/best-ski-goggles-2026/' });
+    }
   }
 
-  if (current.tempF < -10) {
-    suggestions.push({ text: 'Extreme cold — heavy insulation, face protection, chemical warmers', priority: 'essential', category: 'warmth', reviewUrl: '/darn-tough-thermolite-rfl-review/' });
-  } else if (current.tempF < 10) {
-    suggestions.push({ text: 'Cold conditions — insulated layer and warm socks essential', priority: 'essential', category: 'warmth', reviewUrl: '/best-ski-socks-2026/' });
+  // ── CCC trail suggestions ──
+  if (CCC_TRAIL_IDS.has(zoneId)) {
+    suggestions.push({ text: 'CCC trails have sustained pitch — sharp edges and reliable skins essential', priority: 'essential', category: 'gear', reviewUrl: '/best-climbing-skins-2026/' });
+  }
+
+  // ── Gladed terrain suggestions ──
+  if (GLADE_IDS.has(zoneId)) {
+    suggestions.push({ text: 'Gladed terrain requires good visibility — amber/rose lens goggles recommended', priority: 'recommended', category: 'visibility', reviewUrl: '/best-ski-goggles-2026/' });
+    if (temp > 35) {
+      suggestions.push({ text: 'Warm temps mean heavy wet snow — wax for wet conditions', priority: 'recommended', category: 'snow', reviewUrl: '/best-climbing-skins-2026/' });
+    }
+  }
+
+  // ── Long approach suggestions ──
+  if (LONG_APPROACH_IDS.has(zoneId)) {
+    suggestions.push({ text: 'This is a long approach — carry extra food, headlamp, and emergency shelter', priority: 'essential', category: 'safety', reviewUrl: '/best-headlamps-backcountry-skiing-2026/' });
+    suggestions.push({ text: 'Portable charger for long days — keep your phone and GPS alive', priority: 'recommended', category: 'power', reviewUrl: '/best-portable-chargers-backcountry-skiing-2026/' });
+  }
+
+  // ── Weather-based suggestions (all zones) ──
+  if (temp < -10) {
+    suggestions.push({ text: `Extreme cold: ${temp}°F — heavy insulation, face protection, chemical warmers`, priority: 'essential', category: 'warmth', reviewUrl: '/darn-tough-thermolite-rfl-review/' });
+  } else if (temp < 10) {
+    suggestions.push({ text: `Cold conditions: ${temp}°F — insulated layers and warm socks essential`, priority: 'essential', category: 'warmth', reviewUrl: '/darn-tough-thermolite-rfl-review/' });
   }
 
   const totalSnow = daily.slice(0, 2).reduce((sum: number, d: any) => sum + (d.totalSnowInches || 0), 0);
@@ -528,8 +846,12 @@ function getGearSuggestions(current: any, daily: any[]) {
     suggestions.push({ text: `${Math.round(totalSnow)}" of fresh snow forecast — good powder conditions`, priority: 'recommended', category: 'snow', reviewUrl: '/best-climbing-skins-2026/' });
   }
 
+  // ── Always-include suggestions ──
   suggestions.push({ text: 'Navigation app for backcountry routing', priority: 'recommended', category: 'navigation', reviewUrl: '/best-backcountry-ski-apps-2026/' });
-  suggestions.push({ text: 'Check avalanche forecast before heading out', priority: 'essential', category: 'safety', reviewUrl: '/best-avalanche-resources-2026/' });
+
+  if (ALPINE_EXPOSED_IDS.has(zoneId)) {
+    suggestions.push({ text: 'Check avalanche forecast before heading out', priority: 'essential', category: 'safety', reviewUrl: '/best-avalanche-beacons-2026/' });
+  }
 
   return suggestions;
 }
@@ -701,9 +1023,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       })),
     };
 
-    // Only fetch MWAC forecast for alpine zones (Presidential Range)
+    // Only fetch MWAC forecast for Presidential Range alpine zones
     let mwacForecast = null;
-    if (zone.zoneType === 'alpine') {
+    if (zone.zoneType === 'alpine' && zone.subRegion === 'Presidential Range') {
       try {
         mwacForecast = await getMwacForecast();
       } catch {
@@ -717,7 +1039,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     } else {
       assessment = getTripAssessment(weather.current, mwacForecast);
     }
-    const gearSuggestions = getGearSuggestions(weather.current, weather.daily);
+    const gearSuggestions = getGearSuggestions(weather.current, weather.daily, zone);
 
     res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600');
     return res.status(200).json({

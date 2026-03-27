@@ -27,6 +27,10 @@ export default function App() {
     const zones = data?.zones ?? [];
     if (regionFilter === 'all') return zones;
     if (regionFilter === 'nh') return zones.filter((z) => z.region === 'New Hampshire');
+    if (regionFilter === 'vt') return zones.filter((z) => z.region === 'Vermont');
+    if (regionFilter === 'ny') return zones.filter((z) => z.region === 'New York');
+    if (regionFilter === 'ma') return zones.filter((z) => z.region === 'Massachusetts');
+    if (regionFilter === 'me') return zones.filter((z) => z.region === 'Maine');
     return zones;
   }, [data?.zones, regionFilter]);
 
