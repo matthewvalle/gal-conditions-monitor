@@ -42,10 +42,18 @@ a:hover {
   flex-direction: column;
 }
 
+@media (min-width: 1024px) {
+  .app {
+    height: 100vh;
+    overflow: hidden;
+  }
+}
+
 .app-body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0; /* allow flex children to shrink below content size */
 }
 
 .app-map-col {
@@ -54,34 +62,33 @@ a:hover {
 }
 
 .app-panel-col {
-  flex: 1;
-  min-height: 0;
   padding: 0 12px 24px;
 }
 
-/* Desktop: side-by-side layout */
+/* Desktop: side-by-side layout, locked to viewport */
 @media (min-width: 1024px) {
   .app-body {
     display: flex;
     flex-direction: row;
+    flex: 1;
+    min-height: 0;
   }
 
   .app-map-col {
     width: 65%;
     flex-shrink: 0;
-    /* Don't set height here — map-container has its own explicit height */
+    flex: none;
+    height: 100%;
+    min-height: 0;
   }
 
   .app-panel-col {
     width: 35%;
-    /* Panel scrolls independently, pinned to viewport */
-    max-height: calc(100vh - 130px);
+    flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
     border-left: 1px solid var(--stone-300);
     padding: 0;
-    position: sticky;
-    top: 0;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
   }
@@ -318,15 +325,15 @@ a:hover {
 
 .map-container {
   position: relative;
-  height: 65vh;
-  min-height: 350px;
+  height: 55vh;
+  min-height: 280px;
 }
 
 @media (min-width: 1024px) {
   .map-container {
-    /* Explicit viewport height — don't rely on flex */
-    height: calc(100vh - 240px);
-    min-height: 400px;
+    height: auto;
+    flex: 1;
+    min-height: 200px;
   }
 }
 
@@ -403,14 +410,49 @@ a:hover {
   color: var(--white);
 }
 
-/* Zone marker popup */
+/* Zone marker popup — rich hover card */
 .zone-marker-popup .maplibregl-popup-content {
   font-family: 'Inter', sans-serif;
   font-size: 12px;
-  font-weight: 500;
-  padding: 4px 8px;
+  font-weight: 400;
+  padding: 10px 12px;
   border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
+  min-width: 160px;
+  line-height: 1.4;
+}
+
+.zone-popup-name {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--stone-900);
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--stone-200);
+  padding-bottom: 5px;
+}
+
+.zone-popup-details {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.zone-popup-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 11px;
+}
+
+.zone-popup-label {
+  color: var(--stone-500);
+  font-weight: 500;
+}
+
+.zone-popup-value {
+  color: var(--stone-800);
+  font-weight: 600;
+  text-align: right;
 }
 
 /* Marker pulse animation */
@@ -428,6 +470,7 @@ a:hover {
 .app-zone-controls {
   border-top: 1px solid var(--stone-300);
   background: var(--white);
+  flex-shrink: 0;
 }
 
 .region-filter {
@@ -487,14 +530,8 @@ a:hover {
 /* ─── Zone Selector (collapsible list) ────────────────────────────────────── */
 
 .zone-selector {
-  max-height: 200px;
+  max-height: 160px;
   overflow-y: auto;
-}
-
-@media (min-width: 1024px) {
-  .zone-selector {
-    max-height: 120px;
-  }
 }
 
 .zone-selector--empty {
@@ -697,7 +734,6 @@ a:hover {
 
 @media (max-width: 1023px) {
   .zone-panel {
-    max-height: 80vh;
     overflow-y: auto;
   }
 }

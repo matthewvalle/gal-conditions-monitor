@@ -10,6 +10,21 @@ interface ZoneMarkerProps {
   map: maplibregl.Map;
 }
 
+/** Build rich popup HTML from zone data — automatically adapts to whatever fields exist. */
+function buildPopupHTML(zone: Zone): string {
+  const rows: string[] = [];
+
+  rows.push(`<div class="zone-popup-row"><span class="zone-popup-label">Elev.</span><span class="zone-popup-value">${zone.elevation.toLocaleString()} ft</span></div>`);
+
+  if (zone.aspect) {
+    rows.push(`<div class="zone-popup-row"><span class="zone-popup-label">Aspect</span><span class="zone-popup-value">${zone.aspect}</span></div>`);
+  }
+
+  rows.push(`<div class="zone-popup-row"><span class="zone-popup-label">Approach</span><span class="zone-popup-value">${zone.approachMiles} mi</span></div>`);
+
+  return `<div class="zone-popup-name">${zone.name}</div><div class="zone-popup-details">${rows.join('')}</div>`;
+}
+
 /** Creates a MapLibre marker for a zone colored by condition rating. */
 export default function ZoneMarker({
   zone,
@@ -59,13 +74,14 @@ export default function ZoneMarker({
     onClick();
   });
 
-  // Tooltip
+  // Rich hover popover — built from Zone data so it scales automatically
+  const popupHTML = buildPopupHTML(zone);
   const popup = new maplibregl.Popup({
     offset: 16,
     closeButton: false,
     closeOnClick: false,
     className: 'zone-marker-popup',
-  }).setText(zone.name);
+  }).setHTML(popupHTML);
 
   el.addEventListener('mouseenter', () => popup.addTo(map));
   el.addEventListener('mouseleave', () => popup.remove());
