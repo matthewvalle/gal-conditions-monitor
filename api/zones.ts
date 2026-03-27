@@ -25,9 +25,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Fetch all data sources in parallel with caching
     const [mwac, alerts, ...weatherResults] = await Promise.all([
       cacheGetOrFetch<MwacForecast>('mwac:current', 4 * 3600, () =>
-        fetchMwacForecast().catch((): MwacForecast => ({
-          status: 'unavailable',
-          dangerLevel: null as any,
+        fetchMwacForecast().catch((): any => ({
+          dangerLevel: null,
           dangerLabel: 'Unavailable',
           problems: [],
           bottomLine: 'Unable to fetch MWAC forecast. Check mountwashingtonavalanchecenter.org directly.',
