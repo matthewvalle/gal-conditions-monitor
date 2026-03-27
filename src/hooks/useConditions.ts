@@ -2,7 +2,10 @@
 import { useQuery } from '@tanstack/react-query';
 import type { ZonesResponse, ZoneDetailResponse } from '../../lib/types';
 
-const API_BASE = import.meta.env.VITE_API_URL ?? '';
+// When embedded in WordPress, API calls go to Vercel
+// When running on Vercel directly, use relative paths
+const isVercel = window.location.hostname.includes('vercel.app');
+const API_BASE = isVercel ? '' : (import.meta.env.VITE_API_URL || 'https://gal-conditions-monitor.vercel.app');
 
 async function fetchJson<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`);
