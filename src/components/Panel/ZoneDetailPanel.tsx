@@ -185,6 +185,9 @@ export default function ZoneDetailPanel({ detail, isLoading, zones, weather, for
 
       {assessment && <TripAssessment assessment={assessment} />}
 
+      {/* About This Zone — moved up for prominence */}
+      {(detail as any).zoneInfo && <ZoneInfo info={(detail as any).zoneInfo} />}
+
       <div className="zone-panel-weather-row">
         <WeatherCard weather={detailWeather} />
         <WindRose
@@ -194,28 +197,18 @@ export default function ZoneDetailPanel({ detail, isLoading, zones, weather, for
         />
       </div>
 
-      {zone.zoneType === 'alpine' ? (
-        <AvalancheCard forecast={detailForecast} />
-      ) : (
-        <div className="avy-card" style={{ background: 'var(--stone-100)', border: '1px solid var(--stone-300)', borderRadius: 'var(--radius)', padding: '14px' }}>
-          <h3 className="card-title">Avalanche Info</h3>
-          <p style={{ fontSize: '13px', color: 'var(--stone-700)', lineHeight: '1.6' }}>
-            This zone is below typical avalanche terrain. MWAC forecasts cover the Presidential Range. Exercise caution if venturing above treeline.
-          </p>
-          <a
-            href="https://www.mountwashingtonavalanchecenter.org/forecasts/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="avy-link"
-            style={{ display: 'inline-block', marginTop: '8px' }}
-          >
-            View MWAC Forecast &rarr;
-          </a>
+      <ForecastTable daily={detailWeather.daily} />
+
+      {zone.zoneType === 'alpine' && <AvalancheCard forecast={detailForecast} />}
+
+      {zone.zoneType !== 'alpine' && (
+        <div className="glade-avy-note" style={{ background: 'var(--stone-100)', border: '1px solid var(--stone-300)', borderRadius: 'var(--radius)', padding: '12px 14px', fontSize: '12px', color: 'var(--stone-600)', lineHeight: '1.5' }}>
+          ⚠️ MWAC avalanche forecasts cover the Presidential Range only. Exercise caution above treeline.{' '}
+          <a href="https://www.mountwashingtonavalanchecenter.org/forecasts/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--link-color)' }}>View MWAC Forecast →</a>
         </div>
       )}
-      <ForecastTable daily={detailWeather.daily} />
+
       {gearSuggestions && <GearSuggestions gear={gearSuggestions} />}
-      {(detail as any).zoneInfo && <ZoneInfo info={(detail as any).zoneInfo} />}
     </div>
   );
 }
