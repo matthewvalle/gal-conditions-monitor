@@ -11,6 +11,7 @@ interface Props {
   assessments: Record<string, { rating: string; reasons: string[] }>;
   isLoading: boolean;
   panelRef: React.RefObject<HTMLDivElement | null>;
+  regionFilter: string;
 }
 
 // Map styles — inline raster definitions for terrain + satellite (no API keys needed)
@@ -76,7 +77,7 @@ export const CONDITION_COLORS: Record<string, string> = {
   dangerous: '#F44336',
 };
 
-export default function ConditionsMap({ zones, weather, forecast, assessments, isLoading, panelRef }: Props) {
+export default function ConditionsMap({ zones, weather, forecast, assessments, isLoading, panelRef, regionFilter }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<maplibregl.Marker[]>([]);
@@ -201,20 +202,11 @@ export default function ConditionsMap({ zones, weather, forecast, assessments, i
     }
   }, [selectedZoneId, zones]);
 
-  // Fit map bounds to show all visible zones when filter changes
-  const prevZoneCountRef = useRef(0);
+  // Refit bounds whenever the region filter changes
   useEffect(() => {
     const map = mapRef.current;
     if (!map || zones.length === 0) return;
 
-    // Only refit when the zone count changes (filter changed)
-    if (zones.length === prevZoneCountRef.current) return;
-    prevZoneCountRef.current = zones.length;
-
-    // Don't refit if a zone is selected (user is drilling in)
-    if (selectedZoneId) return;
-
-    // Compute bounds from all visible zones
     const lngs = zones.map((z) => z.lon);
     const lats = zones.map((z) => z.lat);
     const sw: [number, number] = [Math.min(...lngs) - 0.1, Math.min(...lats) - 0.05];
@@ -225,7 +217,8 @@ export default function ConditionsMap({ zones, weather, forecast, assessments, i
       maxZoom: 13,
       duration: 1200,
     });
-  }, [zones, selectedZoneId]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [regionFilter]);
 
   return (
     <div className="map-container">

@@ -74,21 +74,21 @@ export default function ZoneMarker({
     onClick();
   });
 
-  // Rich hover popover — built from Zone data so it scales automatically
+  // Rich hover popover — set lngLat explicitly on show so it doesn't conflict
+  // with marker.setPopup() click-toggle behavior
   const popupHTML = buildPopupHTML(zone);
   const popup = new maplibregl.Popup({
     offset: 16,
     closeButton: false,
     closeOnClick: false,
     className: 'zone-marker-popup',
-  }).setHTML(popupHTML);
+  }).setHTML(popupHTML).setLngLat([zone.lon, zone.lat]);
 
   el.addEventListener('mouseenter', () => popup.addTo(map));
   el.addEventListener('mouseleave', () => popup.remove());
 
   const marker = new maplibregl.Marker({ element: el })
     .setLngLat([zone.lon, zone.lat])
-    .setPopup(popup)
     .addTo(map);
 
   return marker;

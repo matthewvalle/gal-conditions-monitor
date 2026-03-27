@@ -16,7 +16,18 @@ const queryClient = new QueryClient({
   },
 });
 
-const root = createRoot(document.getElementById('gal-conditions-root')!);
+const rootEl = document.getElementById('gal-conditions-root')!;
+
+// Detect embedded context (WordPress) by measuring top offset from viewport.
+// If there's a header above the root, set a CSS variable so the app can
+// subtract it from 100vh — keeping everything viewport-locked without overflow.
+const topOffset = Math.round(rootEl.getBoundingClientRect().top);
+if (topOffset > 0) {
+  rootEl.style.setProperty('--header-offset', `${topOffset}px`);
+  rootEl.classList.add('gal-embedded');
+}
+
+const root = createRoot(rootEl);
 
 root.render(
   <React.StrictMode>

@@ -13,10 +13,16 @@ import Attribution from './components/Layout/Attribution';
 
 export default function App() {
   const { data, isLoading, error } = useAllZones();
-  const { selectedZoneId } = useSelectedZone();
+  const { selectedZoneId, selectZone } = useSelectedZone();
   const detailQuery = useZoneDetail(selectedZoneId);
   const panelRef = useRef<HTMLDivElement>(null);
   const [regionFilter, setRegionFilter] = useState('all');
+
+  // Clear zone selection when region filter changes so map refits to new region
+  const handleRegionChange = (region: string) => {
+    selectZone(null);
+    setRegionFilter(region);
+  };
 
   // Server-side assessments (includes avy danger in rating)
   const assessments: Record<string, { rating: string; reasons: string[] }> =
@@ -64,9 +70,10 @@ export default function App() {
             assessments={assessments}
             isLoading={isLoading}
             panelRef={panelRef}
+            regionFilter={regionFilter}
           />
           <div className="app-zone-controls">
-            <RegionFilter selected={regionFilter} onChange={setRegionFilter} />
+            <RegionFilter selected={regionFilter} onChange={handleRegionChange} />
             <ZoneList
               zones={filteredZones}
               weather={data?.weather ?? {}}
