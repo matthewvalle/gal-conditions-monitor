@@ -13,9 +13,27 @@ interface Props {
   panelRef: React.RefObject<HTMLDivElement | null>;
 }
 
-// Style URLs or inline style objects for MapLibre
+// Map styles — inline raster definitions for terrain + satellite (no API keys needed)
 const STYLE_STANDARD = 'https://tiles.openfreemap.org/styles/liberty';
-const STYLE_TERRAIN = 'https://tiles.stadiamaps.com/styles/stamen_terrain.json';
+
+const STYLE_TERRAIN: any = {
+  version: 8,
+  sources: {
+    'topo': {
+      type: 'raster',
+      tiles: ['https://tile.opentopomap.org/{z}/{x}/{y}.png'],
+      tileSize: 256,
+      maxzoom: 17,
+      attribution: '© OpenTopoMap contributors',
+    },
+  },
+  layers: [{
+    id: 'topo-layer',
+    type: 'raster',
+    source: 'topo',
+  }],
+};
+
 const STYLE_SATELLITE: any = {
   version: 8,
   sources: {
@@ -31,8 +49,6 @@ const STYLE_SATELLITE: any = {
     id: 'satellite-layer',
     type: 'raster',
     source: 'satellite',
-    minzoom: 0,
-    maxzoom: 16,
   }],
 };
 

@@ -1321,6 +1321,245 @@ a:hover {
   line-height: 1.4;
 }
 
+/* ─── Zone Info Card ─────────────────────────────────────────────────────── */
+
+.zone-info-card {
+  background: var(--white);
+  border: 1px solid var(--stone-300);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+
+.zone-info-overview {
+  font-size: 13px;
+  color: var(--stone-700);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.zone-info-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 12px 0;
+  border-top: 1px solid var(--stone-200);
+  border-bottom: 1px solid var(--stone-200);
+  margin-bottom: 14px;
+}
+
+@media (max-width: 480px) {
+  .zone-info-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+.zone-info-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.zone-info-stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--stone-500);
+}
+
+.zone-info-stat-value {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--stone-800);
+  line-height: 1.4;
+}
+
+.zone-info-sources-section {
+  margin-top: 2px;
+}
+
+.zone-info-sources-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--stone-500);
+  margin-bottom: 8px;
+}
+
+.zone-info-sources {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.zone-info-source {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--stone-200);
+}
+
+.zone-info-source:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.zone-info-source-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.zone-info-source-link:hover {
+  color: var(--ember-hover);
+  text-decoration: underline;
+}
+
+.zone-info-source-desc {
+  font-size: 11px;
+  color: var(--stone-600);
+  line-height: 1.4;
+}
+
+/* ─── Panel Dashboard (empty state) ──────────────────────────────────────── */
+
+.panel-dashboard {
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: panelSlideUp 0.3s ease-out;
+}
+
+.panel-dashboard-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.panel-dashboard-icon {
+  color: var(--alpine);
+  flex-shrink: 0;
+}
+
+.panel-dashboard-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--stone-950);
+  line-height: 1.2;
+}
+
+.panel-dashboard-subtitle {
+  font-size: 12px;
+  color: var(--stone-600);
+  margin-top: 1px;
+}
+
+.panel-dashboard-stats {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.panel-dashboard-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.panel-dashboard-stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--stone-500);
+}
+
+.panel-dashboard-stat-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--stone-900);
+}
+
+.panel-dashboard-stat-badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 4px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.panel-dashboard-zones {
+  background: var(--white);
+  border: 1px solid var(--stone-300);
+  border-radius: var(--radius);
+  padding: 12px;
+}
+
+.panel-dashboard-zones-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--stone-500);
+  margin-bottom: 8px;
+}
+
+.panel-dashboard-zone-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.panel-dashboard-zone-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.panel-dashboard-zone-item:hover {
+  background: var(--stone-100);
+}
+
+.panel-dashboard-zone-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.panel-dashboard-zone-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--stone-800);
+  flex: 1;
+}
+
+.panel-dashboard-zone-temp {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--stone-600);
+  font-variant-numeric: tabular-nums;
+}
+
+.panel-dashboard-footer {
+  font-size: 12px;
+  color: var(--stone-500);
+  line-height: 1.5;
+  text-align: center;
+  padding-top: 4px;
+}
+
 /* ─── Utility ─────────────────────────────────────────────────────────────── */
 
 @keyframes spin {

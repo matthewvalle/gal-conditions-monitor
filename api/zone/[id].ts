@@ -12,6 +12,162 @@ const mvpZones = [
   { id: 'pinkham-notch', name: 'Pinkham Notch', lat: 44.2573, lon: -71.2530, elevation: 2032, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: '', approachMiles: 0, isMvp: true },
 ];
 
+const ZONE_INFO: Record<string, any> = {
+  'tuckerman-ravine': {
+    overview: 'The most famous backcountry ski zone in the Eastern US -- a southeast-facing glacial cirque on Mt. Washington with pitches ranging from 35 to 55 degrees across multiple named lines. Spring corn skiing from April through June draws thousands, but winter conditions demand serious avalanche skills. Multiple runs span the bowl from the moderate Lip to the steep Center Headwall, offering options from advanced to expert-only terrain.',
+    stats: {
+      verticalDrop: '800 ft (headwall) / 1,850 ft (ravine floor to Pinkham Notch)',
+      maxPitch: '55 degrees (Center Headwall up to 60 degrees)',
+      difficulty: 'advanced-expert',
+      bestMonths: ['March', 'April', 'May', 'June'],
+      approachTime: '1.5-2.5 hours from Pinkham Notch (2.4 miles via Tuckerman Ravine Trail)',
+      baseElevation: 3950,
+      topElevation: 5200,
+      aspect: 'SE',
+    },
+    sources: [
+      { title: 'USFS White Mountain National Forest - Tuckerman Ravine Trail', url: 'https://www.fs.usda.gov/recarea/whitemountain/recarea?recid=78538', description: 'Official USDA Forest Service page for the Tuckerman Ravine Trail with access info, regulations, and seasonal conditions.' },
+      { title: 'Mount Washington Avalanche Center - Forecasts', url: 'https://www.mountwashingtonavalanchecenter.org/forecasts/', description: 'Daily avalanche advisories with zone-specific danger ratings for Tuckerman Ravine gullies, updated by USFS Snow Rangers.' },
+      { title: 'Friends of Tuckerman Ravine', url: 'https://www.friendsoftuckermanravine.org/', description: 'Nonprofit partner of the USFS focused on trail maintenance, volunteer crews, and preservation of the Tuckerman/Sherburne/Gulf of Slides trail network.' },
+      { title: 'AMC - The Bold History of Skiing at Tuckerman Ravine', url: 'https://www.outdoors.org/resources/amc-outdoors/history/the-bold-history-of-skiing-at-tuckerman-ravine/', description: 'Appalachian Mountain Club deep-dive on Tuckerman\'s ski history from the 1930s CCC era through the modern backcountry revival.' },
+      { title: 'Teton Gravity Research - How to Ski Tuckerman Ravine', url: 'https://www.tetongravity.com/story/ski/bucket-list-how-to-ski-tuckermans-ravine', description: 'Practical bucket-list guide covering logistics, line descriptions, gear recommendations, and timing for a Tuckerman trip.' },
+    ],
+  },
+  'huntington-ravine': {
+    overview: 'East-facing and significantly steeper than neighboring Tuckerman, Huntington Ravine is a rocky alpine amphitheater with named couloirs ranging from 40 to 50+ degrees. Better known for winter ice climbing, it has seen a surge in ski traffic in recent years as skilled mountaineers seek out lines like Central Gully and Diagonal Gully. Conditions are highly variable -- expect ice bulges, wind-loaded slabs, and mandatory exposure to consequential terrain.',
+    stats: {
+      verticalDrop: '1,100 ft (Diagonal Gully)',
+      maxPitch: '50+ degrees (Central Gully 40-50 degrees, Diagonal Gully ~45 degrees avg)',
+      difficulty: 'expert',
+      bestMonths: ['March', 'April', 'May'],
+      approachTime: '2-3 hours from Pinkham Notch (2.5 miles via Tuckerman Ravine Trail to Huntington Ravine Trail junction)',
+      baseElevation: 3400,
+      topElevation: 5200,
+      aspect: 'E',
+    },
+    sources: [
+      { title: 'Mount Washington Avalanche Center - Forecast Elevation Zones', url: 'https://www.mountwashingtonavalanchecenter.org/forecast-elevation-zones/', description: 'MWAC zone breakdown including Huntington Ravine gullies with elevation bands and avalanche problem descriptions.' },
+      { title: 'Cody Bradford / Ski The Fifty - Huntington Ravine', url: 'https://skithefifty.com/huntington-ravine', description: 'Huntington Ravine profile from the Fifty Project -- ski mountaineering descent details, conditions notes, and line descriptions.' },
+      { title: 'Skimo.co - Huntington Ravine Central Gully', url: 'https://skimo.co/huntington-ravine-central-gully', description: 'Route description for Central Gully with approach info, pitch angles, snow conditions, and topo overview.' },
+      { title: 'Northeast Alpine Start - Trip Reports (Huntington Ravine)', url: 'https://northeastalpinestart.com/tag/mount-washington-avalanche/', description: 'Curated trip reports and avalanche incident analyses from Huntington Ravine and surrounding Presidential Range terrain.' },
+    ],
+  },
+  'gulf-of-slides': {
+    overview: 'A collection of avalanche paths descending from Boott Spur on the southeast side of Mt. Washington, offering more moderate terrain than Tuckerman with wide-open snowfields averaging around 30 degrees. Far less crowded than its famous neighbor, the Gulf of Slides rewards the extra approach distance with solitude and consistent fall-line skiing. The south snowfields are the primary draw, with a brief steeper pitch near the top.',
+    stats: {
+      verticalDrop: '2,000-2,500 ft (full descent to Pinkham Notch)',
+      maxPitch: '35 degrees (brief steeper sections near top)',
+      difficulty: 'intermediate-advanced',
+      bestMonths: ['March', 'April', 'May'],
+      approachTime: '2.5-3.5 hours from Pinkham Notch (2.6 miles via Gulf of Slides Trail)',
+      baseElevation: 2050,
+      topElevation: 4600,
+      aspect: 'E/SE',
+    },
+    sources: [
+      { title: 'NH Magazine - What It\'s Like To Ski Mount Washington\'s Gulf of Slides', url: 'https://www.nhmagazine.com/skiing-mount-washingtons-gulf-of-slides/', description: 'In-depth feature on the Gulf of Slides experience with terrain description, approach logistics, and comparison to Tuckerman.' },
+      { title: 'Granite Backcountry Alliance - Sherburne / Gulf of Slides Trail Work', url: 'https://granitebackcountryalliance.org/sherburne-gulf-of-slides-trail-work', description: 'GBA trail maintenance updates for the Sherburne and Gulf of Slides ski trails with current conditions and volunteer info.' },
+      { title: 'Mount Washington Avalanche Center - MWAC Forecast Area', url: 'https://www.mountwashingtonavalanchecenter.org/mwac-forecast-area/', description: 'Map and description of MWAC\'s full forecast coverage area including Gulf of Slides avalanche paths.' },
+      { title: 'AMC NH Chapter - Catching the Bluebird in the Gulf of Slides', url: 'https://amcnh.org/catching-the-bluebird-in-the-gulf-of-slides-by-ham-mehlman/', description: 'First-person AMC trip report with practical approach info, snow conditions, and route-finding notes for Gulf of Slides.' },
+    ],
+  },
+  'great-gulf': {
+    overview: 'The largest glacial cirque in the White Mountains, Great Gulf is a federally designated Wilderness area on the northeast side of Mt. Washington. Its remote headwall gains 1,600 feet in half a mile with serious avalanche exposure. The long approach through boulder-strewn old-growth forest filters out casual visitors -- this is committed ski mountaineering terrain best suited for spring conditions when snow softens and days lengthen.',
+    stats: {
+      verticalDrop: '1,600 ft (headwall) / 5,000 ft total (summit to trailhead)',
+      maxPitch: '40-50 degrees on the headwall',
+      difficulty: 'expert',
+      bestMonths: ['April', 'May'],
+      approachTime: '4-6 hours from Great Gulf Trailhead (6.5 miles via Great Gulf Trail) or alternate approach from Pinkham Notch',
+      baseElevation: 1350,
+      topElevation: 6288,
+      aspect: 'NE',
+    },
+    sources: [
+      { title: 'Mount Washington Observatory - Great Gulf Skiing', url: 'https://mountwashington.org/great-gulf-skiing/', description: 'Observatory overview of Great Gulf as a ski objective with conditions context and approach considerations.' },
+      { title: 'Backcountry Magazine - Mt. Washington\'s Great White North', url: 'https://backcountrymagazine.com/stories/mt-washingtons-great-white-north/', description: 'Feature piece on skiing the north-facing zones of Mt. Washington including Great Gulf headwall terrain and access.' },
+      { title: 'SectionHiker - Climbing the Mt Washington Headwall and the Great Gulf Trail', url: 'https://sectionhiker.com/climbing-the-mt-washington-headwall-and-the-great-gulf-trail/', description: 'Detailed trail guide covering the full Great Gulf approach with headwall description, mileage, and elevation profile.' },
+      { title: 'SummitPost - Great Gulf Trail', url: 'https://www.summitpost.org/great-gulf-trail/533010', description: 'Mountaineering-focused route description with elevation data, wilderness regulations, and seasonal access notes.' },
+    ],
+  },
+  'oakes-gulf': {
+    overview: 'A southeast-facing glacial cirque between Mt. Washington and Mt. Monroe, similar in scale to Tuckerman but far more remote and harder to access. Oakes Gulf is serious avalanche terrain -- windslabs build rapidly on the exposed upper bowl, and multiple fatal and near-fatal incidents have occurred here. The reward is steep, untracked alpine skiing in a dramatic setting with virtually no crowds. Approach typically comes over the Monroe-Washington saddle via Lakes of the Clouds.',
+    stats: {
+      verticalDrop: '1,500-2,000 ft (upper bowl)',
+      maxPitch: '40+ degrees',
+      difficulty: 'expert',
+      bestMonths: ['April', 'May'],
+      approachTime: '4-5 hours via Ammonoosuc Ravine Trail to Lakes of the Clouds, then traverse to the gulf rim',
+      baseElevation: 3200,
+      topElevation: 5200,
+      aspect: 'SE',
+    },
+    sources: [
+      { title: 'Backcountry Magazine - How a spring day on Mt. Washington proves sometimes danger comes from above', url: 'https://backcountrymagazine.com/stories/how-a-spring-day-on-mt-washington-proves-sometimes-danger-comes-from-above-not-below/', description: 'Analysis of a fatal avalanche cycle on Mt. Washington that impacted Oakes Gulf, with lessons on wind slab and terrain traps.' },
+      { title: 'Northeast Alpine Start - Caught and Partially Buried in Oakes Gulf Avalanche (4/11/19)', url: 'https://northeastalpinestart.com/2019/04/12/caught-and-partially-buried-in-oakes-gulf-avalanche-4-11-19/', description: 'Detailed first-person avalanche incident report from experienced guides caught in Oakes Gulf -- critical reading for anyone considering this zone.' },
+      { title: 'Chauvin Guides - Mount Washington Climbs and Ski Runs', url: 'https://www.chauvinguides.com/mount-washington-climbs-and-ski-runs/', description: 'Professional guide service overview of all Mt. Washington ski zones including Oakes Gulf approach options and terrain assessment.' },
+      { title: 'SectionHiker - Oakes Gulf: A Hidden Gem in the Wilderness', url: 'https://sectionhiker.com/backpacking-white-mountain-4000-footers-guidebook/backpacking-an-oakes-gulf-loop/', description: 'Comprehensive terrain description of Oakes Gulf with loop route options, elevation profile, and seasonal access notes.' },
+    ],
+  },
+  'burt-ammonoosuc-ravines': {
+    overview: 'The west-side ravines of Mt. Washington flanking the Cog Railway -- Burt Ravine sits to the north (skier\'s left) and the larger Ammonoosuc Ravine to the south. These SW-facing aspects see far less traffic than the east-side zones and offer a completely different character: longer descents, more sun-protected snow, and approach via the Cog Railway bed or Ammonoosuc Ravine Trail. Best in spring when the west side consolidates. Expect bushwhacking on the lower exits.',
+    stats: {
+      verticalDrop: '3,200-3,600 ft (summit to Cog Railway base station)',
+      maxPitch: '35-45 degrees in the upper ravine bowls',
+      difficulty: 'advanced-expert',
+      bestMonths: ['April', 'May'],
+      approachTime: '3-4 hours via Cog Railway bed or Ammonoosuc Ravine Trail from Marshfield Base Station',
+      baseElevation: 2700,
+      topElevation: 6288,
+      aspect: 'W/SW',
+    },
+    sources: [
+      { title: 'Northeast Alpine Start - Trip Report: Burt Ravine (3/28/18)', url: 'https://northeastalpinestart.com/2018/03/28/trip-report-burt-ravine-3-28-18/', description: 'Detailed ski trip report with approach via the Cog, snow conditions, descent line description, and bushwhack exit notes.' },
+      { title: 'KUHL - West Side Story: Hiking and Skiing the Ammonoosuc Ravine Trail', url: 'https://www.kuhl.com/borninthemountains/hiking-and-skiing-ammonoosuc-ravine-trail-mount-washington', description: 'Narrative account of skiing the Ammonoosuc Ravine Trail descent with approach logistics and terrain overview.' },
+      { title: 'AMC NH Chapter - Skiing The Cog', url: 'https://amcnh.org/skiing-the-cog-it-may-not-be-backcountry-but-it-sure-is-fun-by-ham-mehlman/', description: 'AMC trip report covering the Cog Railway as a ski approach with descriptions of both Burt and Ammonoosuc Ravine access.' },
+      { title: 'The Snow Way - Mount Washington Ammonoosuc Ravine & East Snowfields', url: 'https://www.thesnowway.com/2010/04/02/mount-washington-ammonoosuc-ravine-and-the-east-snowfields', description: 'Trip report combining Ammonoosuc descent with east-side skiing, useful for understanding the west-side terrain character.' },
+    ],
+  },
+  'sherburne-ski-trail': {
+    overview: 'The classic 2.4-mile descent from Tuckerman Ravine back to Pinkham Notch, originally cut by the Civilian Conservation Corps in the 1930s. The \'Sherbie\' drops nearly 1,900 vertical feet through a narrow, winding trail averaging about 20 feet wide with a consistent fall-line grade around 22%. It serves as the return route for virtually every east-side ski tour and is arguably the most-traveled backcountry trail in the Northeast. Conditions range from bulletproof ice to spring slush depending on the day.',
+    stats: {
+      verticalDrop: '1,918 ft',
+      maxPitch: '22% average grade (~12 degrees), steeper sections up to 25 degrees',
+      difficulty: 'intermediate',
+      bestMonths: ['February', 'March', 'April', 'May'],
+      approachTime: 'N/A (descent trail -- typically skied top-to-bottom after touring Tuckerman, Huntington, or Gulf of Slides)',
+      baseElevation: 2032,
+      topElevation: 3950,
+      aspect: 'Various (follows drainage)',
+    },
+    sources: [
+      { title: 'Granite Backcountry Alliance - Historic CCC Trails', url: 'https://granitebackcountryalliance.org/ccctrails', description: 'GBA overview of CCC-era ski trails in the White Mountains including the Sherburne trail\'s construction history and current maintenance status.' },
+      { title: 'Friends of Tuckerman Ravine - Trail Crew Volunteers', url: 'https://www.friendsoftuckermanravine.org/trail_crew_volunteers', description: 'FOTR volunteer trail crew program focused on maintaining the Sherburne and Gulf of Slides ski trails -- includes work schedules and trail condition updates.' },
+      { title: 'Powder Project - Sherburne Ski Trail', url: 'https://www.powderproject.com/trail/7000253/sherburne-ski-trail', description: 'Route page with elevation profile, vertical drop stats, trail description, and user trip reports for the Sherburne descent.' },
+      { title: 'Trailforks - John Sherburne Ski Trail', url: 'https://www.trailforks.com/trails/john-sherburne-ski-trail-615041331/', description: 'Interactive trail map with GPS track, elevation data, and current user-submitted conditions reports.' },
+    ],
+  },
+  'pinkham-notch': {
+    overview: 'The primary basecamp and trailhead for all east-side Presidential Range ski tours. The AMC Pinkham Notch Visitor Center sits at 2,032 feet on Route 16 and provides parking, lodging at Joe Dodge Lodge, gear sales, trail information, and MWAC avalanche advisory postings. This is where every Tuckerman, Huntington, Gulf of Slides, and Sherburne tour begins and ends. Parking fills early on spring weekends -- arrive before 7 AM or plan for overflow lots.',
+    stats: {
+      verticalDrop: 'N/A (base area)',
+      maxPitch: 'N/A',
+      difficulty: 'beginner (base area and short nature trails)',
+      bestMonths: ['Year-round (ski staging: February through June)'],
+      approachTime: 'N/A (this IS the starting point)',
+      baseElevation: 2032,
+      topElevation: 2032,
+      aspect: 'N/A',
+    },
+    sources: [
+      { title: 'USFS White Mountain National Forest - Pinkham Notch Trailhead', url: 'https://www.fs.usda.gov/r09/whitemountain/recreation/pinkham-notch-trailhead', description: 'Official Forest Service page for the Pinkham Notch trailhead with parking info, trail access details, and WMNF regulations.' },
+      { title: 'AMC - Joe Dodge Lodge at Pinkham Notch', url: 'https://www.outdoors.org/destinations/new-hampshire/joe-dodge-lodge/', description: 'AMC lodging and visitor center information including hours, dining, gear shop, trail conditions, and program offerings.' },
+      { title: 'Mount Washington Avalanche Center', url: 'https://www.mountwashingtonavalanchecenter.org/', description: 'MWAC homepage with daily avalanche advisories, observation submissions, and educational resources -- the first stop before any Presidential Range tour.' },
+      { title: 'Mount Washington Volunteer Ski Patrol', url: 'https://tuckerman.org/', description: 'Volunteer ski patrol serving Tuckerman and Huntington Ravines -- provides rescue assistance, first aid, and skiing information from Pinkham Notch.' },
+    ],
+  },
+};
+
 function weatherCodeToCondition(code: number): string {
   const map: Record<number, string> = {
     0: 'Clear', 1: 'Mostly Clear', 2: 'Partly Cloudy', 3: 'Overcast',
@@ -268,6 +424,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       alerts: [],
       assessment,
       gearSuggestions,
+      zoneInfo: ZONE_INFO[zoneId] || null,
       updatedAt: new Date().toISOString(),
     });
   } catch (err: any) {

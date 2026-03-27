@@ -5,27 +5,124 @@ import AvalancheCard from './AvalancheCard';
 import ForecastTable from './ForecastTable';
 import GearSuggestions from './GearSuggestions';
 import WindRose from './WindRose';
+import ZoneInfo from './ZoneInfo';
 import type { ZoneDetailResponse } from '../../../lib/types';
 
 interface Props {
   detail: ZoneDetailResponse | null;
   isLoading: boolean;
+  zones?: any[];
+  weather?: Record<string, any>;
+  forecast?: any;
+  assessments?: Record<string, any>;
 }
 
-export default function ZoneDetailPanel({ detail, isLoading }: Props) {
+const DANGER_LABELS: Record<number, string> = {
+  1: 'Low',
+  2: 'Moderate',
+  3: 'Considerable',
+  4: 'High',
+  5: 'Extreme',
+};
+
+const DANGER_COLORS: Record<number, string> = {
+  1: 'var(--danger-low)',
+  2: 'var(--danger-moderate)',
+  3: 'var(--danger-considerable)',
+  4: 'var(--danger-high)',
+  5: 'var(--danger-extreme)',
+};
+
+const RATING_COLORS: Record<string, string> = {
+  good: 'var(--danger-low)',
+  fair: 'var(--danger-moderate)',
+  poor: 'var(--danger-considerable)',
+  dangerous: 'var(--danger-high)',
+};
+
+export default function ZoneDetailPanel({ detail, isLoading, zones, weather, forecast, assessments }: Props) {
   const { selectedZoneId, selectZone } = useSelectedZone();
 
   if (!selectedZoneId) {
+    // Compute summary data for the empty state dashboard
+    const temps: number[] = [];
+    if (weather) {
+      Object.values(weather).forEach((w: any) => {
+        if (w?.current?.tempF != null) temps.push(w.current.tempF);
+      });
+    }
+    const minTemp = temps.length > 0 ? Math.min(...temps) : null;
+    const maxTemp = temps.length > 0 ? Math.max(...temps) : null;
+
+    const avyRating = forecast?.dangerRating ?? -1;
+    const avyLabel = avyRating > 0 ? DANGER_LABELS[avyRating] || 'Unknown' : null;
+    const avyColor = avyRating > 0 ? DANGER_COLORS[avyRating] || 'var(--stone-500)' : null;
+
     return (
-      <div className="panel-empty">
-        <div className="panel-empty-icon">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-            <circle cx="12" cy="10" r="3" />
-          </svg>
+      <div className="panel-dashboard">
+        <div className="panel-dashboard-header">
+          <div className="panel-dashboard-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5" />
+              <path d="M2 12l10 5 10-5" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="panel-dashboard-title">Presidential Range</h3>
+            <p className="panel-dashboard-subtitle">8 Backcountry Zones</p>
+          </div>
         </div>
-        <h3>Select a zone to view conditions</h3>
-        <p>Click a marker on the map or choose a zone from the list below.</p>
+
+        <div className="panel-dashboard-stats">
+          {avyLabel && (
+            <div className="panel-dashboard-stat">
+              <span className="panel-dashboard-stat-label">Avy Danger</span>
+              <span
+                className="panel-dashboard-stat-badge"
+                style={{ background: avyColor || undefined, color: avyRating === 2 ? 'var(--stone-900)' : 'var(--white)' }}
+              >
+                {avyRating} &mdash; {avyLabel}
+              </span>
+            </div>
+          )}
+          {minTemp !== null && maxTemp !== null && (
+            <div className="panel-dashboard-stat">
+              <span className="panel-dashboard-stat-label">Temperature Range</span>
+              <span className="panel-dashboard-stat-value">{minTemp}&deg;F to {maxTemp}&deg;F</span>
+            </div>
+          )}
+        </div>
+
+        {zones && zones.length > 0 && (
+          <div className="panel-dashboard-zones">
+            <h4 className="panel-dashboard-zones-title">Select a zone to view conditions</h4>
+            <ul className="panel-dashboard-zone-list">
+              {zones.map((z: any) => {
+                const zWeather = weather?.[z.id];
+                const zTemp = zWeather?.current?.tempF;
+                const zAssessment = assessments?.[z.id];
+                const ratingColor = zAssessment?.rating
+                  ? RATING_COLORS[zAssessment.rating] || 'var(--stone-400)'
+                  : 'var(--stone-400)';
+
+                return (
+                  <li key={z.id} className="panel-dashboard-zone-item" onClick={() => selectZone(z.id)}>
+                    <span className="panel-dashboard-zone-dot" style={{ background: ratingColor }} />
+                    <span className="panel-dashboard-zone-name">{z.name}</span>
+                    {zTemp != null && (
+                      <span className="panel-dashboard-zone-temp">{zTemp}&deg;F</span>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+
+        <p className="panel-dashboard-footer">
+          Real-time weather, avalanche forecasts, and trip assessments for Mt. Washington backcountry zones.
+        </p>
       </div>
     );
   }
@@ -51,12 +148,12 @@ export default function ZoneDetailPanel({ detail, isLoading }: Props) {
 
   // Handle both typed response and raw API response shapes
   const zone = detail.zone;
-  const weather = detail.weather;
-  const forecast = detail.forecast ?? (detail as any).mwac ?? null;
+  const detailWeather = detail.weather;
+  const detailForecast = detail.forecast ?? (detail as any).mwac ?? null;
   const assessment = detail.assessment ?? (detail as any).assessment ?? null;
   const gearSuggestions = (detail as any).gearSuggestions ?? assessment?.gear ?? null;
 
-  if (!weather) {
+  if (!detailWeather) {
     return (
       <div className="panel-error">
         <p>Weather data unavailable for this zone.</p>
@@ -89,17 +186,18 @@ export default function ZoneDetailPanel({ detail, isLoading }: Props) {
       {assessment && <TripAssessment assessment={assessment} />}
 
       <div className="zone-panel-weather-row">
-        <WeatherCard weather={weather} />
+        <WeatherCard weather={detailWeather} />
         <WindRose
-          direction={weather.current.windDirection}
-          speed={weather.current.windMph}
-          gust={weather.current.windGustMph}
+          direction={detailWeather.current.windDirection}
+          speed={detailWeather.current.windMph}
+          gust={detailWeather.current.windGustMph}
         />
       </div>
 
-      <AvalancheCard forecast={forecast} />
-      <ForecastTable daily={weather.daily} />
+      <AvalancheCard forecast={detailForecast} />
+      <ForecastTable daily={detailWeather.daily} />
       {gearSuggestions && <GearSuggestions gear={gearSuggestions} />}
+      {(detail as any).zoneInfo && <ZoneInfo info={(detail as any).zoneInfo} />}
     </div>
   );
 }

@@ -67,6 +67,10 @@ export default function App() {
             <ZoneDetailPanel
               detail={detailQuery.data ?? null}
               isLoading={detailQuery.isLoading && !!selectedZoneId}
+              zones={data?.zones}
+              weather={data?.weather}
+              forecast={data?.forecast}
+              assessments={assessments}
             />
           )}
         </div>
