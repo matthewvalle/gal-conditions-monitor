@@ -202,10 +202,11 @@ export default function ConditionsMap({ zones, weather, forecast, assessments, i
     }
   }, [selectedZoneId, zones]);
 
-  // Refit bounds whenever the region filter changes
+  // Refit bounds on initial data load AND whenever the region filter changes
+  const zonesLoaded = zones.length > 0;
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || zones.length === 0) return;
+    if (!map || !zonesLoaded) return;
 
     const lngs = zones.map((z) => z.lon);
     const lats = zones.map((z) => z.lat);
@@ -218,7 +219,7 @@ export default function ConditionsMap({ zones, weather, forecast, assessments, i
       duration: 1200,
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [regionFilter]);
+  }, [regionFilter, zonesLoaded]);
 
   return (
     <div className="map-container">
