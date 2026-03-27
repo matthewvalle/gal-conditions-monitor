@@ -35,6 +35,7 @@ function getBestDayIndex(days: DailyForecast[]): number {
 }
 
 export default function ForecastTable({ daily }: Props) {
+  if (!daily || !Array.isArray(daily)) return null;
   const days = daily.slice(0, 5);
   const bestIdx = getBestDayIndex(days);
 

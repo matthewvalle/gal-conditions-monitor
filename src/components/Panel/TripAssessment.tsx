@@ -1,49 +1,49 @@
-import type { TripAssessment as TripAssessmentType } from '../../../lib/types';
-
 interface Props {
-  assessment: TripAssessmentType;
+  assessment: any;
 }
 
-const ratingConfig: Record<string, { label: string; className: string }> = {
-  excellent: { label: 'Excellent', className: 'assessment--excellent' },
-  good: { label: 'Good', className: 'assessment--good' },
-  fair: { label: 'Fair', className: 'assessment--fair' },
-  poor: { label: 'Poor', className: 'assessment--poor' },
-  dangerous: { label: 'Dangerous', className: 'assessment--dangerous' },
-};
-
-const factorColorMap: Record<string, string> = {
-  green: 'var(--danger-low)',
-  yellow: 'var(--danger-moderate)',
-  orange: 'var(--danger-considerable)',
-  red: 'var(--danger-high)',
+const ratingConfig: Record<string, { label: string; className: string; emoji: string }> = {
+  excellent: { label: 'Excellent Conditions', className: 'assessment--good', emoji: '🟢' },
+  good: { label: 'Good Conditions', className: 'assessment--good', emoji: '🟢' },
+  fair: { label: 'Fair — Check Details', className: 'assessment--fair', emoji: '🟡' },
+  poor: { label: 'Caution Advised', className: 'assessment--poor', emoji: '🟠' },
+  dangerous: { label: 'Not Recommended', className: 'assessment--dangerous', emoji: '🔴' },
 };
 
 export default function TripAssessment({ assessment }: Props) {
-  const config = ratingConfig[assessment.overallRating] ?? ratingConfig.fair;
+  if (!assessment) return null;
+
+  const rating = assessment.overallRating ?? 'fair';
+  const config = ratingConfig[rating] ?? ratingConfig.fair;
+  const summary = assessment.summary ?? '';
+  const reasons = assessment.reasons ?? [];
+  const factors = assessment.factors ?? [];
 
   return (
     <div className={`assessment ${config.className}`}>
       <div className="assessment-header">
-        <span className="assessment-badge">{config.label}</span>
-        <span className="assessment-confidence">
-          {Math.round(assessment.confidence * 100)}% confidence
-        </span>
+        <span className="assessment-badge">{config.emoji} {config.label}</span>
       </div>
-      <p className="assessment-summary">{assessment.summary}</p>
+      {summary && <p className="assessment-summary">{summary}</p>}
 
-      <div className="assessment-factors">
-        {assessment.factors.map((factor) => (
-          <div key={factor.name} className="assessment-factor">
-            <span
-              className="assessment-factor-dot"
-              style={{ backgroundColor: factorColorMap[factor.rating] ?? '#999' }}
-            />
-            <span className="assessment-factor-name">{factor.name}</span>
-            <span className="assessment-factor-detail">{factor.detail}</span>
-          </div>
-        ))}
-      </div>
+      {reasons.length > 0 && (
+        <ul className="assessment-reasons">
+          {reasons.map((r: string, i: number) => (
+            <li key={i}>{r}</li>
+          ))}
+        </ul>
+      )}
+
+      {factors.length > 0 && (
+        <div className="assessment-factors">
+          {factors.map((factor: any) => (
+            <div key={factor.name} className="assessment-factor">
+              <span className="assessment-factor-name">{factor.name}</span>
+              <span className="assessment-factor-detail">{factor.detail}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
