@@ -1,16 +1,36 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-// Same MVP zones as the /api/zones endpoint
+// Same MVP zones as the /api/zones endpoint — Presidential Range (alpine)
 const mvpZones = [
-  { id: 'tuckerman-ravine', name: 'Tuckerman Ravine', lat: 44.2596, lon: -71.2973, elevation: 4000, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'SE', approachMiles: 2.4, isMvp: true },
-  { id: 'huntington-ravine', name: 'Huntington Ravine', lat: 44.2680, lon: -71.2935, elevation: 4200, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'E', approachMiles: 2.5, isMvp: true },
-  { id: 'gulf-of-slides', name: 'Gulf of Slides', lat: 44.2495, lon: -71.2890, elevation: 3800, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'E/SE', approachMiles: 2.8, isMvp: true },
-  { id: 'great-gulf', name: 'Great Gulf', lat: 44.2795, lon: -71.3050, elevation: 4000, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'NE', approachMiles: 3.5, isMvp: true },
-  { id: 'oakes-gulf', name: 'Oakes Gulf', lat: 44.2470, lon: -71.3130, elevation: 4300, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'SE', approachMiles: 4.0, isMvp: true },
-  { id: 'burt-ammonoosuc-ravines', name: 'Burt and Ammonoosuc Ravines', lat: 44.2720, lon: -71.3310, elevation: 4200, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'W/SW', approachMiles: 3.2, isMvp: true },
-  { id: 'sherburne-ski-trail', name: 'Sherburne Ski Trail', lat: 44.2570, lon: -71.2530, elevation: 2400, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'SE', approachMiles: 0, isMvp: true },
-  { id: 'pinkham-notch', name: 'Pinkham Notch', lat: 44.2573, lon: -71.2530, elevation: 2032, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: '', approachMiles: 0, isMvp: true },
+  { id: 'tuckerman-ravine', name: 'Tuckerman Ravine', lat: 44.2596, lon: -71.2973, elevation: 4000, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'SE', approachMiles: 2.4, isMvp: true, zoneType: 'alpine' as const },
+  { id: 'huntington-ravine', name: 'Huntington Ravine', lat: 44.2680, lon: -71.2935, elevation: 4200, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'E', approachMiles: 2.5, isMvp: true, zoneType: 'alpine' as const },
+  { id: 'gulf-of-slides', name: 'Gulf of Slides', lat: 44.2495, lon: -71.2890, elevation: 3800, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'E/SE', approachMiles: 2.8, isMvp: true, zoneType: 'alpine' as const },
+  { id: 'great-gulf', name: 'Great Gulf', lat: 44.2795, lon: -71.3050, elevation: 4000, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'NE', approachMiles: 3.5, isMvp: true, zoneType: 'alpine' as const },
+  { id: 'oakes-gulf', name: 'Oakes Gulf', lat: 44.2470, lon: -71.3130, elevation: 4300, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'SE', approachMiles: 4.0, isMvp: true, zoneType: 'alpine' as const },
+  { id: 'burt-ammonoosuc-ravines', name: 'Burt and Ammonoosuc Ravines', lat: 44.2720, lon: -71.3310, elevation: 4200, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'W/SW', approachMiles: 3.2, isMvp: true, zoneType: 'alpine' as const },
+  { id: 'sherburne-ski-trail', name: 'Sherburne Ski Trail', lat: 44.2570, lon: -71.2530, elevation: 2400, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'SE', approachMiles: 0, isMvp: true, zoneType: 'alpine' as const },
+  { id: 'pinkham-notch', name: 'Pinkham Notch', lat: 44.2573, lon: -71.2530, elevation: 2032, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: '', approachMiles: 0, isMvp: true, zoneType: 'alpine' as const },
 ];
+
+// GBA glade zone definitions
+const gbaZones = [
+  { id: 'baldface', name: 'Baldface', lat: 44.2375, lon: -71.015, elevation: 3000, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 3.0, isMvp: false, zoneType: 'glade' as const },
+  { id: 'black-white-glade', name: 'Black & White Glade', lat: 44.55, lon: -70.6841, elevation: 2214, region: 'Maine', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 4.0, isMvp: false, zoneType: 'glade' as const },
+  { id: 'bill-hill-glade', name: 'Bill Hill Glade', lat: 44.3866, lon: -71.2047, elevation: 1471, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'N', approachMiles: 0.5, isMvp: false, zoneType: 'glade' as const },
+  { id: 'cooley-jericho-glade', name: 'Cooley-Jericho Glade', lat: 44.1719, lon: -71.8119, elevation: 2625, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 1.0, isMvp: false, zoneType: 'glade' as const },
+  { id: 'hypnosis-glade', name: 'Hypnosis Glade', lat: 43.9025, lon: -71.1246, elevation: 1035, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 0.3, isMvp: false, zoneType: 'glade' as const },
+  { id: 'maple-villa-glade', name: 'Maple Villa Glade', lat: 44.0727, lon: -71.1368, elevation: 2200, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'N', approachMiles: 1.5, isMvp: false, zoneType: 'glade' as const },
+  { id: 'page-hill', name: 'Page Hill', lat: 43.8598, lon: -71.2631, elevation: 1145, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 0.2, isMvp: false, zoneType: 'glade' as const },
+  { id: 'prkr-mtn-glades', name: 'PRKR MTN Glades', lat: 44.3291, lon: -71.764, elevation: 1894, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'NE', approachMiles: 0.5, isMvp: false, zoneType: 'glade' as const },
+  { id: 'the-pike-glades', name: 'The Pike Glades', lat: 43.9735, lon: -71.9536, elevation: 2200, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 1.0, isMvp: false, zoneType: 'glade' as const },
+  { id: 'ski-tow-glade', name: 'Ski Tow Glade', lat: 44.452, lon: -71.5704, elevation: 2000, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 0.5, isMvp: false, zoneType: 'glade' as const },
+  { id: 'west-side-glade', name: 'West Side Glade', lat: 44.0881, lon: -71.2934, elevation: 1300, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'N', approachMiles: 0.5, isMvp: false, zoneType: 'glade' as const },
+  { id: 'historic-ccc-trails', name: 'Historic CCC Trails', lat: 44.163, lon: -71.153, elevation: 3950, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 2.0, isMvp: false, zoneType: 'glade' as const },
+  { id: 'crescent-ridge-glade', name: 'Crescent Ridge Glade', lat: 44.3919, lon: -71.2863, elevation: 3046, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'SE/E', approachMiles: 2.0, isMvp: false, zoneType: 'glade' as const },
+];
+
+// All zones combined
+const allZones = [...mvpZones, ...gbaZones];
 
 const ZONE_INFO: Record<string, any> = {
   'tuckerman-ravine': {
@@ -164,6 +184,228 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'AMC - Joe Dodge Lodge at Pinkham Notch', url: 'https://www.outdoors.org/destinations/new-hampshire/joe-dodge-lodge/', description: 'AMC lodging and visitor center information including hours, dining, gear shop, trail conditions, and program offerings.' },
       { title: 'Mount Washington Avalanche Center', url: 'https://www.mountwashingtonavalanchecenter.org/', description: 'MWAC homepage with daily avalanche advisories, observation submissions, and educational resources -- the first stop before any Presidential Range tour.' },
       { title: 'Mount Washington Volunteer Ski Patrol', url: 'https://tuckerman.org/', description: 'Volunteer ski patrol serving Tuckerman and Huntington Ravines -- provides rescue assistance, first aid, and skiing information from Pinkham Notch.' },
+    ],
+  },
+  // GBA Glade zones
+  'baldface': {
+    overview: 'Open ledge alpine terrain spanning North Baldface, South Baldface, and Baldface Knob in the Cold River Valley near the NH/ME state line. The glades begin steeply in the upper elevations and transition to mellow cruisers midway and toward the bottom, offering 2,500 vertical feet from the top of the Knob via the Ridgeline Glades. Significant avalanche hazard exists in the alpine zone above treeline.',
+    stats: {
+      verticalDrop: '2,500 ft',
+      maxPitch: 'Advanced sections in upper elevations',
+      difficulty: 'intermediate-advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      approachTime: 'Full Day tour via Baldface Circle Trail / Slippery Brook Trail',
+      baseElevation: 500,
+      topElevation: 3000,
+      aspect: 'Various',
+    },
+    sources: [
+      { title: 'Baldface -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/baldface', description: 'Official GBA zone page with terrain description, access info, parking, and safety warnings.' },
+      { title: 'Avenza Maps - South Baldface Slippery Brook Glade', url: 'https://www.avenzamaps.com/maps/852161', description: 'Downloadable geo-referenced PDF map for offline navigation of the Baldface glade zone.' },
+    ],
+  },
+  'black-white-glade': {
+    overview: 'Maine\'s first public human-powered glade, featuring an eight-mile point-to-point two-mountain traverse connecting Bethel (west) to Rumford (east) across Black Mountain and Rumford Whitecap. The terrain includes snowfields, drops, and 360-degree summit views with 600-1,400 feet of vertical depending on route.',
+    stats: {
+      verticalDrop: '1,414 ft',
+      maxPitch: 'Intermediate-advanced sections',
+      difficulty: 'intermediate-advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      approachTime: 'Full Day traverse (8-mile point-to-point)',
+      baseElevation: 800,
+      topElevation: 2214,
+      aspect: 'Various',
+    },
+    sources: [
+      { title: 'Black & White Glade -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/black-white-glade', description: 'Official GBA zone page with traverse route description, access points, safety warnings, and ecological notes.' },
+      { title: 'Black Mountain of Maine', url: 'https://skiblackmountain.org/', description: 'Partner organization operating the backcountry gate with uphill-only skintrack access on the Black Mountain side.' },
+    ],
+  },
+  'bill-hill-glade': {
+    overview: 'A quick-access north-facing glade on the northern arm of Pine Mountain in Gorham. Recently logged terrain with young, tightly-spaced trees demands tight turns -- the north aspect holds snow long after storms. Entry-level to advanced terrain with 600 vertical feet of skiing.',
+    stats: {
+      verticalDrop: '642 ft',
+      maxPitch: 'Intermediate-advanced sections',
+      difficulty: 'intermediate-advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      approachTime: 'Lunch Lap from Bellevue Road',
+      baseElevation: 829,
+      topElevation: 1471,
+      aspect: 'N',
+    },
+    sources: [
+      { title: 'Bill Hill Glade -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/bill-hill-glade', description: 'Official GBA zone page with terrain description, parking instructions, and access details.' },
+      { title: 'Avenza Maps - Gorham Bill Hill Glade', url: 'https://store.avenza.com/products/gorham-bill-hill-glade-granite-backcountry-alliance-map', description: 'Downloadable geo-referenced PDF map for offline navigation.' },
+    ],
+  },
+  'cooley-jericho-glade': {
+    overview: 'Four sporty glade lines ranging from 400 to 800+ vertical feet on an 840-acre community forest spanning four towns (Franconia, Sugar Hill, Easton, and Landaff). Features drops, large yellow birches, and panoramic views of Mount Lafayette and Cannon Mountain on the ascent.',
+    stats: {
+      verticalDrop: '857 ft',
+      maxPitch: 'Intermediate-advanced sections',
+      difficulty: 'intermediate-advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      approachTime: 'Half Day from 12 Trumpet Round Rd, Easton',
+      baseElevation: 1768,
+      topElevation: 2625,
+      aspect: 'Various',
+    },
+    sources: [
+      { title: 'Cooley-Jericho Glade -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/cooleyjericho-glade', description: 'Official GBA zone page with glade descriptions, parking protocol, and nearby amenities.' },
+      { title: 'Avenza Maps - Franconia Cooley Jericho Glade', url: 'https://www.avenzamaps.com/maps/1102869/franconia-cooley-jericho-glade', description: 'Downloadable geo-referenced PDF map for offline navigation.' },
+    ],
+  },
+  'hypnosis-glade': {
+    overview: 'A family-friendly introductory glade zone on private land behind the White Mountain Hypnosis Center in Madison. Four distinct glade lines offer mellow yet colorful skiing with 400+ vertical feet of varied terrain for all abilities.',
+    stats: {
+      verticalDrop: '435 ft',
+      maxPitch: 'Beginner-intermediate pitch',
+      difficulty: 'beginner-intermediate',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      approachTime: 'Lunch Lap from 428 Conway Road (Route 113), Madison',
+      baseElevation: 600,
+      topElevation: 1035,
+      aspect: 'Various',
+    },
+    sources: [
+      { title: 'Hypnosis Glade -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/hypnosis-glade', description: 'Official GBA zone page with terrain description, access details, and parking info.' },
+      { title: 'Avenza Maps - Madison Hypnosis Glade', url: 'https://store.avenza.com/products/madison-hypnosis-glade-granite-backcountry-alliance-map', description: 'Downloadable geo-referenced PDF map for offline navigation.' },
+    ],
+  },
+  'maple-villa-glade': {
+    overview: 'Expert to intermediate terrain on Bartlett Mountain with 1,700 vertical feet across three distinct zones. Originally built by the Civilian Conservation Corps in 1933 and revived in 2018. The east zone offers upper glade lines of approximately 800 vertical feet each, the west zone provides solitude-oriented skiing, and Pine Hill features steep powder stashes.',
+    stats: {
+      verticalDrop: '1,700 ft',
+      maxPitch: 'Expert sections on Pine Hill',
+      difficulty: 'intermediate-expert',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      approachTime: 'Full Day from 70 East Branch Road, Intervale',
+      baseElevation: 500,
+      topElevation: 2200,
+      aspect: 'N',
+    },
+    sources: [
+      { title: 'Maple Villa Glade -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/maplevillaglade', description: 'Official GBA zone page with three-zone terrain description, parking info, and access guidelines.' },
+      { title: 'Avenza Maps - Maple Villa Glade Bartlett', url: 'https://www.avenzamaps.com/maps/852161/maple-villa-glade-bartlett', description: 'Downloadable geo-referenced PDF map for offline navigation.' },
+    ],
+  },
+  'page-hill': {
+    overview: 'A revived former alpine ski area (operated 1930s-1960s) in Tamworth offering 350 vertical feet of approachable gladed terrain for intermediate and advancing skiers. Stunning views of the Sandwich Dome, Mt. Whiteface, Mt. Passaconaway, Mt. Paugus, and Mt. Chocorua. Now home to the Public House on Page Hill restaurant.',
+    stats: {
+      verticalDrop: '350 ft',
+      maxPitch: 'Intermediate-advanced pitch',
+      difficulty: 'intermediate-advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      approachTime: 'Lunch Lap from 388 Page Hill Rd, Tamworth',
+      baseElevation: 795,
+      topElevation: 1145,
+      aspect: 'Various',
+    },
+    sources: [
+      { title: 'Page Hill -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/page-hill', description: 'Official GBA zone page with terrain description, parking instructions, and historical context.' },
+      { title: 'Avenza Maps - Tamworth Page Hill Glade', url: 'https://store.avenza.com/products/tamworth-page-hill-glade-granite-backcountry-alliance-map', description: 'Downloadable geo-referenced PDF map for offline navigation.' },
+    ],
+  },
+  'prkr-mtn-glades': {
+    overview: 'Four northeast-facing glade lines cut in 2022 on Parker Mountain, just minutes from downtown Littleton. Each line delivers approximately 400 vertical feet of skiing with steeps, turns, and views. Named runs include Chiswick, Pollyanna Timber Baron, and Railroad Hotel.',
+    stats: {
+      verticalDrop: '400 ft',
+      maxPitch: 'Intermediate-advanced sections',
+      difficulty: 'intermediate-advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      approachTime: 'Lunch Lap from Scout Lot, Broomstick Hill Rd, Littleton',
+      baseElevation: 897,
+      topElevation: 1894,
+      aspect: 'NE',
+    },
+    sources: [
+      { title: 'PRKR MTN Glades -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/prkrmtnglades', description: 'Official GBA zone page with glade line descriptions, parking info, and nearby amenities.' },
+      { title: 'PRKR MTN Trails', url: 'https://www.prkrmtn.org', description: 'Official partner organization website for the Parker Mountain trail network.' },
+    ],
+  },
+  'the-pike-glades': {
+    overview: 'A newer GBA zone accommodating skiers across ability levels with both technical and mellower glade lines. Named runs include Wazza\'s Glade and Udder Delight (steeper, technical) and Long Strange Trip and Iron Moose (moderate pitch). Warming huts at mid-mountain and the summit provide shelter.',
+    stats: {
+      verticalDrop: '1,500 ft',
+      maxPitch: 'Beginner to advanced sections',
+      difficulty: 'beginner-advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      approachTime: 'Half Day to Full Day from 2719 Mt Moosilauke Highway, Pike',
+      baseElevation: 700,
+      topElevation: 2200,
+      aspect: 'Various',
+    },
+    sources: [
+      { title: 'The Pike Glades -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/the-pike-glades', description: 'Official GBA zone page with named run descriptions, warming hut info, and access details.' },
+      { title: 'The Pike Glades', url: 'https://thepikeglades.com', description: 'Dedicated website for The Pike Glades zone with conditions updates and info.' },
+    ],
+  },
+  'ski-tow-glade': {
+    overview: 'Four glade lines developed in 2018 from the summit of Mount Prospect in Weeks State Park, dropping through exciting terrain and flowing into the existing community ski tow footprint for 700 vertical feet of skiing. Skin to the summit stone tower for panoramic views, then ski down and warm up with hot chocolate in the yurt.',
+    stats: {
+      verticalDrop: '700 ft',
+      maxPitch: 'Intermediate-advanced sections',
+      difficulty: 'intermediate-advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      approachTime: 'Lunch Lap from Route 3 / Prospect Street, Lancaster',
+      baseElevation: 1300,
+      topElevation: 2000,
+      aspect: 'Various',
+    },
+    sources: [
+      { title: 'Ski Tow Glade -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/ski-tow-glade', description: 'Official GBA zone page with glade descriptions, community ski tow info, and yurt details.' },
+      { title: 'Mount Prospect Ski Tow', url: 'https://www.mountprospectskitow.com/', description: 'Official website for the community-run Mount Prospect Ski Club with hours, conditions, and directions.' },
+    ],
+  },
+  'west-side-glade': {
+    overview: 'A peaceful and serene intermediate glade on private land in Bartlett\'s Mt. Washington Valley, offering 600 vertical feet of north-facing gladed skiing. The glade lines carry a solid intermediate pitch that rewards both careful and experienced skiers.',
+    stats: {
+      verticalDrop: '600 ft',
+      maxPitch: 'Intermediate pitch',
+      difficulty: 'intermediate',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      approachTime: 'Lunch Lap from 629 West Side Road, Bartlett',
+      baseElevation: 700,
+      topElevation: 1300,
+      aspect: 'N',
+    },
+    sources: [
+      { title: 'West Side Glade -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/westsideglade', description: 'Official GBA zone page with terrain description, parking lot info, and access guidelines.' },
+      { title: 'Avenza Maps - Bartlett West Side Glade', url: 'https://www.avenzamaps.com/maps/1511736/bartlett-west-side-glade', description: 'Downloadable geo-referenced PDF map for offline navigation.' },
+    ],
+  },
+  'historic-ccc-trails': {
+    overview: 'Four historic ski trails built by the Civilian Conservation Corps in the 1930s, maintained by GBA in and around Mt. Washington Valley. These include the Doublehead Ski Trail (Jackson, 1,573 ft vertical), Black Mountain Ski Trail (Jackson, 1,527 ft vertical), John Sherburne Ski Trail (Pinkham Notch, 1,918 ft vertical), and Gulf of Slides Ski Trail (Pinkham Notch, 1,868 ft vertical).',
+    stats: {
+      verticalDrop: '1,918 ft (max -- Sherburne)',
+      maxPitch: 'Advanced on Sherburne; beginner-intermediate on Black Mountain',
+      difficulty: 'intermediate-advanced',
+      bestMonths: ['December', 'January', 'February', 'March', 'April'],
+      approachTime: 'Half Day to Full Day -- multiple trailheads in Jackson and Pinkham Notch',
+      baseElevation: 1220,
+      topElevation: 3950,
+      aspect: 'Various',
+    },
+    sources: [
+      { title: 'Historic CCC Trails -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/ccctrails', description: 'Official GBA page covering all four maintained CCC ski trails with distances, vertical, and historical context.' },
+      { title: 'Friends of Tuckerman Ravine - Trail Crew Volunteers', url: 'https://www.friendsoftuckermanravine.org/trail_crew_volunteers', description: 'FOTR volunteer program for Sherburne and Gulf of Slides trail maintenance.' },
+    ],
+  },
+  'crescent-ridge-glade': {
+    overview: 'A 75-acre zone of five skiable glade lines in the 10,000-acre Randolph Community Forest, designed to appeal to intermediate and advanced skiers. The upper pitch starts mellow then drops to 30-35 degrees for 200-300 vertical feet, flowing into a large open hardwood glade at 20-25 degrees, and finishing through a tree-less wildlife area with stunning views of the northern Presidential Range.',
+    stats: {
+      verticalDrop: '1,106 ft',
+      maxPitch: '30-35 degrees in the steep section',
+      difficulty: 'intermediate-advanced',
+      bestMonths: ['December', 'January', 'February', 'March'],
+      approachTime: 'Half Day -- 1.95-mile uphill skin track from end of Randolph Hill Road',
+      baseElevation: 1940,
+      topElevation: 3046,
+      aspect: 'SE/E',
+    },
+    sources: [
+      { title: 'Crescent Ridge Glade -- Trail Finder', url: 'https://www.trailfinder.info/trails/trail/crescent-ridge-glade', description: 'Trail Finder page with GPS coordinates, elevation data, named glade lines, and trail manager contact.' },
+      { title: 'Avenza Maps - Randolph Crescent Ridge Glade', url: 'https://store.avenza.com/products/randolph-crescent-ridge-glade-granite-backcountry-alliance-map', description: 'Downloadable geo-referenced PDF map for offline navigation.' },
     ],
   },
 };
@@ -334,6 +576,60 @@ function getTripAssessment(current: any, mwacForecast: any) {
   return { overallRating: level, summary: labels[level] || labels.fair, reasons };
 }
 
+// Trip assessment for GBA glade zones (no MWAC avalanche data)
+function getGladeTripAssessment(current: any, hourly: any[]) {
+  const reasons: string[] = [];
+  let level = 'good';
+
+  const gusts = current.windGustMph ?? 0;
+  const wind = current.windMph ?? 0;
+  const temp = current.tempF ?? 32;
+
+  // Check recent snowfall from hourly data (last 24 hours)
+  const recentSnow = (hourly || [])
+    .slice(0, 24)
+    .reduce((sum: number, h: any) => sum + (h.snowInches || 0), 0);
+
+  // Poor conditions
+  if (temp < 0 || temp > 40) {
+    level = 'poor';
+    reasons.push(temp < 0 ? `Very cold: ${temp}°F` : `Warm temps: ${temp}°F — potential for poor snow quality`);
+  }
+  if (gusts > 35 || wind > 35) {
+    level = 'poor';
+    reasons.push(`Strong winds: ${wind} mph, gusts ${gusts} mph`);
+  }
+
+  // Fair conditions
+  if (level === 'good') {
+    if (temp < 15 || temp > 35) {
+      level = 'fair';
+      reasons.push(temp < 15 ? `Cold: ${temp}°F` : `Warm: ${temp}°F`);
+    }
+    if (gusts > 20 || wind > 20) {
+      level = 'fair';
+      reasons.push(`Moderate winds: ${wind} mph, gusts ${gusts} mph`);
+    }
+  }
+
+  // Good conditions boost
+  if (level === 'good' && recentSnow > 2) {
+    reasons.push(`Recent snowfall: ${Math.round(recentSnow * 10) / 10}" — fresh conditions likely`);
+  }
+
+  reasons.push('MWAC avalanche forecast does not cover this zone. Exercise caution above treeline.');
+
+  if (reasons.length === 1) reasons.unshift('Conditions look favorable for glade skiing');
+
+  const labels: Record<string, string> = {
+    good: 'Good conditions for glade skiing',
+    fair: 'Fair — check details before heading out',
+    poor: 'Caution advised — challenging conditions',
+  };
+
+  return { overallRating: level, summary: labels[level] || labels.fair, reasons };
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -343,7 +639,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const zoneId = Array.isArray(id) ? id[0] : id;
   if (!zoneId) return res.status(400).json({ error: 'Zone ID required' });
 
-  const zone = mvpZones.find((z) => z.id === zoneId);
+  const zone = allZones.find((z) => z.id === zoneId);
   if (!zone) return res.status(404).json({ error: `Zone "${zoneId}" not found` });
 
   try {
@@ -405,15 +701,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       })),
     };
 
-    // Fetch MWAC forecast in parallel (don't block on failure)
+    // Only fetch MWAC forecast for alpine zones (Presidential Range)
     let mwacForecast = null;
-    try {
-      mwacForecast = await getMwacForecast();
-    } catch {
-      // MWAC fetch failed — continue with null forecast
+    if (zone.zoneType === 'alpine') {
+      try {
+        mwacForecast = await getMwacForecast();
+      } catch {
+        // MWAC fetch failed — continue with null forecast
+      }
     }
 
-    const assessment = getTripAssessment(weather.current, mwacForecast);
+    let assessment;
+    if (zone.zoneType === 'glade') {
+      assessment = getGladeTripAssessment(weather.current, weather.hourly);
+    } else {
+      assessment = getTripAssessment(weather.current, mwacForecast);
+    }
     const gearSuggestions = getGearSuggestions(weather.current, weather.daily);
 
     res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600');

@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 const regionTabs = [
   { id: 'all', label: 'All', active: true },
   { id: 'nh', label: 'NH', active: true },
@@ -9,16 +7,19 @@ const regionTabs = [
   { id: 'ma', label: 'MA', active: false },
 ];
 
-export default function RegionFilter() {
-  const [selected, setSelected] = useState('all');
+interface Props {
+  selected: string;
+  onChange: (regionId: string) => void;
+}
 
+export default function RegionFilter({ selected, onChange }: Props) {
   return (
     <div className="region-filter">
       {regionTabs.map((tab) => (
         <button
           key={tab.id}
           className={`region-tab${selected === tab.id ? ' region-tab--active' : ''}${!tab.active ? ' region-tab--disabled' : ''}`}
-          onClick={() => tab.active && setSelected(tab.id)}
+          onClick={() => tab.active && onChange(tab.id)}
           disabled={!tab.active}
           title={!tab.active ? 'Coming soon' : undefined}
         >

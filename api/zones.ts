@@ -1,16 +1,36 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-// MVP zone definitions
+// MVP zone definitions — Presidential Range (alpine)
 const mvpZones = [
-  { id: 'tuckerman-ravine', name: 'Tuckerman Ravine', lat: 44.2596, lon: -71.2973, elevation: 4000, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'SE', approachMiles: 2.4, isMvp: true },
-  { id: 'huntington-ravine', name: 'Huntington Ravine', lat: 44.2680, lon: -71.2935, elevation: 4200, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'E', approachMiles: 2.5, isMvp: true },
-  { id: 'gulf-of-slides', name: 'Gulf of Slides', lat: 44.2495, lon: -71.2890, elevation: 3800, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'E/SE', approachMiles: 2.8, isMvp: true },
-  { id: 'great-gulf', name: 'Great Gulf', lat: 44.2795, lon: -71.3050, elevation: 4000, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'NE', approachMiles: 3.5, isMvp: true },
-  { id: 'oakes-gulf', name: 'Oakes Gulf', lat: 44.2470, lon: -71.3130, elevation: 4300, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'SE', approachMiles: 4.0, isMvp: true },
-  { id: 'burt-ammonoosuc-ravines', name: 'Burt and Ammonoosuc Ravines', lat: 44.2720, lon: -71.3310, elevation: 4200, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'W/SW', approachMiles: 3.2, isMvp: true },
-  { id: 'sherburne-ski-trail', name: 'Sherburne Ski Trail', lat: 44.2570, lon: -71.2530, elevation: 2400, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'SE', approachMiles: 0, isMvp: true },
-  { id: 'pinkham-notch', name: 'Pinkham Notch', lat: 44.2573, lon: -71.2530, elevation: 2032, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: '', approachMiles: 0, isMvp: true },
+  { id: 'tuckerman-ravine', name: 'Tuckerman Ravine', lat: 44.2596, lon: -71.2973, elevation: 4000, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'SE', approachMiles: 2.4, isMvp: true, zoneType: 'alpine' as const },
+  { id: 'huntington-ravine', name: 'Huntington Ravine', lat: 44.2680, lon: -71.2935, elevation: 4200, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'E', approachMiles: 2.5, isMvp: true, zoneType: 'alpine' as const },
+  { id: 'gulf-of-slides', name: 'Gulf of Slides', lat: 44.2495, lon: -71.2890, elevation: 3800, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'E/SE', approachMiles: 2.8, isMvp: true, zoneType: 'alpine' as const },
+  { id: 'great-gulf', name: 'Great Gulf', lat: 44.2795, lon: -71.3050, elevation: 4000, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'NE', approachMiles: 3.5, isMvp: true, zoneType: 'alpine' as const },
+  { id: 'oakes-gulf', name: 'Oakes Gulf', lat: 44.2470, lon: -71.3130, elevation: 4300, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'SE', approachMiles: 4.0, isMvp: true, zoneType: 'alpine' as const },
+  { id: 'burt-ammonoosuc-ravines', name: 'Burt and Ammonoosuc Ravines', lat: 44.2720, lon: -71.3310, elevation: 4200, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'W/SW', approachMiles: 3.2, isMvp: true, zoneType: 'alpine' as const },
+  { id: 'sherburne-ski-trail', name: 'Sherburne Ski Trail', lat: 44.2570, lon: -71.2530, elevation: 2400, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: 'SE', approachMiles: 0, isMvp: true, zoneType: 'alpine' as const },
+  { id: 'pinkham-notch', name: 'Pinkham Notch', lat: 44.2573, lon: -71.2530, elevation: 2032, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: '', approachMiles: 0, isMvp: true, zoneType: 'alpine' as const },
 ];
+
+// GBA glade zone definitions
+const gbaZones = [
+  { id: 'baldface', name: 'Baldface', lat: 44.2375, lon: -71.015, elevation: 3000, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 3.0, isMvp: false, zoneType: 'glade' as const },
+  { id: 'black-white-glade', name: 'Black & White Glade', lat: 44.55, lon: -70.6841, elevation: 2214, region: 'Maine', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 4.0, isMvp: false, zoneType: 'glade' as const },
+  { id: 'bill-hill-glade', name: 'Bill Hill Glade', lat: 44.3866, lon: -71.2047, elevation: 1471, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'N', approachMiles: 0.5, isMvp: false, zoneType: 'glade' as const },
+  { id: 'cooley-jericho-glade', name: 'Cooley-Jericho Glade', lat: 44.1719, lon: -71.8119, elevation: 2625, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 1.0, isMvp: false, zoneType: 'glade' as const },
+  { id: 'hypnosis-glade', name: 'Hypnosis Glade', lat: 43.9025, lon: -71.1246, elevation: 1035, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 0.3, isMvp: false, zoneType: 'glade' as const },
+  { id: 'maple-villa-glade', name: 'Maple Villa Glade', lat: 44.0727, lon: -71.1368, elevation: 2200, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'N', approachMiles: 1.5, isMvp: false, zoneType: 'glade' as const },
+  { id: 'page-hill', name: 'Page Hill', lat: 43.8598, lon: -71.2631, elevation: 1145, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 0.2, isMvp: false, zoneType: 'glade' as const },
+  { id: 'prkr-mtn-glades', name: 'PRKR MTN Glades', lat: 44.3291, lon: -71.764, elevation: 1894, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'NE', approachMiles: 0.5, isMvp: false, zoneType: 'glade' as const },
+  { id: 'the-pike-glades', name: 'The Pike Glades', lat: 43.9735, lon: -71.9536, elevation: 2200, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 1.0, isMvp: false, zoneType: 'glade' as const },
+  { id: 'ski-tow-glade', name: 'Ski Tow Glade', lat: 44.452, lon: -71.5704, elevation: 2000, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 0.5, isMvp: false, zoneType: 'glade' as const },
+  { id: 'west-side-glade', name: 'West Side Glade', lat: 44.0881, lon: -71.2934, elevation: 1300, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'N', approachMiles: 0.5, isMvp: false, zoneType: 'glade' as const },
+  { id: 'historic-ccc-trails', name: 'Historic CCC Trails', lat: 44.163, lon: -71.153, elevation: 3950, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'Various', approachMiles: 2.0, isMvp: false, zoneType: 'glade' as const },
+  { id: 'crescent-ridge-glade', name: 'Crescent Ridge Glade', lat: 44.3919, lon: -71.2863, elevation: 3046, region: 'New Hampshire', subRegion: 'GBA Glades', aspect: 'SE/E', approachMiles: 2.0, isMvp: false, zoneType: 'glade' as const },
+];
+
+// All zones combined
+const allZones = [...mvpZones, ...gbaZones];
 
 // WMO weather code → human-readable condition
 function weatherCodeToCondition(code: number): { condition: string; icon: string } {
@@ -238,6 +258,57 @@ function getQuickAssessment(weather: any, mwacForecast: any): { rating: 'good' |
   return { rating, reasons };
 }
 
+// Quick assessment for GBA glade zones (no MWAC avalanche data)
+function getGladeAssessment(weather: any): { rating: 'good' | 'fair' | 'poor'; reasons: string[] } {
+  const reasons: string[] = [];
+  let rating: 'good' | 'fair' | 'poor' = 'good';
+
+  const current = weather?.current;
+  if (!current) return { rating: 'fair', reasons: ['Weather data unavailable'] };
+
+  const gusts = current.windGustMph ?? 0;
+  const wind = current.windMph ?? 0;
+  const temp = current.tempF ?? 32;
+
+  // Check recent snowfall from hourly data (last 24 hours)
+  const recentSnow = (weather.hourly || [])
+    .slice(0, 24)
+    .reduce((sum: number, h: any) => sum + (h.snowInches || 0), 0);
+
+  // Poor conditions
+  if (temp < 0 || temp > 40) {
+    rating = 'poor';
+    reasons.push(temp < 0 ? `Very cold: ${temp}°F` : `Warm temps: ${temp}°F — potential for poor snow quality`);
+  }
+  if (gusts > 35 || wind > 35) {
+    rating = 'poor';
+    reasons.push(`Strong winds: ${wind} mph, gusts ${gusts} mph`);
+  }
+
+  // Fair conditions
+  if (rating === 'good') {
+    if (temp < 15 || temp > 35) {
+      rating = 'fair';
+      reasons.push(temp < 15 ? `Cold: ${temp}°F` : `Warm: ${temp}°F`);
+    }
+    if (gusts > 20 || wind > 20) {
+      rating = 'fair';
+      reasons.push(`Moderate winds: ${wind} mph, gusts ${gusts} mph`);
+    }
+  }
+
+  // Good conditions boost
+  if (rating === 'good' && recentSnow > 2) {
+    reasons.push(`Recent snowfall: ${Math.round(recentSnow * 10) / 10}" — fresh conditions likely`);
+  }
+
+  reasons.push('MWAC avalanche forecast does not cover this zone. Exercise caution above treeline.');
+
+  if (reasons.length === 1) reasons.unshift('Conditions look favorable for glade skiing');
+
+  return { rating, reasons };
+}
+
 // Fetch NWS alerts
 async function getAlerts() {
   try {
@@ -265,34 +336,38 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const results = await Promise.allSettled([
-      ...mvpZones.map((z) => getWeather(z.id, z.lat, z.lon, z.elevation)),
+      ...allZones.map((z) => getWeather(z.id, z.lat, z.lon, z.elevation)),
       getAlerts(),
       getMwacForecast(),
     ]);
 
     const weatherMap: Record<string, any> = {};
-    mvpZones.forEach((zone, i) => {
+    allZones.forEach((zone, i) => {
       const result = results[i];
       if (result.status === 'fulfilled') {
         weatherMap[zone.id] = result.value;
       }
     });
 
-    const alertsResult = results[mvpZones.length];
+    const alertsResult = results[allZones.length];
     const alerts = alertsResult.status === 'fulfilled' ? alertsResult.value : [];
 
-    const forecastResult = results[mvpZones.length + 1];
+    const forecastResult = results[allZones.length + 1];
     const mwacForecast = forecastResult.status === 'fulfilled' ? forecastResult.value : null;
 
     // Build per-zone assessments
     const assessments: Record<string, any> = {};
-    mvpZones.forEach((zone) => {
+    allZones.forEach((zone) => {
       const weather = weatherMap[zone.id];
-      assessments[zone.id] = getQuickAssessment(weather, mwacForecast);
+      if (zone.zoneType === 'glade') {
+        assessments[zone.id] = getGladeAssessment(weather);
+      } else {
+        assessments[zone.id] = getQuickAssessment(weather, mwacForecast);
+      }
     });
 
     return res.status(200).json({
-      zones: mvpZones,
+      zones: allZones,
       weather: weatherMap,
       forecast: mwacForecast,
       assessments,

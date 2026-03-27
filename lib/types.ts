@@ -10,6 +10,7 @@ export interface Zone {
   aspect?: string;
   approachMiles: number;
   isMvp: boolean;
+  zoneType: 'alpine' | 'glade';
 }
 
 /** Current and forecasted weather for a single zone. */

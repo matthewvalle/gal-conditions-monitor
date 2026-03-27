@@ -19,9 +19,14 @@ export default function Attribution() {
           <a href="https://www.weather.gov/" target="_blank" rel="noopener noreferrer">
             National Weather Service
           </a>
+          <span className="app-attribution-sep">&middot;</span>
+          <a href="https://granitebackcountryalliance.org/" target="_blank" rel="noopener noreferrer">
+            Granite Backcountry Alliance
+          </a>
         </div>
         <p className="app-attribution-disclaimer">
-          Conditions data is provided for informational purposes only. Always verify conditions with official sources
+          Conditions data is provided for informational purposes only. MWAC avalanche forecasts cover the Presidential
+          Range only and do not apply to GBA glade zones. Always verify conditions with official sources
           and exercise your own judgment before entering avalanche terrain. This tool does not replace avalanche
           education, proper equipment, or sound decision-making.
         </p>
