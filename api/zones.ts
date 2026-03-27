@@ -12,15 +12,56 @@ const mvpZones = [
   { id: 'pinkham-notch', name: 'Pinkham Notch', lat: 44.2573, lon: -71.2530, elevation: 2032, region: 'New Hampshire', subRegion: 'Presidential Range', aspect: '', approachMiles: 0, isMvp: true },
 ];
 
-// Fetch weather directly from Open-Meteo (inline, no library import)
-async function getWeather(lat: number, lon: number, elevation: number) {
+// WMO weather code → human-readable condition
+function weatherCodeToCondition(code: number): { condition: string; icon: string } {
+  const map: Record<number, { condition: string; icon: string }> = {
+    0: { condition: 'Clear', icon: 'clear' },
+    1: { condition: 'Mostly Clear', icon: 'mostly-clear' },
+    2: { condition: 'Partly Cloudy', icon: 'partly-cloudy' },
+    3: { condition: 'Overcast', icon: 'overcast' },
+    45: { condition: 'Fog', icon: 'fog' },
+    48: { condition: 'Rime Fog', icon: 'fog' },
+    51: { condition: 'Light Drizzle', icon: 'drizzle' },
+    53: { condition: 'Drizzle', icon: 'drizzle' },
+    55: { condition: 'Heavy Drizzle', icon: 'drizzle' },
+    56: { condition: 'Freezing Drizzle', icon: 'freezing-rain' },
+    57: { condition: 'Freezing Drizzle', icon: 'freezing-rain' },
+    61: { condition: 'Light Rain', icon: 'rain' },
+    63: { condition: 'Rain', icon: 'rain' },
+    65: { condition: 'Heavy Rain', icon: 'rain' },
+    66: { condition: 'Freezing Rain', icon: 'freezing-rain' },
+    67: { condition: 'Freezing Rain', icon: 'freezing-rain' },
+    71: { condition: 'Light Snow', icon: 'snow' },
+    73: { condition: 'Snow', icon: 'snow' },
+    75: { condition: 'Heavy Snow', icon: 'snow' },
+    77: { condition: 'Snow Grains', icon: 'snow' },
+    80: { condition: 'Rain Showers', icon: 'rain' },
+    81: { condition: 'Rain Showers', icon: 'rain' },
+    82: { condition: 'Heavy Rain Showers', icon: 'rain' },
+    85: { condition: 'Snow Showers', icon: 'snow' },
+    86: { condition: 'Heavy Snow Showers', icon: 'snow' },
+    95: { condition: 'Thunderstorm', icon: 'thunderstorm' },
+    96: { condition: 'Thunderstorm w/ Hail', icon: 'thunderstorm' },
+    99: { condition: 'Thunderstorm w/ Heavy Hail', icon: 'thunderstorm' },
+  };
+  return map[code] || { condition: 'Unknown', icon: 'unknown' };
+}
+
+// Convert wind degrees to cardinal direction
+function degreesToCardinal(deg: number): string {
+  const dirs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+  return dirs[Math.round(deg / 22.5) % 16];
+}
+
+// Fetch weather from Open-Meteo and transform to ZoneWeather shape
+async function getWeather(zoneId: string, lat: number, lon: number, elevation: number) {
   const params = new URLSearchParams({
     latitude: String(lat),
     longitude: String(lon),
-    elevation: String(Math.round(elevation * 0.3048)), // feet to meters
-    current: 'temperature_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code',
-    hourly: 'temperature_2m,snowfall,precipitation,wind_speed_10m',
-    daily: 'temperature_2m_max,temperature_2m_min,snowfall_sum,precipitation_sum,wind_speed_10m_max,weather_code',
+    elevation: String(Math.round(elevation * 0.3048)),
+    current: 'temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code,visibility',
+    hourly: 'temperature_2m,snowfall,precipitation,precipitation_probability,wind_speed_10m,wind_gusts_10m,wind_direction_10m,weather_code',
+    daily: 'temperature_2m_max,temperature_2m_min,snowfall_sum,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,weather_code,sunrise,sunset',
     temperature_unit: 'fahrenheit',
     wind_speed_unit: 'mph',
     precipitation_unit: 'inch',
@@ -30,7 +71,55 @@ async function getWeather(lat: number, lon: number, elevation: number) {
 
   const res = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
   if (!res.ok) throw new Error(`Open-Meteo ${res.status}`);
-  return res.json();
+  const data = await res.json();
+
+  const { condition, icon } = weatherCodeToCondition(data.current?.weather_code ?? 0);
+  const visibilityMeters = data.current?.visibility ?? 10000;
+
+  // Build ZoneWeather matching the TypeScript interface exactly
+  return {
+    zoneId,
+    fetchedAt: new Date().toISOString(),
+    current: {
+      tempF: Math.round(data.current?.temperature_2m ?? 0),
+      feelsLikeF: Math.round(data.current?.apparent_temperature ?? 0),
+      windMph: Math.round(data.current?.wind_speed_10m ?? 0),
+      windGustMph: Math.round(data.current?.wind_gusts_10m ?? 0),
+      windDirection: degreesToCardinal(data.current?.wind_direction_10m ?? 0),
+      humidity: data.current?.relative_humidity_2m ?? 0,
+      precipInches: 0,
+      snowDepthInches: null,
+      visibility: Math.round(visibilityMeters * 0.000621371 * 10) / 10, // meters to miles
+      condition,
+      icon,
+    },
+    hourly: (data.hourly?.time ?? []).map((t: string, i: number) => ({
+      time: t,
+      tempF: Math.round(data.hourly.temperature_2m?.[i] ?? 0),
+      windMph: Math.round(data.hourly.wind_speed_10m?.[i] ?? 0),
+      windGustMph: Math.round(data.hourly.wind_gusts_10m?.[i] ?? 0),
+      windDirection: degreesToCardinal(data.hourly.wind_direction_10m?.[i] ?? 0),
+      precipProbability: data.hourly.precipitation_probability?.[i] ?? 0,
+      precipInches: data.hourly.precipitation?.[i] ?? 0,
+      snowInches: data.hourly.snowfall?.[i] ?? 0,
+      condition: weatherCodeToCondition(data.hourly.weather_code?.[i] ?? 0).condition,
+      icon: weatherCodeToCondition(data.hourly.weather_code?.[i] ?? 0).icon,
+    })),
+    daily: (data.daily?.time ?? []).map((t: string, i: number) => ({
+      date: t,
+      highF: Math.round(data.daily.temperature_2m_max?.[i] ?? 0),
+      lowF: Math.round(data.daily.temperature_2m_min?.[i] ?? 0),
+      windMph: Math.round(data.daily.wind_speed_10m_max?.[i] ?? 0),
+      windGustMph: Math.round(data.daily.wind_gusts_10m_max?.[i] ?? 0),
+      precipProbability: data.daily.precipitation_probability_max?.[i] ?? 0,
+      totalPrecipInches: data.daily.precipitation_sum?.[i] ?? 0,
+      totalSnowInches: data.daily.snowfall_sum?.[i] ?? 0,
+      condition: weatherCodeToCondition(data.daily.weather_code?.[i] ?? 0).condition,
+      icon: weatherCodeToCondition(data.daily.weather_code?.[i] ?? 0).icon,
+      sunrise: data.daily.sunrise?.[i] ?? '',
+      sunset: data.daily.sunset?.[i] ?? '',
+    })),
+  };
 }
 
 // Fetch NWS alerts
@@ -59,34 +148,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
-    // Fetch weather for all zones + alerts in parallel
     const results = await Promise.allSettled([
-      ...mvpZones.map((z) => getWeather(z.lat, z.lon, z.elevation)),
+      ...mvpZones.map((z) => getWeather(z.id, z.lat, z.lon, z.elevation)),
       getAlerts(),
     ]);
 
-    // Build weather map from settled results
     const weatherMap: Record<string, any> = {};
     mvpZones.forEach((zone, i) => {
       const result = results[i];
       if (result.status === 'fulfilled') {
-        const data = result.value;
-        weatherMap[zone.id] = {
-          current: {
-            temperature: data.current?.temperature_2m,
-            feelsLike: data.current?.apparent_temperature,
-            windSpeed: data.current?.wind_speed_10m,
-            windDirection: data.current?.wind_direction_10m,
-            windGust: data.current?.wind_gusts_10m,
-            weatherCode: data.current?.weather_code,
-          },
-          hourly: data.hourly,
-          daily: data.daily,
-        };
+        weatherMap[zone.id] = result.value;
       }
     });
 
-    // Alerts are the last result
     const alertsResult = results[results.length - 1];
     const alerts = alertsResult.status === 'fulfilled' ? alertsResult.value : [];
 
@@ -98,6 +172,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       updatedAt: new Date().toISOString(),
     });
   } catch (err: any) {
-    return res.status(500).json({ error: err.message, stack: err.stack?.split('\n').slice(0, 5) });
+    return res.status(500).json({ error: err.message });
   }
 }
