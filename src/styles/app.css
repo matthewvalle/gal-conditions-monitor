@@ -1418,6 +1418,62 @@ a:hover {
   line-height: 1.4;
 }
 
+.zone-info-parking-section {
+  margin-top: 2px;
+  margin-bottom: 12px;
+}
+
+.zone-info-parking-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--stone-500);
+  margin-bottom: 8px;
+}
+
+.zone-info-parking {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.zone-info-parking-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--stone-800);
+}
+
+.zone-info-parking-notes {
+  font-size: 11px;
+  color: var(--stone-600);
+  line-height: 1.4;
+}
+
+.zone-info-parking-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--ember);
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  width: fit-content;
+}
+
+.zone-info-parking-btn:hover {
+  background: var(--ember-hover);
+  text-decoration: none;
+  color: #fff;
+}
+
 .zone-info-sources-section {
   margin-top: 2px;
 }

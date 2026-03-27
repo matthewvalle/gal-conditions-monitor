@@ -82,6 +82,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'AMC - The Bold History of Skiing at Tuckerman Ravine', url: 'https://www.outdoors.org/resources/amc-outdoors/history/the-bold-history-of-skiing-at-tuckerman-ravine/', description: 'Appalachian Mountain Club deep-dive on Tuckerman\'s ski history from the 1930s CCC era through the modern backcountry revival.' },
       { title: 'Teton Gravity Research - How to Ski Tuckerman Ravine', url: 'https://www.tetongravity.com/story/ski/bucket-list-how-to-ski-tuckermans-ravine', description: 'Practical bucket-list guide covering logistics, line descriptions, gear recommendations, and timing for a Tuckerman trip.' },
     ],
+    parking: {
+      name: 'Pinkham Notch Visitor Center',
+      lat: 44.2573,
+      lon: -71.2530,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.2573,-71.2530',
+      notes: 'USFS parking lot. Arrive early on spring weekends. Free.',
+    },
   },
   'huntington-ravine': {
     overview: 'East-facing and significantly steeper than neighboring Tuckerman, Huntington Ravine is a rocky alpine amphitheater with named couloirs ranging from 40 to 50+ degrees. Better known for winter ice climbing, it has seen a surge in ski traffic in recent years as skilled mountaineers seek out lines like Central Gully and Diagonal Gully. Conditions are highly variable -- expect ice bulges, wind-loaded slabs, and mandatory exposure to consequential terrain.',
@@ -101,6 +108,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Skimo.co - Huntington Ravine Central Gully', url: 'https://skimo.co/huntington-ravine-central-gully', description: 'Route description for Central Gully with approach info, pitch angles, snow conditions, and topo overview.' },
       { title: 'Northeast Alpine Start - Trip Reports (Huntington Ravine)', url: 'https://northeastalpinestart.com/tag/mount-washington-avalanche/', description: 'Curated trip reports and avalanche incident analyses from Huntington Ravine and surrounding Presidential Range terrain.' },
     ],
+    parking: {
+      name: 'Pinkham Notch Visitor Center',
+      lat: 44.2573,
+      lon: -71.2530,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.2573,-71.2530',
+      notes: 'USFS parking lot. Arrive early on spring weekends. Free.',
+    },
   },
   'gulf-of-slides': {
     overview: 'A collection of avalanche paths descending from Boott Spur on the southeast side of Mt. Washington, offering more moderate terrain than Tuckerman with wide-open snowfields averaging around 30 degrees. Far less crowded than its famous neighbor, the Gulf of Slides rewards the extra approach distance with solitude and consistent fall-line skiing. The south snowfields are the primary draw, with a brief steeper pitch near the top.',
@@ -120,6 +134,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Mount Washington Avalanche Center - MWAC Forecast Area', url: 'https://www.mountwashingtonavalanchecenter.org/mwac-forecast-area/', description: 'Map and description of MWAC\'s full forecast coverage area including Gulf of Slides avalanche paths.' },
       { title: 'AMC NH Chapter - Catching the Bluebird in the Gulf of Slides', url: 'https://amcnh.org/catching-the-bluebird-in-the-gulf-of-slides-by-ham-mehlman/', description: 'First-person AMC trip report with practical approach info, snow conditions, and route-finding notes for Gulf of Slides.' },
     ],
+    parking: {
+      name: 'Pinkham Notch Visitor Center',
+      lat: 44.2573,
+      lon: -71.2530,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.2573,-71.2530',
+      notes: 'USFS parking lot. Arrive early on spring weekends. Free.',
+    },
   },
   'great-gulf': {
     overview: 'The largest glacial cirque in the White Mountains, Great Gulf is a federally designated Wilderness area on the northeast side of Mt. Washington. Its remote headwall gains 1,600 feet in half a mile with serious avalanche exposure. The long approach through boulder-strewn old-growth forest filters out casual visitors -- this is committed ski mountaineering terrain best suited for spring conditions when snow softens and days lengthen.',
@@ -139,6 +160,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'SectionHiker - Climbing the Mt Washington Headwall and the Great Gulf Trail', url: 'https://sectionhiker.com/climbing-the-mt-washington-headwall-and-the-great-gulf-trail/', description: 'Detailed trail guide covering the full Great Gulf approach with headwall description, mileage, and elevation profile.' },
       { title: 'SummitPost - Great Gulf Trail', url: 'https://www.summitpost.org/great-gulf-trail/533010', description: 'Mountaineering-focused route description with elevation data, wilderness regulations, and seasonal access notes.' },
     ],
+    parking: {
+      name: 'Great Gulf Trailhead (Rt. 16)',
+      lat: 44.3217,
+      lon: -71.2417,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.3217,-71.2417',
+      notes: 'Small lot on Route 16. Limited spots.',
+    },
   },
   'oakes-gulf': {
     overview: 'A southeast-facing glacial cirque between Mt. Washington and Mt. Monroe, similar in scale to Tuckerman but far more remote and harder to access. Oakes Gulf is serious avalanche terrain -- windslabs build rapidly on the exposed upper bowl, and multiple fatal and near-fatal incidents have occurred here. The reward is steep, untracked alpine skiing in a dramatic setting with virtually no crowds. Approach typically comes over the Monroe-Washington saddle via Lakes of the Clouds.',
@@ -158,6 +186,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Chauvin Guides - Mount Washington Climbs and Ski Runs', url: 'https://www.chauvinguides.com/mount-washington-climbs-and-ski-runs/', description: 'Professional guide service overview of all Mt. Washington ski zones including Oakes Gulf approach options and terrain assessment.' },
       { title: 'SectionHiker - Oakes Gulf: A Hidden Gem in the Wilderness', url: 'https://sectionhiker.com/backpacking-white-mountain-4000-footers-guidebook/backpacking-an-oakes-gulf-loop/', description: 'Comprehensive terrain description of Oakes Gulf with loop route options, elevation profile, and seasonal access notes.' },
     ],
+    parking: {
+      name: 'Pinkham Notch Visitor Center',
+      lat: 44.2573,
+      lon: -71.2530,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.2573,-71.2530',
+      notes: 'USFS parking lot. Approach via Boot Spur or Lakes of the Clouds.',
+    },
   },
   'burt-ammonoosuc-ravines': {
     overview: 'The west-side ravines of Mt. Washington flanking the Cog Railway -- Burt Ravine sits to the north (skier\'s left) and the larger Ammonoosuc Ravine to the south. These SW-facing aspects see far less traffic than the east-side zones and offer a completely different character: longer descents, more sun-protected snow, and approach via the Cog Railway bed or Ammonoosuc Ravine Trail. Best in spring when the west side consolidates. Expect bushwhacking on the lower exits.',
@@ -177,6 +212,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'AMC NH Chapter - Skiing The Cog', url: 'https://amcnh.org/skiing-the-cog-it-may-not-be-backcountry-but-it-sure-is-fun-by-ham-mehlman/', description: 'AMC trip report covering the Cog Railway as a ski approach with descriptions of both Burt and Ammonoosuc Ravine access.' },
       { title: 'The Snow Way - Mount Washington Ammonoosuc Ravine & East Snowfields', url: 'https://www.thesnowway.com/2010/04/02/mount-washington-ammonoosuc-ravine-and-the-east-snowfields', description: 'Trip report combining Ammonoosuc descent with east-side skiing, useful for understanding the west-side terrain character.' },
     ],
+    parking: {
+      name: 'Cog Railway Base Station',
+      lat: 44.2708,
+      lon: -71.3497,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.2708,-71.3497',
+      notes: 'Cog Railway parking area. Paved lot.',
+    },
   },
   'sherburne-ski-trail': {
     overview: 'The classic 2.4-mile descent from Tuckerman Ravine back to Pinkham Notch, originally cut by the Civilian Conservation Corps in the 1930s. The \'Sherbie\' drops nearly 1,900 vertical feet through a narrow, winding trail averaging about 20 feet wide with a consistent fall-line grade around 22%. It serves as the return route for virtually every east-side ski tour and is arguably the most-traveled backcountry trail in the Northeast. Conditions range from bulletproof ice to spring slush depending on the day.',
@@ -196,6 +238,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Powder Project - Sherburne Ski Trail', url: 'https://www.powderproject.com/trail/7000253/sherburne-ski-trail', description: 'Route page with elevation profile, vertical drop stats, trail description, and user trip reports for the Sherburne descent.' },
       { title: 'Trailforks - John Sherburne Ski Trail', url: 'https://www.trailforks.com/trails/john-sherburne-ski-trail-615041331/', description: 'Interactive trail map with GPS track, elevation data, and current user-submitted conditions reports.' },
     ],
+    parking: {
+      name: 'Pinkham Notch Visitor Center',
+      lat: 44.2573,
+      lon: -71.2530,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.2573,-71.2530',
+      notes: 'USFS parking lot. Arrive early on spring weekends. Free.',
+    },
   },
   'pinkham-notch': {
     overview: 'The primary basecamp and trailhead for all east-side Presidential Range ski tours. The AMC Pinkham Notch Visitor Center sits at 2,032 feet on Route 16 and provides parking, lodging at Joe Dodge Lodge, gear sales, trail information, and MWAC avalanche advisory postings. This is where every Tuckerman, Huntington, Gulf of Slides, and Sherburne tour begins and ends. Parking fills early on spring weekends -- arrive before 7 AM or plan for overflow lots.',
@@ -215,6 +264,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Mount Washington Avalanche Center', url: 'https://www.mountwashingtonavalanchecenter.org/', description: 'MWAC homepage with daily avalanche advisories, observation submissions, and educational resources -- the first stop before any Presidential Range tour.' },
       { title: 'Mount Washington Volunteer Ski Patrol', url: 'https://tuckerman.org/', description: 'Volunteer ski patrol serving Tuckerman and Huntington Ravines -- provides rescue assistance, first aid, and skiing information from Pinkham Notch.' },
     ],
+    parking: {
+      name: 'Pinkham Notch Visitor Center',
+      lat: 44.2573,
+      lon: -71.2530,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.2573,-71.2530',
+      notes: 'USFS parking lot. Arrive early on spring weekends. Free.',
+    },
   },
   // GBA Glade zones
   'baldface': {
@@ -233,6 +289,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Baldface -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/baldface', description: 'Official GBA zone page with terrain description, access info, parking, and safety warnings.' },
       { title: 'Avenza Maps - South Baldface Slippery Brook Glade', url: 'https://www.avenzamaps.com/maps/852161', description: 'Downloadable geo-referenced PDF map for offline navigation of the Baldface glade zone.' },
     ],
+    parking: {
+      name: 'Baldface Circle Trailhead (ME-113)',
+      lat: 44.2422,
+      lon: -71.0078,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.2422,-71.0078',
+      notes: 'Small gravel lot on ME-113. Limited spots in winter.',
+    },
   },
   'black-white-glade': {
     overview: 'Maine\'s first public human-powered glade, featuring an eight-mile point-to-point two-mountain traverse connecting Bethel (west) to Rumford (east) across Black Mountain and Rumford Whitecap. The terrain includes snowfields, drops, and 360-degree summit views with 600-1,400 feet of vertical depending on route.',
@@ -250,6 +313,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Black & White Glade -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/black-white-glade', description: 'Official GBA zone page with traverse route description, access points, safety warnings, and ecological notes.' },
       { title: 'Black Mountain of Maine', url: 'https://skiblackmountain.org/', description: 'Partner organization operating the backcountry gate with uphill-only skintrack access on the Black Mountain side.' },
     ],
+    parking: {
+      name: 'East B Hill Rd, Andover ME',
+      lat: 44.5917,
+      lon: -70.7583,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.5917,-70.7583',
+      notes: 'Roadside parking. Plow turnaround area.',
+    },
   },
   'bill-hill-glade': {
     overview: 'A quick-access north-facing glade on the northern arm of Pine Mountain in Gorham. Recently logged terrain with young, tightly-spaced trees demands tight turns -- the north aspect holds snow long after storms. Entry-level to advanced terrain with 600 vertical feet of skiing.',
@@ -267,6 +337,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Bill Hill Glade -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/bill-hill-glade', description: 'Official GBA zone page with terrain description, parking instructions, and access details.' },
       { title: 'Avenza Maps - Gorham Bill Hill Glade', url: 'https://store.avenza.com/products/gorham-bill-hill-glade-granite-backcountry-alliance-map', description: 'Downloadable geo-referenced PDF map for offline navigation.' },
     ],
+    parking: {
+      name: 'Bill Hill Trailhead, Gorham',
+      lat: 44.3866,
+      lon: -71.2047,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.3866,-71.2047',
+      notes: 'Small pulloff. Limited.',
+    },
   },
   'cooley-jericho-glade': {
     overview: 'Four sporty glade lines ranging from 400 to 800+ vertical feet on an 840-acre community forest spanning four towns (Franconia, Sugar Hill, Easton, and Landaff). Features drops, large yellow birches, and panoramic views of Mount Lafayette and Cannon Mountain on the ascent.',
@@ -284,6 +361,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Cooley-Jericho Glade -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/cooleyjericho-glade', description: 'Official GBA zone page with glade descriptions, parking protocol, and nearby amenities.' },
       { title: 'Avenza Maps - Franconia Cooley Jericho Glade', url: 'https://www.avenzamaps.com/maps/1102869/franconia-cooley-jericho-glade', description: 'Downloadable geo-referenced PDF map for offline navigation.' },
     ],
+    parking: {
+      name: '12 Trumpet Round Rd, Easton NH',
+      lat: 44.1719,
+      lon: -71.8119,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.1719,-71.8119',
+      notes: 'Small lot at trailhead.',
+    },
   },
   'hypnosis-glade': {
     overview: 'A family-friendly introductory glade zone on private land behind the White Mountain Hypnosis Center in Madison. Four distinct glade lines offer mellow yet colorful skiing with 400+ vertical feet of varied terrain for all abilities.',
@@ -301,6 +385,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Hypnosis Glade -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/hypnosis-glade', description: 'Official GBA zone page with terrain description, access details, and parking info.' },
       { title: 'Avenza Maps - Madison Hypnosis Glade', url: 'https://store.avenza.com/products/madison-hypnosis-glade-granite-backcountry-alliance-map', description: 'Downloadable geo-referenced PDF map for offline navigation.' },
     ],
+    parking: {
+      name: '428 Conway Rd, Madison NH',
+      lat: 43.8800,
+      lon: -71.1650,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=43.8800,-71.1650',
+      notes: 'Roadside pulloff.',
+    },
   },
   'maple-villa-glade': {
     overview: 'Expert to intermediate terrain on Bartlett Mountain with 1,700 vertical feet across three distinct zones. Originally built by the Civilian Conservation Corps in 1933 and revived in 2018. The east zone offers upper glade lines of approximately 800 vertical feet each, the west zone provides solitude-oriented skiing, and Pine Hill features steep powder stashes.',
@@ -318,6 +409,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Maple Villa Glade -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/maplevillaglade', description: 'Official GBA zone page with three-zone terrain description, parking info, and access guidelines.' },
       { title: 'Avenza Maps - Maple Villa Glade Bartlett', url: 'https://www.avenzamaps.com/maps/852161/maple-villa-glade-bartlett', description: 'Downloadable geo-referenced PDF map for offline navigation.' },
     ],
+    parking: {
+      name: '70 East Branch Rd, Intervale NH',
+      lat: 44.0950,
+      lon: -71.1200,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.0950,-71.1200',
+      notes: 'Small lot.',
+    },
   },
   'page-hill': {
     overview: 'A revived former alpine ski area (operated 1930s-1960s) in Tamworth offering 350 vertical feet of approachable gladed terrain for intermediate and advancing skiers. Stunning views of the Sandwich Dome, Mt. Whiteface, Mt. Passaconaway, Mt. Paugus, and Mt. Chocorua. Now home to the Public House on Page Hill restaurant.',
@@ -335,6 +433,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Page Hill -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/page-hill', description: 'Official GBA zone page with terrain description, parking instructions, and historical context.' },
       { title: 'Avenza Maps - Tamworth Page Hill Glade', url: 'https://store.avenza.com/products/tamworth-page-hill-glade-granite-backcountry-alliance-map', description: 'Downloadable geo-referenced PDF map for offline navigation.' },
     ],
+    parking: {
+      name: 'Route 25 Pulloff, Tamworth NH',
+      lat: 43.8600,
+      lon: -71.2650,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=43.8600,-71.2650',
+      notes: 'Roadside parking.',
+    },
   },
   'prkr-mtn-glades': {
     overview: 'Four northeast-facing glade lines cut in 2022 on Parker Mountain, just minutes from downtown Littleton. Each line delivers approximately 400 vertical feet of skiing with steeps, turns, and views. Named runs include Chiswick, Pollyanna Timber Baron, and Railroad Hotel.',
@@ -352,6 +457,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'PRKR MTN Glades -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/prkrmtnglades', description: 'Official GBA zone page with glade line descriptions, parking info, and nearby amenities.' },
       { title: 'PRKR MTN Trails', url: 'https://www.prkrmtn.org', description: 'Official partner organization website for the Parker Mountain trail network.' },
     ],
+    parking: {
+      name: 'Parker Mountain Rd, Littleton NH',
+      lat: 44.3291,
+      lon: -71.7640,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.3291,-71.7640',
+      notes: 'Small pulloff at trailhead.',
+    },
   },
   'the-pike-glades': {
     overview: 'A newer GBA zone accommodating skiers across ability levels with both technical and mellower glade lines. Named runs include Wazza\'s Glade and Udder Delight (steeper, technical) and Long Strange Trip and Iron Moose (moderate pitch). Warming huts at mid-mountain and the summit provide shelter.',
@@ -369,6 +481,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'The Pike Glades -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/the-pike-glades', description: 'Official GBA zone page with named run descriptions, warming hut info, and access details.' },
       { title: 'The Pike Glades', url: 'https://thepikeglades.com', description: 'Dedicated website for The Pike Glades zone with conditions updates and info.' },
     ],
+    parking: {
+      name: '2719 Mt Moosilauke Hwy, Pike NH',
+      lat: 43.9800,
+      lon: -71.8600,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=43.9800,-71.8600',
+      notes: 'Plowed lot at trailhead.',
+    },
   },
   'ski-tow-glade': {
     overview: 'Four glade lines developed in 2018 from the summit of Mount Prospect in Weeks State Park, dropping through exciting terrain and flowing into the existing community ski tow footprint for 700 vertical feet of skiing. Skin to the summit stone tower for panoramic views, then ski down and warm up with hot chocolate in the yurt.',
@@ -386,6 +505,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Ski Tow Glade -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/ski-tow-glade', description: 'Official GBA zone page with glade descriptions, community ski tow info, and yurt details.' },
       { title: 'Mount Prospect Ski Tow', url: 'https://www.mountprospectskitow.com/', description: 'Official website for the community-run Mount Prospect Ski Club with hours, conditions, and directions.' },
     ],
+    parking: {
+      name: 'Weeks State Park, Lancaster NH',
+      lat: 44.4520,
+      lon: -71.5704,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.4520,-71.5704',
+      notes: 'State park lot. $4 day fee in season.',
+    },
   },
   'west-side-glade': {
     overview: 'A peaceful and serene intermediate glade on private land in Bartlett\'s Mt. Washington Valley, offering 600 vertical feet of north-facing gladed skiing. The glade lines carry a solid intermediate pitch that rewards both careful and experienced skiers.',
@@ -403,6 +529,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'West Side Glade -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/westsideglade', description: 'Official GBA zone page with terrain description, parking lot info, and access guidelines.' },
       { title: 'Avenza Maps - Bartlett West Side Glade', url: 'https://www.avenzamaps.com/maps/1511736/bartlett-west-side-glade', description: 'Downloadable geo-referenced PDF map for offline navigation.' },
     ],
+    parking: {
+      name: '629 West Side Rd, Bartlett NH',
+      lat: 44.0800,
+      lon: -71.2800,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.0800,-71.2800',
+      notes: 'Small lot. Arrive early.',
+    },
   },
   'historic-ccc-trails': {
     overview: 'Four historic ski trails built by the Civilian Conservation Corps in the 1930s, maintained by GBA in and around Mt. Washington Valley. These include the Doublehead Ski Trail (Jackson, 1,573 ft vertical), Black Mountain Ski Trail (Jackson, 1,527 ft vertical), John Sherburne Ski Trail (Pinkham Notch, 1,918 ft vertical), and Gulf of Slides Ski Trail (Pinkham Notch, 1,868 ft vertical).',
@@ -420,6 +553,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Historic CCC Trails -- Granite Backcountry Alliance', url: 'https://granitebackcountryalliance.org/ccctrails', description: 'Official GBA page covering all four maintained CCC ski trails with distances, vertical, and historical context.' },
       { title: 'Friends of Tuckerman Ravine - Trail Crew Volunteers', url: 'https://www.friendsoftuckermanravine.org/trail_crew_volunteers', description: 'FOTR volunteer program for Sherburne and Gulf of Slides trail maintenance.' },
     ],
+    parking: {
+      name: 'Pinkham Notch Visitor Center',
+      lat: 44.2573,
+      lon: -71.2530,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.2573,-71.2530',
+      notes: 'Central starting point for CCC network.',
+    },
   },
   'crescent-ridge-glade': {
     overview: 'A 75-acre zone of five skiable glade lines in the 10,000-acre Randolph Community Forest, designed to appeal to intermediate and advanced skiers. The upper pitch starts mellow then drops to 30-35 degrees for 200-300 vertical feet, flowing into a large open hardwood glade at 20-25 degrees, and finishing through a tree-less wildlife area with stunning views of the northern Presidential Range.',
@@ -437,6 +577,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Crescent Ridge Glade -- Trail Finder', url: 'https://www.trailfinder.info/trails/trail/crescent-ridge-glade', description: 'Trail Finder page with GPS coordinates, elevation data, named glade lines, and trail manager contact.' },
       { title: 'Avenza Maps - Randolph Crescent Ridge Glade', url: 'https://store.avenza.com/products/randolph-crescent-ridge-glade-granite-backcountry-alliance-map', description: 'Downloadable geo-referenced PDF map for offline navigation.' },
     ],
+    parking: {
+      name: 'Randolph Hill Rd, Randolph NH',
+      lat: 44.3919,
+      lon: -71.2863,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.3919,-71.2863',
+      notes: 'Small roadside pulloff.',
+    },
   },
   // ─── Mt. Mansfield (Vermont) ──────────────────────────────────────────────
   'teardrop-trail': {
@@ -454,6 +601,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'New England Ski History - Mt. Mansfield CCC Ski Trails', url: 'https://www.newenglandskihistory.com/cccskitrails/Vermont/mtmansfield.php', description: 'Comprehensive history of CCC-era ski trails on Mt. Mansfield.' },
       { title: 'Explore-Share - Backcountry Skiing on the Teardrop Trail', url: 'https://www.explore-share.com/trip/backcountry-skiing-on-the-teardrop-trail-mt-mansfield-west-side/', description: 'Guided trip details for the Teardrop Trail with route description and difficulty assessment.' },
     ],
+    parking: {
+      name: 'Underhill State Park',
+      lat: 44.5290,
+      lon: -72.8428,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.5290,-72.8428',
+      notes: 'State park lot. Day use fee. Plowed in winter.',
+    },
   },
   'bruce-trail': {
     overview: 'One of the oldest ski trails in the United States, cut by the CCC in 1933. The Bruce descends the southwest side of Mt. Mansfield from near the Chin summit with roughly 2,180 ft of vertical. The trail starts narrow then dives down the fall line through progressively wider terrain in dense spruce forest.',
@@ -470,6 +624,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'New England Ski History - Mt. Mansfield CCC Ski Trails', url: 'https://www.newenglandskihistory.com/cccskitrails/Vermont/mtmansfield.php', description: 'History of the Bruce Trail including construction dates and historical context.' },
       { title: 'Vermont Dept. of Forests, Parks and Recreation - Mt. Mansfield State Forest', url: 'https://fpr.vermont.gov/mt-mansfield-state-forest-0', description: 'Official state resource for Mt. Mansfield State Forest trail access and regulations.' },
     ],
+    parking: {
+      name: 'Underhill State Park',
+      lat: 44.5290,
+      lon: -72.8428,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.5290,-72.8428',
+      notes: 'State park lot. Day use fee. Plowed in winter.',
+    },
   },
   'skytop-trail': {
     overview: 'A high-elevation ridge traverse and descent route offering panoramic views of the Green Mountains. Skytop follows the ridgeline below Skytop Ridge before descending through hardwood glades on the west side. Accessible from the Stowe Mountain Resort Nordic Center or the Trapp Family Lodge. A longer tour combining ridge walking with moderate glade skiing.',
@@ -485,6 +646,13 @@ const ZONE_INFO: Record<string, any> = {
     sources: [
       { title: 'Explore-Share - Backcountry Skiing Day Tour on Mount Mansfield', url: 'https://www.explore-share.com/trip/backcountry-skiing-day-tour-on-mount-mansfield-in-stowe-vermont/', description: 'Overview of Mt. Mansfield backcountry skiing options including Skytop.' },
     ],
+    parking: {
+      name: 'Underhill State Park',
+      lat: 44.5290,
+      lon: -72.8428,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.5290,-72.8428',
+      notes: 'State park lot. Day use fee. Plowed in winter.',
+    },
   },
   'steeple-trail': {
     overview: 'The steepest marked backcountry trail in Mansfield State Forest with an average grade of 23.3%. Starts near the top of the Toll Road and delivers one of the most rewarding descents on the mountain. The upper third is expert-only terrain through tight trees, while the lower Steeple mellows to intermediate grade.',
@@ -501,6 +669,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'SkiMaven - Skiing the Lower Steeple Trail', url: 'https://www.skimaven.com/post/skiing-the-lower-steeple-trail-a-classic-backcountry-trail-near-mt-mansfield', description: 'Trip report and trail description for the Steeple Trail descent.' },
       { title: 'Explore-Share - Backcountry Skiing Day Tour on Mount Mansfield', url: 'https://www.explore-share.com/trip/backcountry-skiing-day-tour-on-mount-mansfield-in-stowe-vermont/', description: 'Guide-led tour info for Mansfield backcountry routes.' },
     ],
+    parking: {
+      name: 'Smugglers Notch State Park (Rt. 108)',
+      lat: 44.5575,
+      lon: -72.7936,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.5575,-72.7936',
+      notes: 'Rt. 108 parking. Road may be closed in winter.',
+    },
   },
   'nosedive-trail': {
     overview: 'Cut by the CCC in 1934-1935, the Nose Dive was Stowe\'s most famous race trail and hosted Eastern Downhill Championships from 1937 to 1949. The original trail featured the Cork Screw, the Corridor, and the Gulch. While the upper portion is now part of Stowe Mountain Resort, the lower sections and historical race line remain a backcountry classic.',
@@ -516,6 +691,13 @@ const ZONE_INFO: Record<string, any> = {
     sources: [
       { title: 'New England Ski History - Mt. Mansfield CCC Ski Trails', url: 'https://www.newenglandskihistory.com/cccskitrails/Vermont/mtmansfield.php', description: 'Historical overview of the Nose Dive trail including race history.' },
     ],
+    parking: {
+      name: 'Stowe Mountain Resort Area',
+      lat: 44.5400,
+      lon: -72.7814,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.5400,-72.7814',
+      notes: 'Resort parking available.',
+    },
   },
   // ─── Mt. Cardigan (New Hampshire) ─────────────────────────────────────────
   'dukes-trail': {
@@ -533,6 +715,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'AMC Outdoors - Best Backcountry Skiing at Mount Cardigan', url: 'https://www.outdoors.org/resources/amc-outdoors/outdoor-resources/best-backcountry-skiing-at-mount-cardigan/', description: 'AMC guide to backcountry skiing on Mt. Cardigan with trail descriptions.' },
       { title: 'New England Ski History - Mt. Cardigan CCC Ski Trails', url: 'https://www.newenglandskihistory.com/cccskitrails/NewHampshire/mtcardigan.php', description: 'Historical overview of CCC-era ski trail construction on Mt. Cardigan.' },
     ],
+    parking: {
+      name: 'AMC Cardigan Lodge',
+      lat: 43.6495,
+      lon: -71.8777,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=43.6495,-71.8777',
+      notes: 'AMC lodge lot. Day visitors welcome.',
+    },
   },
   'alexandria-trail': {
     overview: 'Cut by the CCC in 1934 and designed by Charles Proctor, the Alexandria Trail is the steeper, more challenging descent on Mt. Cardigan. At 1.7 miles with 1,400 ft of vertical drop, the trail showcases excellent CCC craftsmanship -- widening where you need room to carve. Combined with Duke\'s Trail in the Grand Tour, it creates one of the best backcountry ski loops in New Hampshire.',
@@ -549,6 +738,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'AMC Outdoors - Best Backcountry Skiing at Mount Cardigan', url: 'https://www.outdoors.org/resources/amc-outdoors/outdoor-resources/best-backcountry-skiing-at-mount-cardigan/', description: 'AMC guide covering the Alexandria Trail.' },
       { title: 'EMS goEast - Backcountry Turns at Mt. Cardigan', url: 'https://goeast.ems.com/backcountry-skiing-mount-cardigan/', description: 'EMS backcountry guide to Mt. Cardigan.' },
     ],
+    parking: {
+      name: 'Cardigan Mountain Rd, Alexandria NH',
+      lat: 43.6300,
+      lon: -71.8950,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=43.6300,-71.8950',
+      notes: 'USFS trailhead lot.',
+    },
   },
   'kimball-trail': {
     overview: 'A shorter, lower-elevation forest descent on the south side of Mt. Cardigan, cut by the AMC in December 1934. At 0.8-1 mile with roughly 600 ft of vertical, the Kimball provides a quick lap option and connects into the Grand Tour loop. Dense forest retains snow when higher trails are wind-scoured.',
@@ -564,6 +760,13 @@ const ZONE_INFO: Record<string, any> = {
     sources: [
       { title: 'New England Ski History - Mt. Cardigan CCC Ski Trails', url: 'https://www.newenglandskihistory.com/cccskitrails/NewHampshire/mtcardigan.php', description: 'Historical overview of Kimball Trail construction.' },
     ],
+    parking: {
+      name: 'AMC Cardigan Lodge',
+      lat: 43.6495,
+      lon: -71.8777,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=43.6495,-71.8777',
+      notes: 'AMC lodge lot. Day visitors welcome.',
+    },
   },
   'cardigan-grand-tour': {
     overview: 'The signature backcountry ski outing on Mt. Cardigan: a 5.5-mile loop that skins up one CCC trail, crosses the Firescrew-Mt. Cardigan ridge, and descends the opposite ski trail. Typically done ascending Duke\'s and descending Alexandria. The ridge traverse adds alpine character with exposed granite above treeline. Roughly 1,750 ft of vertical in 3-4 hours.',
@@ -580,6 +783,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'AMC Outdoors - Best Backcountry Skiing at Mount Cardigan', url: 'https://www.outdoors.org/resources/amc-outdoors/outdoor-resources/best-backcountry-skiing-at-mount-cardigan/', description: 'AMC guide with Grand Tour route details.' },
       { title: 'Explore-Share - Mt. Cardigan Grand Tour on Skis', url: 'https://www.explore-share.com/trip/mt-cardigan-grand-tour-skis-intermediate/', description: 'Guided tour of the Grand Tour loop with route description.' },
     ],
+    parking: {
+      name: 'AMC Cardigan Lodge',
+      lat: 43.6495,
+      lon: -71.8777,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=43.6495,-71.8777',
+      notes: 'AMC lodge lot. Day visitors welcome.',
+    },
   },
   // ─── Mt. Greylock (Massachusetts) ─────────────────────────────────────────
   'thunderbolt-trail': {
@@ -599,6 +809,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'New England Ski History - Mt. Greylock CCC Ski Trails', url: 'https://www.newenglandskihistory.com/cccskitrails/Massachusetts/mtgreylock.php', description: 'History of CCC-era ski trail construction on Mt. Greylock.' },
       { title: 'Powder Project - Thunderbolt Ski Trail', url: 'https://www.powderproject.com/trail/7000227/thunderbolt-ski-trail', description: 'Route page with GPS coordinates, elevation profile, and user trip reports.' },
     ],
+    parking: {
+      name: 'Thiel Rd Trailhead, Adams MA',
+      lat: 42.6372,
+      lon: -73.1658,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=42.6372,-73.1658',
+      notes: 'Small lot at base of Thunderbolt. Free.',
+    },
   },
   'bellows-pipe-trail': {
     overview: 'An intermediate alternative to the Thunderbolt, opened in 1938-39 on the northeast face of Mt. Greylock. At 1.8 miles with 2,000 ft of vertical drop, it was designed as a less extreme racing venue. Maximum gradient is 27 degrees -- substantially mellower than the Thunderbolt. Can be combined with the Thunderbolt in a loop using the Bellows Pipe hiking trail.',
@@ -616,6 +833,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'New England Ski History - Mt. Greylock CCC Ski Trails', url: 'https://www.newenglandskihistory.com/cccskitrails/Massachusetts/mtgreylock.php', description: 'History of Bellows Pipe trail construction and race history.' },
       { title: 'EMS goEast - Alpha Guide: Hiking Mount Greylock\'s Thunderbolt Trail', url: 'https://goeast.ems.com/mount-greylock-thunderbolt-trail-alpha-guide/', description: 'Guide to Greylock trails with approach logistics.' },
     ],
+    parking: {
+      name: 'Notch Rd Trailhead, Adams MA',
+      lat: 42.6550,
+      lon: -73.1700,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=42.6550,-73.1700',
+      notes: 'Trailhead lot off Notch Road.',
+    },
   },
   // ─── Mt. Marcy (New York) ─────────────────────────────────────────────────
   'van-hoevenberg-trail': {
@@ -635,6 +859,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Pure Adirondacks - Backcountry Skiing Mt. Marcy Trip', url: 'https://pureadirondacks.com/blogs/adirondack-skiing-riding/backcountry-skiing-mt-marcy-trip', description: 'Detailed ski trip report covering the full Marcy approach.' },
       { title: 'ADK - Hiker Parking at Heart Lake', url: 'https://adk.org/hiker-parking-at-heart-lake/', description: 'Official ADK info on parking and winter access at Adirondak Loj.' },
     ],
+    parking: {
+      name: 'Adirondak Loj, Lake Placid NY',
+      lat: 44.1830,
+      lon: -73.9645,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.1830,-73.9645',
+      notes: 'ADK Loj parking. $15/day. Fills early on weekends.',
+    },
   },
   'marcy-summit-bowl-glades': {
     overview: 'Above treeline near the summit and in the transition zone above Indian Falls, Mt. Marcy offers open glade skiing accessible as a bonus on the standard Van Hoevenberg route. The summit bowl provides a short, steep descent with 360-degree views before entering the tree-skiing zone. The classic ski loop descends the cone on the west side, contours left of Gray Peak through the Funnel, then floats through glades to Lake Tear of the Clouds.',
@@ -651,6 +882,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'Adirondack Explorer - The Fun Dome: New York\'s Mount Marcy', url: 'https://www.adirondackexplorer.org/outdoor-recreation/skiing-mt-marcy-five-minutes/', description: 'Profile of Marcy\'s summit bowl skiing and classic glade descent.' },
       { title: 'Adirondack Explorer - Skiing Mount Marcy', url: 'https://www.adirondackexplorer.org/outdoor-recreation/skiing-mount-marcy/', description: 'Comprehensive route guide.' },
     ],
+    parking: {
+      name: 'Adirondak Loj, Lake Placid NY',
+      lat: 44.1830,
+      lon: -73.9645,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.1830,-73.9645',
+      notes: 'ADK Loj parking. $15/day. Fills early on weekends.',
+    },
   },
   'panther-gorge-slides': {
     overview: 'Between Mt. Marcy and Mt. Haystack lies Panther Gorge, harboring several slide paths on the south face of Marcy. The Pipeline is a 600-ft slide, Grand Central rises roughly 1,200 ft but is only 50 ft wide. All Panther Gorge lines are extremely hazardous -- avalanche-prone with numerous terrain traps. These are ski mountaineering objectives, not recreational descents. Most approach from the Upper Works trailhead in Newcomb (10.3 miles, 3,800 ft gain).',
@@ -667,6 +905,13 @@ const ZONE_INFO: Record<string, any> = {
       { title: 'NYSkiBlog - Panther Gorge Trek', url: 'https://nyskiblog.com/panther-gorge-trek/', description: 'Trip report and terrain description of Panther Gorge slides.' },
       { title: 'Adirondack Explorer - Skiing Mount Marcy', url: 'https://www.adirondackexplorer.org/outdoor-recreation/skiing-mount-marcy/', description: 'Overview including Panther Gorge terrain.' },
     ],
+    parking: {
+      name: 'Upper Works Trailhead, Newcomb NY',
+      lat: 44.0893,
+      lon: -74.0562,
+      googleMapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=44.0893,-74.0562',
+      notes: 'DEC parking area. Remote. Check road conditions.',
+    },
   },
 };
 

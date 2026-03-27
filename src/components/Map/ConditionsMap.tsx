@@ -201,6 +201,32 @@ export default function ConditionsMap({ zones, weather, forecast, assessments, i
     }
   }, [selectedZoneId, zones]);
 
+  // Fit map bounds to show all visible zones when filter changes
+  const prevZoneCountRef = useRef(0);
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || zones.length === 0) return;
+
+    // Only refit when the zone count changes (filter changed)
+    if (zones.length === prevZoneCountRef.current) return;
+    prevZoneCountRef.current = zones.length;
+
+    // Don't refit if a zone is selected (user is drilling in)
+    if (selectedZoneId) return;
+
+    // Compute bounds from all visible zones
+    const lngs = zones.map((z) => z.lon);
+    const lats = zones.map((z) => z.lat);
+    const sw: [number, number] = [Math.min(...lngs) - 0.1, Math.min(...lats) - 0.05];
+    const ne: [number, number] = [Math.max(...lngs) + 0.1, Math.max(...lats) + 0.05];
+
+    map.fitBounds([sw, ne], {
+      padding: { top: 40, bottom: 40, left: 40, right: 40 },
+      maxZoom: 13,
+      duration: 1200,
+    });
+  }, [zones, selectedZoneId]);
+
   return (
     <div className="map-container">
       <div ref={containerRef} className="map-canvas" />

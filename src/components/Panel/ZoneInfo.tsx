@@ -1,3 +1,11 @@
+interface ParkingData {
+  name: string;
+  lat: number;
+  lon: number;
+  googleMapsUrl: string;
+  notes: string;
+}
+
 interface ZoneInfoData {
   overview: string;
   stats: {
@@ -10,6 +18,7 @@ interface ZoneInfoData {
     topElevation: number;
     aspect: string;
   };
+  parking?: ParkingData;
   sources: Array<{
     title: string;
     url: string;
@@ -22,7 +31,7 @@ interface Props {
 }
 
 export default function ZoneInfo({ info }: Props) {
-  const { overview, stats, sources } = info;
+  const { overview, stats, parking, sources } = info;
 
   return (
     <div className="zone-info-card">
@@ -55,6 +64,26 @@ export default function ZoneInfo({ info }: Props) {
           <span className="zone-info-stat-value">{stats.aspect}</span>
         </div>
       </div>
+
+      {parking && (
+        <div className="zone-info-parking-section">
+          <h4 className="zone-info-parking-title">Where to Park</h4>
+          <div className="zone-info-parking">
+            <span className="zone-info-parking-name">{parking.name}</span>
+            {parking.notes && (
+              <span className="zone-info-parking-notes">{parking.notes}</span>
+            )}
+            <a
+              href={parking.googleMapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="zone-info-parking-btn"
+            >
+              Get Directions
+            </a>
+          </div>
+        </div>
+      )}
 
       {sources && sources.length > 0 && (
         <div className="zone-info-sources-section">
