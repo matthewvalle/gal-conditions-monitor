@@ -9,6 +9,7 @@ import ConditionsMap from './components/Map/ConditionsMap';
 import RegionFilter from './components/Sidebar/RegionFilter';
 import ZoneList from './components/Sidebar/ZoneList';
 import ZoneDetailPanel from './components/Panel/ZoneDetailPanel';
+import Attribution from './components/Layout/Attribution';
 
 export default function App() {
   const { data, isLoading, error } = useAllZones();
@@ -73,6 +74,7 @@ export default function App() {
               assessments={assessments}
             />
           )}
+          <Attribution />
         </div>
       </div>
     </div>

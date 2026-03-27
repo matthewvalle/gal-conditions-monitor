@@ -56,27 +56,32 @@ a:hover {
 .app-panel-col {
   flex: 1;
   min-height: 0;
+  padding: 0 12px 24px;
 }
 
-/* Desktop: side-by-side */
+/* Desktop: side-by-side with independently scrollable panel */
 @media (min-width: 1024px) {
   .app-body {
     flex-direction: row;
+    height: calc(100vh - 90px);
+    overflow: hidden;
   }
 
   .app-map-col {
-    width: 60%;
+    width: 58%;
     flex-shrink: 0;
-    height: calc(100vh - 100px);
-    position: sticky;
-    top: 0;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
 
   .app-panel-col {
-    width: 40%;
+    width: 42%;
+    height: 100%;
     overflow-y: auto;
-    max-height: calc(100vh - 100px);
     border-left: 1px solid var(--stone-300);
+    padding: 0;
   }
 }
 
@@ -1564,4 +1569,80 @@ a:hover {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* ─── Attribution Footer ─────────────────────────────────────────────────── */
+
+.app-attribution {
+  padding: 20px 16px;
+  border-top: 1px solid var(--stone-200);
+  background: var(--stone-100);
+  margin-top: 16px;
+}
+
+.app-attribution-inner {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.app-attribution-heading {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--stone-500);
+  margin: 0 0 6px;
+}
+
+.app-attribution-sources {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px 6px;
+  margin-bottom: 10px;
+}
+
+.app-attribution-sources a {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.app-attribution-sources a:hover {
+  text-decoration: underline;
+}
+
+.app-attribution-sep {
+  color: var(--stone-400);
+  font-size: 0.7rem;
+}
+
+.app-attribution-disclaimer {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  color: var(--stone-500);
+  line-height: 1.5;
+  margin: 0 0 8px;
+}
+
+.app-attribution-credit {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  color: var(--stone-500);
+  margin: 0;
+}
+
+.app-attribution-credit a {
+  color: var(--stone-600);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.app-attribution-credit a:hover {
+  color: var(--link-color);
 }
