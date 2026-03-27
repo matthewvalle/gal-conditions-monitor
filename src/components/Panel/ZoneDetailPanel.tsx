@@ -44,7 +44,7 @@ export default function ZoneDetailPanel({ detail, isLoading, zones, weather, for
   const { selectedZoneId, selectZone } = useSelectedZone();
 
   if (!selectedZoneId) {
-    // Compute summary data for the empty state dashboard
+    // Compute summary data
     const temps: number[] = [];
     if (weather) {
       Object.values(weather).forEach((w: any) => {
@@ -58,6 +58,25 @@ export default function ZoneDetailPanel({ detail, isLoading, zones, weather, for
     const avyLabel = avyRating > 0 ? DANGER_LABELS[avyRating] || 'Unknown' : null;
     const avyColor = avyRating > 0 ? DANGER_COLORS[avyRating] || 'var(--stone-500)' : null;
 
+    // Group zones by subRegion for compact summary
+    const regionGroups: Record<string, { count: number; conditions: Record<string, number> }> = {};
+    (zones || []).forEach((z: any) => {
+      const sr = z.subRegion || 'Other';
+      if (!regionGroups[sr]) regionGroups[sr] = { count: 0, conditions: {} };
+      regionGroups[sr].count++;
+      const rating = assessments?.[z.id]?.rating || 'unknown';
+      regionGroups[sr].conditions[rating] = (regionGroups[sr].conditions[rating] || 0) + 1;
+    });
+
+    // Find the dominant condition for each region
+    const getDominantCondition = (conditions: Record<string, number>) => {
+      const priority = ['dangerous', 'poor', 'fair', 'good'];
+      for (const p of priority) {
+        if (conditions[p]) return p;
+      }
+      return 'unknown';
+    };
+
     return (
       <div className="panel-dashboard">
         <div className="panel-dashboard-header">
@@ -69,15 +88,15 @@ export default function ZoneDetailPanel({ detail, isLoading, zones, weather, for
             </svg>
           </div>
           <div>
-            <h3 className="panel-dashboard-title">{zones && zones.length > 8 ? 'Northeast Backcountry' : (zones?.[0] as any)?.subRegion || 'Conditions'}</h3>
-            <p className="panel-dashboard-subtitle">{zones?.length || 0} Backcountry Zones</p>
+            <h3 className="panel-dashboard-title">Northeast Backcountry</h3>
+            <p className="panel-dashboard-subtitle">{zones?.length || 0} zones across 5 states</p>
           </div>
         </div>
 
         <div className="panel-dashboard-stats">
           {avyLabel && (
             <div className="panel-dashboard-stat">
-              <span className="panel-dashboard-stat-label">Avy Danger</span>
+              <span className="panel-dashboard-stat-label">Presidential Range Avy Danger</span>
               <span
                 className="panel-dashboard-stat-badge"
                 style={{ background: avyColor || undefined, color: avyRating === 2 ? 'var(--stone-900)' : 'var(--white)' }}
@@ -89,40 +108,35 @@ export default function ZoneDetailPanel({ detail, isLoading, zones, weather, for
           {minTemp !== null && maxTemp !== null && (
             <div className="panel-dashboard-stat">
               <span className="panel-dashboard-stat-label">Temperature Range</span>
-              <span className="panel-dashboard-stat-value">{minTemp}&deg;F to {maxTemp}&deg;F</span>
+              <span className="panel-dashboard-stat-value">{minTemp}&deg;F &ndash; {maxTemp}&deg;F</span>
             </div>
           )}
         </div>
 
-        {zones && zones.length > 0 && (
-          <div className="panel-dashboard-zones">
-            <h4 className="panel-dashboard-zones-title">Select a zone to view conditions</h4>
-            <ul className="panel-dashboard-zone-list">
-              {zones.map((z: any) => {
-                const zWeather = weather?.[z.id];
-                const zTemp = zWeather?.current?.tempF;
-                const zAssessment = assessments?.[z.id];
-                const ratingColor = zAssessment?.rating
-                  ? RATING_COLORS[zAssessment.rating] || 'var(--stone-400)'
-                  : 'var(--stone-400)';
+        {/* Compact region summary — NOT individual zone list */}
+        <div className="panel-dashboard-regions">
+          <h4 className="panel-dashboard-section-title">Regions at a Glance</h4>
+          {Object.entries(regionGroups).map(([region, data]) => {
+            const dominant = getDominantCondition(data.conditions);
+            const color = RATING_COLORS[dominant] || 'var(--stone-400)';
+            return (
+              <div key={region} className="panel-dashboard-region-row">
+                <span className="panel-dashboard-region-dot" style={{ background: color }} />
+                <span className="panel-dashboard-region-name">{region}</span>
+                <span className="panel-dashboard-region-count">{data.count} zones</span>
+              </div>
+            );
+          })}
+        </div>
 
-                return (
-                  <li key={z.id} className="panel-dashboard-zone-item" onClick={() => selectZone(z.id)}>
-                    <span className="panel-dashboard-zone-dot" style={{ background: ratingColor }} />
-                    <span className="panel-dashboard-zone-name">{z.name}</span>
-                    {zTemp != null && (
-                      <span className="panel-dashboard-zone-temp">{zTemp}&deg;F</span>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        )}
+        <div className="panel-dashboard-cta">
+          <p>Click a marker on the map or select a zone from the list below to view detailed conditions, forecasts, and trip assessments.</p>
+        </div>
 
-        <p className="panel-dashboard-footer">
-          Real-time weather, avalanche forecasts, and trip assessments for {zones?.length || 0} backcountry ski zones across the Northeast.
-        </p>
+        <div className="panel-dashboard-sources">
+          <span className="panel-dashboard-source-label">Data from</span>
+          <span>MWAC &middot; Open-Meteo &middot; NWS &middot; GBA</span>
+        </div>
       </div>
     );
   }
