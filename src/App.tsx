@@ -34,9 +34,20 @@ export default function App() {
     return zones;
   }, [data?.zones, regionFilter]);
 
+  // Dynamic region label based on filter
+  const regionLabels: Record<string, string> = {
+    all: 'Northeast Backcountry',
+    nh: 'New Hampshire',
+    vt: 'Vermont',
+    ny: 'New York',
+    ma: 'Massachusetts',
+    me: 'Maine',
+  };
+  const regionLabel = regionLabels[regionFilter] || 'Northeast Backcountry';
+
   return (
     <div className="app">
-      <Header />
+      <Header regionLabel={regionLabel} zoneCount={filteredZones.length} />
 
       {data?.alerts && data.alerts.length > 0 && (
         <AlertBanner alerts={data.alerts} />

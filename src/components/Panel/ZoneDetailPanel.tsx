@@ -69,8 +69,8 @@ export default function ZoneDetailPanel({ detail, isLoading, zones, weather, for
             </svg>
           </div>
           <div>
-            <h3 className="panel-dashboard-title">Presidential Range</h3>
-            <p className="panel-dashboard-subtitle">8 Backcountry Zones</p>
+            <h3 className="panel-dashboard-title">{zones && zones.length > 8 ? 'Northeast Backcountry' : (zones?.[0] as any)?.subRegion || 'Conditions'}</h3>
+            <p className="panel-dashboard-subtitle">{zones?.length || 0} Backcountry Zones</p>
           </div>
         </div>
 
@@ -121,7 +121,7 @@ export default function ZoneDetailPanel({ detail, isLoading, zones, weather, for
         )}
 
         <p className="panel-dashboard-footer">
-          Real-time weather, avalanche forecasts, and trip assessments for Mt. Washington backcountry zones.
+          Real-time weather, avalanche forecasts, and trip assessments for {zones?.length || 0} backcountry ski zones across the Northeast.
         </p>
       </div>
     );
