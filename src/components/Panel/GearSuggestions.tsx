@@ -8,39 +8,21 @@ const priorityOrder: Record<string, number> = {
   optional: 2,
 };
 
-const priorityLabels: Record<string, string> = {
-  essential: '🔴 Essential',
-  recommended: '🟡 Recommended',
-  optional: '🟢 Optional',
+const priorityConfig: Record<string, { label: string; color: string; bg: string }> = {
+  essential: { label: 'Essential', color: 'var(--danger-high)', bg: 'rgba(244, 67, 54, 0.08)' },
+  recommended: { label: 'Recommended', color: 'var(--danger-moderate)', bg: 'rgba(255, 193, 7, 0.08)' },
+  optional: { label: 'Optional', color: 'var(--danger-low)', bg: 'rgba(76, 175, 80, 0.08)' },
 };
-
-function getGearIcon(text: string): string {
-  const lower = text.toLowerCase();
-  if (lower.includes('crampon')) return '🧊';
-  if (lower.includes('goggle') || lower.includes('glass')) return '🕶️';
-  if (lower.includes('skin') || lower.includes('ski')) return '⛷️';
-  if (lower.includes('beacon') || lower.includes('avy') || lower.includes('avalanche')) return '🚨';
-  if (lower.includes('layer') || lower.includes('jacket') || lower.includes('shell') || lower.includes('insul')) return '🧥';
-  if (lower.includes('headlamp') || lower.includes('light')) return '🔦';
-  if (lower.includes('sock') || lower.includes('warm')) return '🧦';
-  if (lower.includes('navigation') || lower.includes('app')) return '📱';
-  return '🎒';
-}
 
 export default function GearSuggestions({ gear }: Props) {
   if (!gear || !Array.isArray(gear) || gear.length === 0) {
     return (
       <div className="gear-card">
         <h3 className="card-title">Gear Suggestions</h3>
-        <p className="gear-default">
+        <p style={{ fontSize: '13px', color: 'var(--stone-600)', margin: 0, lineHeight: 1.5 }}>
           Standard touring setup.{' '}
-          <a
-            href="https://granitealpinelab.com/backcountry-gear-checklist/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="gear-link"
-          >
-            Check our gear checklist →
+          <a href="https://granitealpinelab.com/backcountry-gear-checklist/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--link-color)' }}>
+            View our gear checklist →
           </a>
         </p>
       </div>
@@ -51,47 +33,52 @@ export default function GearSuggestions({ gear }: Props) {
     (a, b) => (priorityOrder[a.priority] ?? 2) - (priorityOrder[b.priority] ?? 2)
   );
 
-  let currentPriority = '';
+  // Group by priority
+  const groups: Record<string, any[]> = {};
+  sorted.forEach((g) => {
+    const p = g.priority || 'recommended';
+    if (!groups[p]) groups[p] = [];
+    groups[p].push(g);
+  });
 
   return (
     <div className="gear-card">
       <h3 className="card-title">Gear Suggestions</h3>
-      <ul className="gear-list">
-        {sorted.map((g, i) => {
-          const showHeader = g.priority !== currentPriority;
-          currentPriority = g.priority;
-          // Handle both API shapes: { text, reviewUrl } and { item, reason, reviewUrl }
-          const displayText = g.text || g.item || '';
-          const reviewUrl = g.reviewUrl || '';
-
+      <div className="gear-groups">
+        {Object.entries(groups).map(([priority, items]) => {
+          const config = priorityConfig[priority] || priorityConfig.recommended;
           return (
-            <li key={i} className="gear-item">
-              {showHeader && (
-                <div className={`gear-group-header gear-group--${g.priority}`}>
-                  {priorityLabels[g.priority] ?? g.priority}
-                </div>
-              )}
-              <div className="gear-item-content">
-                <span className="gear-icon">{getGearIcon(displayText)}</span>
-                <div className="gear-text">
-                  {reviewUrl ? (
-                    <a
-                      href={`https://granitealpinelab.com${reviewUrl}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="gear-link"
-                    >
-                      {displayText}
-                    </a>
-                  ) : (
-                    <span>{displayText}</span>
-                  )}
-                </div>
+            <div key={priority} className="gear-priority-group">
+              <div className="gear-priority-badge" style={{ color: config.color, background: config.bg }}>
+                {config.label}
               </div>
-            </li>
+              <div className="gear-items">
+                {items.map((g: any, i: number) => {
+                  const text = g.text || g.item || '';
+                  const url = g.reviewUrl || '';
+                  return (
+                    <div key={i} className="gear-suggestion-row">
+                      {url ? (
+                        <a
+                          href={`https://granitealpinelab.com${url}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="gear-suggestion-link"
+                        >
+                          {text}
+                          <span className="gear-suggestion-arrow">→</span>
+                        </a>
+                      ) : (
+                        <span className="gear-suggestion-text">{text}</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           );
         })}
-      </ul>
+      </div>
     </div>
   );
 }

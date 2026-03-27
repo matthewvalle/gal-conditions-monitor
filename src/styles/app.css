@@ -1764,3 +1764,78 @@ a:hover {
   letter-spacing: 0.08em;
   font-size: 0.6rem;
 }
+
+/* ─── Gear Suggestions (Redesigned) ──────────────────────────────────────── */
+
+.gear-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gear-priority-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gear-priority-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 3px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.gear-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 2px;
+}
+
+.gear-suggestion-row {
+  padding: 5px 0;
+  border-bottom: 1px solid var(--stone-200);
+}
+
+.gear-suggestion-row:last-child {
+  border-bottom: none;
+}
+
+.gear-suggestion-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  color: var(--link-color);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  transition: color var(--transition);
+}
+
+.gear-suggestion-link:hover {
+  color: var(--ember-hover);
+  text-decoration: none;
+}
+
+.gear-suggestion-arrow {
+  color: var(--stone-400);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.gear-suggestion-link:hover .gear-suggestion-arrow {
+  color: var(--ember);
+}
+
+.gear-suggestion-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  color: var(--stone-700);
+}
